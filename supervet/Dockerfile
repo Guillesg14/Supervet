@@ -8,5 +8,5 @@ FROM openjdk:21 AS deploy
 
 EXPOSE 8080:8080
 RUN mkdir /app
-COPY --from=build /home/gradle/src/supervet/build/libs/*.jar /app/supervet.jar
+COPY --from=build /home/gradle/src/build/libs/*.jar /app/supervet.jar
 ENTRYPOINT ["java","-jar","/app/supervet.jar"]

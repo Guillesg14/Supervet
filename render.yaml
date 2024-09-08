@@ -7,3 +7,11 @@ services:
     dockerfilePath: ./supervet/Dockerfile
     dockerContext: ./supervet
 
+  - name: supervet-web
+    type: web
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install; npm run build
+    startCommand: npm run start
+    rootDir: ./web

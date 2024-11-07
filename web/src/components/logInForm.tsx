@@ -1,6 +1,6 @@
 import {FormEvent} from "react";
 
-export default function LogIn(){
+export default function LogInForm(){
     const handleSignIn = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         const formData = new FormData(event.currentTarget)
@@ -55,7 +55,7 @@ export default function LogIn(){
                             {/* Enlace para Iniciar Sesión */}
                             <p className="text-sm text-center text-gray-500">
                                 ¿Aún no tienes cuenta?
-                                <a href="../sign-up" className="text-blue-600 hover:underline"> Crea tu cuenta</a>
+                                <a href="../app/sign-up" className="text-blue-600 hover:underline"> Crea tu cuenta</a>
                             </p>
                         </form>
                     </div>

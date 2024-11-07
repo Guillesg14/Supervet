@@ -12,7 +12,7 @@ export default function HeaderSignUp(){
             </div>
             <div className="flex flex-1 justify-end gap-8">
                 <div className="flex items-center gap-9">
-                    <a className="text-[#0e151b] text-sm font-medium leading-normal" href="../">Inicio</a>
+                    <a className="text-[#0e151b] text-sm font-medium leading-normal" href="../app">Inicio</a>
                     <a className="text-[#0e151b] text-sm font-medium leading-normal" href="./log-in">¿Ya tenias
                         cuenta?</a>
                 </div>

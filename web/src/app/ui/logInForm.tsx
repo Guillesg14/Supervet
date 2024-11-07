@@ -1,4 +1,13 @@
+import {FormEvent} from "react";
+
 export default function LogIn(){
+    const handleSignIn = async (event: FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        const formData = new FormData(event.currentTarget)
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
+        console.log(email, password);
+    }
     return (
         <div className="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden"
              style={{fontFamily: 'Inter, "Noto Sans", sans-serif'}}>
@@ -8,7 +17,7 @@ export default function LogIn(){
                     <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
                         <h2 className="text-2xl font-bold text-center text-gray-800">Accede a tu cuenta</h2>
 
-                        <form className="space-y-6">
+                        <form className="space-y-6" onSubmit={handleSignIn}>
                             {/* Correo Electrónico */}
                             <div>
                                 <label className="block mb-1 text-sm font-medium text-gray-600" htmlFor="email">Correo

@@ -1,6 +1,6 @@
 import '@/app/globals.css';
 import React from 'react';
-import colors from "tailwindcss/colors";
+import Image from "next/image";
 
 export default function Home() {
     return (
@@ -130,7 +130,7 @@ export default function Home() {
                                     </ul>
                                 </div>
                                 <div className="w-1/2 flex items-center justify-center">
-                                    <img src="/veterinario.png" alt="imagen de veterinario"
+                                    <Image src="/veterinario.png" alt="imagen de veterinario"
                                          className="max-h-full max-w-full w-96 rounded-2xl shadow-lg"/>
                                 </div>
                             </div>
@@ -145,7 +145,7 @@ export default function Home() {
                             <div className="w-4/5 mb-20 mx-auto flex justify-center items-center" id="wrapper">
 
                                 <div className="w-1/2 flex items-center justify-center">
-                                    <img src="/cliente.png" alt="imagen de veterinario"
+                                    <Image src="/cliente.png" alt="imagen de veterinario"
                                          className="max-h-full max-w-full w-96 rounded-2xl shadow-lg"/>
                                 </div>
 

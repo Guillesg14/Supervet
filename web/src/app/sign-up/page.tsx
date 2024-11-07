@@ -1,6 +1,6 @@
 
-import SignUp from "@/app/ui/signUpForm";
-import HeaderSignUp from "@/app/ui/headerSignUp";
+import SignUp from "@/components/signUpForm";
+import HeaderSignUp from "@/components/headerSignUp";
 export default function SignUpPage(){
     return(
         <>

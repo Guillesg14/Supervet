@@ -1,6 +1,6 @@
 
-import HeaderLogIn from "@/app/ui/headerLogIn";
-import LogIn from "@/app/ui/logInForm";
+import HeaderLogIn from "@/components/headerLogIn";
+import LogInForm from "@/components/logInForm";
 
 
 export default function LogIn() {
@@ -9,7 +9,7 @@ export default function LogIn() {
   return (
             <>
             <HeaderLogIn />
-            <LogIn />
+            <LogInForm />
             </>
         );
     }

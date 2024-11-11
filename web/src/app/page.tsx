@@ -130,7 +130,7 @@ export default function Home() {
                                     </ul>
                                 </div>
                                 <div className="w-1/2 flex items-center justify-center">
-                                    <Image src="/veterinario.png" alt="imagen de veterinario"
+                                    <Image src="/veterinario.png" alt="imagen de veterinario" width={500} height={300}
                                          className="max-h-full max-w-full w-96 rounded-2xl shadow-lg"/>
                                 </div>
                             </div>
@@ -145,7 +145,7 @@ export default function Home() {
                             <div className="w-4/5 mb-20 mx-auto flex justify-center items-center" id="wrapper">
 
                                 <div className="w-1/2 flex items-center justify-center">
-                                    <Image src="/cliente.png" alt="imagen de veterinario"
+                                    <Image src="/cliente.png" alt="imagen de veterinario" width={500} height={300}
                                          className="max-h-full max-w-full w-96 rounded-2xl shadow-lg"/>
                                 </div>
 

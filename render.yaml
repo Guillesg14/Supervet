@@ -15,3 +15,11 @@ services:
     buildCommand: npm install; npm run build
     startCommand: npm run start
     rootDir: ./web
+
+databases:
+
+  - name: supervet-db
+    postgresMajorVersion: "16"
+    region: frankfurt
+    plan: free
+    databaseName: supervet

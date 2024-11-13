@@ -6,6 +6,28 @@ services:
     region: frankfurt
     dockerfilePath: ./supervet/Dockerfile
     dockerContext: ./supervet
+    envVars:
+      - key: DATABASE_HOST
+        fromDatabase:
+          name: supervet-db
+          property: host
+      - key: DATABASE_PORT
+        fromDatabase:
+          name: supervet-db
+          property: port
+      - key: DATABASE_NAME
+        fromDatabase:
+          name: supervet-db
+          property: database
+      - key: DATABASE_USER
+        fromDatabase:
+          name: supervet-db
+          property: user
+      - key: DATABASE_PASSWORD
+        fromDatabase:
+          name: supervet-db
+          property: password
+
 
   - name: supervet-web
     type: web
@@ -23,24 +45,3 @@ databases:
     region: frankfurt
     plan: free
     databaseName: supervet
-    envVars:
-    - key: DATABASE_HOST
-      fromDatabase:
-      name: supervet-db
-      property: Hostname
-    - key: DATABASE_PORT
-      fromDatabase:
-      name: supervet-db
-      property: Port
-    - key: DATABASE_NAME
-      fromDatabase:
-      name: supervet-db
-      property: Name
-    - key: DATABASE_USER
-      fromDatabase:
-      name: supervet-db
-      property: Username
-    - key: DATABASE_PASSWORD
-      fromDatabase:
-      name: supervet-db
-      property: Password

@@ -29,8 +29,14 @@ fun Application.configureRouting() {
         post("/clinics/sign-up") {
             val clinicSignUpRequest = call.receive<ClinicSignUpRequest>()
 
+            val host = environment.config.property("database.host").getString()
+            val port = environment.config.property("database.port").getString()
+            val database = environment.config.property("database.database").getString()
+            val user = environment.config.property("database.user").getString()
+            val password = environment.config.property("database.password").getString()
+
             val hikariConfig = HikariConfig().apply {
-                jdbcUrl = environment.config.property("database.connectionString").getString()
+                jdbcUrl = "jdbc:postgresql://${host}:${port}/${database}?user=${user}&password=${password}"
                 driverClassName = "org.postgresql.Driver"
             }
 
@@ -56,9 +62,14 @@ fun Application.configureRouting() {
 
         post("/clinics/sign-in") {
             val clinicSignInRequest = call.receive<ClinicSignInRequest>()
+            val host = environment.config.property("database.host").getString()
+            val port = environment.config.property("database.port").getString()
+            val database = environment.config.property("database.database").getString()
+            val user = environment.config.property("database.user").getString()
+            val password = environment.config.property("database.password").getString()
 
             val hikariConfig = HikariConfig().apply {
-                jdbcUrl = environment.config.property("database.connectionString").getString()
+                jdbcUrl = "jdbc:postgresql://${host}:${port}/${database}?user=${user}&password=${password}"
                 driverClassName = "org.postgresql.Driver"
             }
 
@@ -66,7 +77,7 @@ fun Application.configureRouting() {
                 .installPlugin(PostgresPlugin())
                 .installPlugin(KotlinPlugin(enableCoroutineSupport = true))
 
-            val user = jdbi.withHandleUnchecked { handle ->
+            val existingUser = jdbi.withHandleUnchecked { handle ->
                 handle.createQuery(
                     """
                         select id, email, password
@@ -83,7 +94,7 @@ fun Application.configureRouting() {
                     .one()
             }
 
-            if (!BCrypt.verifyer().verify(clinicSignInRequest.password.toCharArray(), user.password).verified) {
+            if (!BCrypt.verifyer().verify(clinicSignInRequest.password.toCharArray(), existingUser.password).verified) {
                 call.respond(HttpStatusCode.Unauthorized)
                 return@post
             }
@@ -92,8 +103,8 @@ fun Application.configureRouting() {
                 .withAudience("supervet")
                 .withIssuer("supervet")
                 .withClaim("type", "clinic")
-                .withClaim("user_id", user.id.toString())
-                .withClaim("email", user.email)
+                .withClaim("user_id", existingUser.id.toString())
+                .withClaim("email", existingUser.email)
                 .sign(Algorithm.HMAC512("supervet"))
 
             call.respond(HttpStatusCode.OK, ClinicSignInResponse(token = token))

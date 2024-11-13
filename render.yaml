@@ -23,3 +23,24 @@ databases:
     region: frankfurt
     plan: free
     databaseName: supervet
+    envVars:
+    - key: DATABASE_HOST
+      fromDatabase:
+      name: supervet-db
+      property: Hostname
+    - key: DATABASE_PORT
+      fromDatabase:
+      name: supervet-db
+      property: Port
+    - key: DATABASE_NAME
+      fromDatabase:
+      name: supervet-db
+      property: Name
+    - key: DATABASE_USER
+      fromDatabase:
+      name: supervet-db
+      property: Username
+    - key: DATABASE_PASSWORD
+      fromDatabase:
+      name: supervet-db
+      property: Password

@@ -6,4 +6,9 @@ ktor:
         port: 8080
 
 database:
-    connectionString: $DB_CONNECTION_STRING
+    host: ${DATABASE_HOST}
+    port: ${DATABASE_PORT}
+    database: ${DATABASE_NAME}
+    user: ${DATABASE_USER}
+    password: ${DATABASE_PASSWORD}
+    connectionString: "jdbc:postgresql://${database.host}:${database.port}/${database.database}?user=${database.user}&password=${database.password}"

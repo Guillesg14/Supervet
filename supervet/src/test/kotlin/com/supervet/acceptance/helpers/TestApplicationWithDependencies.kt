@@ -18,7 +18,14 @@ fun testApplicationWithDependencies(body: suspend (Jdbi, HttpClient, MapApplicat
     testApplication {
         val postgresContainer = PostgresTestContainer()
         val customConfig = MapApplicationConfig(
-            "database.connectionString" to postgresContainer.connectionString
+            "database.host" to postgresContainer.host,
+            "database.port" to postgresContainer.port,
+            "database.database" to postgresContainer.database,
+            "database.user" to postgresContainer.user,
+            "database.password" to postgresContainer.password,
+            // Define connectionString directamente
+            "database.connectionString" to
+                    "jdbc:postgresql://${postgresContainer.host}:${postgresContainer.port}/${postgresContainer.database}?user=${postgresContainer.user}&password=${postgresContainer.password}"
         )
 
         environment {

@@ -8,8 +8,14 @@ import org.jdbi.v3.postgres.PostgresPlugin
 import org.testcontainers.containers.PostgreSQLContainer
 
 class PostgresTestContainer {
-    val connectionString: String
+
     val jdbi: Jdbi
+    val host: String
+    val port: String
+    val database: String
+    val user: String
+    val password: String
+
 
     init {
         val container = PostgreSQLContainer("postgres:16-alpine").apply {
@@ -18,13 +24,13 @@ class PostgresTestContainer {
             start()
         }
 
-        val host = container.host
-        val port = container.getMappedPort(5432).toString()
-        val database = container.databaseName
-        val user = container.username
-        val password = container.password
+        host = container.host
+        port = container.getMappedPort(5432).toString()
+        database = container.databaseName
+        user = container.username
+        password = container.password
 
-        connectionString = "jdbc:postgresql://${host}:${port}/${database}?user=${user}&password=${password}"
+        val connectionString = "jdbc:postgresql://${host}:${port}/${database}?user=${user}&password=${password}"
 
         val hikariConfig = HikariConfig().apply {
             jdbcUrl = connectionString

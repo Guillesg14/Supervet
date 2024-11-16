@@ -46,7 +46,7 @@ class ClinicSignInTest {
         val jwt = JWT.require(Algorithm.HMAC512("supervet")).build().verify(response.body<ClinicSignInResponse>().token)
 
         assertEquals(jwt.claims["email"]?.asString(), signInPayload.email)
-        assertEquals(jwt.claims["type"]?.asString(), "clinic")
+        assertEquals(jwt.claims["type"]?.asString(), "CLINIC")
     }
 
     @Test

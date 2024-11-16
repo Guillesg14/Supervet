@@ -102,7 +102,7 @@ fun Application.configureRouting() {
             val token = JWT.create()
                 .withAudience("supervet")
                 .withIssuer("supervet")
-                .withClaim("type", "clinic")
+                .withClaim("type", "CLINIC")
                 .withClaim("user_id", existingUser.id.toString())
                 .withClaim("email", existingUser.email)
                 .sign(Algorithm.HMAC512("supervet"))

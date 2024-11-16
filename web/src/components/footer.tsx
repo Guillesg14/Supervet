@@ -52,7 +52,7 @@ export default function Footer() {
                         rel="noopener noreferrer"
                         className="text-[#0e151b] hover:text-blue-600"
                     >
-                        <Image src="/icons/twitter.svg" alt="Twitter" className="h-6 w-6" />
+                        <Image src="/icons/twitter.png" alt="Twitter" className="h-6 w-6" />
                     </a>
                     <a
                         href="https://instagram.com"

@@ -3,7 +3,7 @@ package com.supervet.auth.clinics
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
-import com.example.auth.sign_in.ClinicSignInResponse
+import com.supervet.auth.sign_in.ClinicSignInResponse
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
 import io.ktor.client.call.*
 import io.ktor.client.request.*

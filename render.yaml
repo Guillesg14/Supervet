@@ -4,8 +4,8 @@ services:
     runtime: docker
     plan: free
     region: frankfurt
-    dockerfilePath: ./supervet/Dockerfile
-    dockerContext: ./supervet
+    dockerfilePath: ./backend/Dockerfile
+    dockerContext: ./backend
     envVars:
       - key: DATABASE_HOST
         fromDatabase:
@@ -36,10 +36,9 @@ services:
     region: frankfurt
     buildCommand: npm install; npm run build
     startCommand: npm run start
-    rootDir: ./web
+    rootDir: ./frontend
 
 databases:
-
   - name: supervet-db
     postgresMajorVersion: "16"
     region: frankfurt

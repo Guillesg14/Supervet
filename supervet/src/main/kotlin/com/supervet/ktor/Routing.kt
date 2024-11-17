@@ -1,9 +1,10 @@
 package com.supervet.ktor
 
-
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.example.auth.sign_in.SignInHandler
+import com.example.auth.sign_up.SignUpHandler
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.http.*
@@ -18,7 +19,18 @@ import org.jdbi.v3.core.kotlin.KotlinPlugin
 import org.jdbi.v3.core.kotlin.useHandleUnchecked
 import org.jdbi.v3.core.kotlin.withHandleUnchecked
 import org.jdbi.v3.postgres.PostgresPlugin
+import org.kodein.di.instance
+import org.kodein.di.ktor.closestDI
 import java.util.UUID
+
+inline fun <reified T : Handler> executeInvoke(): suspend RoutingContext.() -> Unit = {
+    val handler by this.call.application.closestDI().instance<T>()
+    handler(this)
+}
+
+interface Handler {
+    suspend operator fun invoke(ctx: RoutingContext)
+}
 
 fun Application.configureRouting() {
     install(ContentNegotiation) {
@@ -26,94 +38,11 @@ fun Application.configureRouting() {
     }
 
     routing {
-        post("/clinics/sign-up") {
-            val clinicSignUpRequest = call.receive<ClinicSignUpRequest>()
-
-            val host = environment.config.property("database.host").getString()
-            val port = environment.config.property("database.port").getString()
-            val database = environment.config.property("database.database").getString()
-            val user = environment.config.property("database.user").getString()
-            val password = environment.config.property("database.password").getString()
-
-            val hikariConfig = HikariConfig().apply {
-                jdbcUrl = "jdbc:postgresql://${host}:${port}/${database}?user=${user}&password=${password}"
-                driverClassName = "org.postgresql.Driver"
+        route("auth") {
+            route("clinics") {
+                post("sign-up", executeInvoke<SignUpHandler>())
+                post("sign-in", executeInvoke<SignInHandler>())
             }
-
-            val jdbi = Jdbi.create(HikariDataSource(hikariConfig))
-                .installPlugin(PostgresPlugin())
-                .installPlugin(KotlinPlugin(enableCoroutineSupport = true))
-
-            jdbi.useHandleUnchecked { handle ->
-                handle.createUpdate(
-                    """
-                        insert into users(id, email, password, created_at)
-                        values(:id, :email, :password, now())
-                    """.trimIndent()
-                )
-                    .bind("id", UUID.randomUUID())
-                    .bind("email", clinicSignUpRequest.email)
-                    .bind("password", BCrypt.withDefaults().hashToString(12, clinicSignUpRequest.password.toCharArray()))
-                    .execute()
-            }
-
-            call.respond(HttpStatusCode.Created)
-        }
-
-        post("/clinics/sign-in") {
-            val clinicSignInRequest = call.receive<ClinicSignInRequest>()
-            val host = environment.config.property("database.host").getString()
-            val port = environment.config.property("database.port").getString()
-            val database = environment.config.property("database.database").getString()
-            val user = environment.config.property("database.user").getString()
-            val password = environment.config.property("database.password").getString()
-
-            val hikariConfig = HikariConfig().apply {
-                jdbcUrl = "jdbc:postgresql://${host}:${port}/${database}?user=${user}&password=${password}"
-                driverClassName = "org.postgresql.Driver"
-            }
-
-            val jdbi = Jdbi.create(HikariDataSource(hikariConfig))
-                .installPlugin(PostgresPlugin())
-                .installPlugin(KotlinPlugin(enableCoroutineSupport = true))
-
-            val existingUser = jdbi.withHandleUnchecked { handle ->
-                handle.createQuery(
-                    """
-                        select id, email, password
-                        from users
-                        where email = :email
-                    """.trimIndent()
-                )
-                    .bind("email", clinicSignInRequest.email)
-                    .map { rs, _ -> User(
-                        id = UUID.fromString(rs.getString("id")),
-                        email = rs.getString("email"),
-                        password = rs.getString("password")
-                    ) }
-                    .one()
-            }
-
-            if (!BCrypt.verifyer().verify(clinicSignInRequest.password.toCharArray(), existingUser.password).verified) {
-                call.respond(HttpStatusCode.Unauthorized)
-                return@post
-            }
-
-            val token = JWT.create()
-                .withAudience("supervet")
-                .withIssuer("supervet")
-                .withClaim("type", "CLINIC")
-                .withClaim("user_id", existingUser.id.toString())
-                .withClaim("email", existingUser.email)
-                .sign(Algorithm.HMAC512("supervet"))
-
-            call.respond(HttpStatusCode.OK, ClinicSignInResponse(token = token))
         }
     }
 }
-
-data class ClinicSignUpRequest(val email: String, val password: String)
-data class ClinicSignInRequest(val email: String, val password: String)
-data class ClinicSignInResponse(val token: String)
-
-data class User(val id: UUID, val email: String, val password: String)

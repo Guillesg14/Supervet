@@ -42,6 +42,7 @@ dependencies {
     implementation("org.jdbi:jdbi3-kotlin:3.45.1")
     implementation("org.flywaydb:flyway-core:10.11.0")
     implementation("org.flywaydb:flyway-database-postgresql:10.11.0")
+    implementation("org.kodein.di:kodein-di-framework-ktor-server-jvm:7.21.2")
     testImplementation("io.ktor:ktor-server-test-host-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
     testImplementation("io.kotest:kotest-runner-junit5:5.8.1")

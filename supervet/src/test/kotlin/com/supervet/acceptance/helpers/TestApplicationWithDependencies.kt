@@ -1,5 +1,6 @@
 package com.supervet.acceptance.helpers
 
+import com.supervet.ktor.configureDependencyInjection
 import com.supervet.ktor.configureMigrations
 import com.supervet.ktor.configureRouting
 import com.supervet.ktor.configureSecurity
@@ -27,6 +28,7 @@ fun testApplicationWithDependencies(body: suspend (Jdbi, HttpClient, MapApplicat
         }
 
         application {
+            configureDependencyInjection()
             configureMigrations()
             configureSecurity()
             configureRouting()

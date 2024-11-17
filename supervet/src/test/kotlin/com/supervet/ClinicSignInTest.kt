@@ -1,10 +1,10 @@
-package com.supervet
+package com.supervet.auth.clinics
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+import com.example.auth.sign_in.ClinicSignInResponse
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
-import com.supervet.ktor.ClinicSignInResponse
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -36,7 +36,7 @@ class ClinicSignInTest {
                 .execute()
         }
 
-        val response = client.post("/clinics/sign-in") {
+        val response = client.post("auth/clinics/sign-in") {
             contentType(ContentType.Application.Json)
             setBody(signInPayload)
         }
@@ -69,7 +69,7 @@ class ClinicSignInTest {
                 .execute()
         }
 
-        val response = client.post("/clinics/sign-in") {
+        val response = client.post("auth/clinics/sign-in") {
             contentType(ContentType.Application.Json)
             setBody(signInPayload)
         }

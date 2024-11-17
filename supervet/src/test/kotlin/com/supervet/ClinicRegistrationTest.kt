@@ -1,11 +1,10 @@
-package com.supervet
+package com.supervet.auth.clinics
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.http.HttpStatusCode.Companion.Created
-import io.ktor.http.HttpStatusCode.Companion.OK
 import org.jdbi.v3.core.kotlin.withHandleUnchecked
 import java.util.*
 import kotlin.test.*
@@ -18,7 +17,7 @@ class ClinicRegistrationTest {
             val password = UUID.randomUUID().toString()
         }
 
-        val response = client.post("/clinics/sign-up") {
+        val response = client.post("auth/clinics/sign-up") {
             contentType(ContentType.Application.Json)
             setBody(signUpPayload)
         }

@@ -1,6 +1,6 @@
 package com.supervet
 
-import com.supervet.plugins.*
+import com.supervet.ktor.*
 import io.ktor.server.application.*
 
 fun main(args: Array<String>) {

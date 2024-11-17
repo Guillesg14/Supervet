@@ -4,7 +4,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
-import com.supervet.plugins.ClinicSignInResponse
+import com.supervet.ktor.ClinicSignInResponse
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*

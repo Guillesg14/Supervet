@@ -1,4 +1,4 @@
-package com.supervet.plugins
+package com.supervet.ktor
 
 
 import at.favre.lib.crypto.bcrypt.BCrypt

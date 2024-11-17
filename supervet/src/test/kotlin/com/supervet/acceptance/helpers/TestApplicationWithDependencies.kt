@@ -1,8 +1,8 @@
 package com.supervet.acceptance.helpers
 
-import com.supervet.plugins.configureMigrations
-import com.supervet.plugins.configureRouting
-import com.supervet.plugins.configureSecurity
+import com.supervet.ktor.configureMigrations
+import com.supervet.ktor.configureRouting
+import com.supervet.ktor.configureSecurity
 import io.ktor.client.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.serialization.jackson.*

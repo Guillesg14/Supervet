@@ -1,6 +1,6 @@
 package com.supervet
 
-import com.supervet.plugins.*
+import com.supervet.ktor.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*

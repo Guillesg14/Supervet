@@ -7,7 +7,7 @@ export default function Footer() {
                 {/* Logo y descripción */}
                 <div className="flex items-center gap-4 text-[#0e151b]">
                     <div className="size-14">
-                        <Image src="/logo.png" alt="Logo" className="h-14 w-14" />
+                        <Image src="/logo.png" alt="Logo" className="h-14 w-14" width={40} height={40} />
                     </div>
                     <p className="text-sm text-[#0e151b] leading-tight">
                         © 2024 Supervet. All rights reserved.
@@ -44,7 +44,7 @@ export default function Footer() {
                         rel="noopener noreferrer"
                         className="text-[#0e151b] hover:text-blue-600"
                     >
-                        <Image src="/icons/facebook.png" alt="Facebook" className="h-6 w-6" />
+                        <Image src="/icons/facebook.png" alt="Facebook" className="h-6 w-6" width={40} height={40} />
                     </a>
                     <a
                         href="https://twitter.com"
@@ -52,7 +52,7 @@ export default function Footer() {
                         rel="noopener noreferrer"
                         className="text-[#0e151b] hover:text-blue-600"
                     >
-                        <Image src="/icons/twitter.png" alt="Twitter" className="h-6 w-6" />
+                        <Image src="/icons/twitter.png" alt="Twitter" className="h-6 w-6" width={40} height={40} />
                     </a>
                     <a
                         href="https://instagram.com"
@@ -60,7 +60,7 @@ export default function Footer() {
                         rel="noopener noreferrer"
                         className="text-[#0e151b] hover:text-blue-600"
                     >
-                        <Image src="/icons/instagram.png" alt="Instagram" className="h-6 w-6" />
+                        <Image src="/icons/instagram.png" alt="Instagram" className="h-6 w-6" width={40} height={40}  />
                     </a>
                 </div>
             </div>

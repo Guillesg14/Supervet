@@ -1,16 +1,23 @@
+export default async function SignUp() {
+    const handleSignUp = async (formData: FormData) => {
+        'use server'
 
-import {FormEvent} from "react";
+        const rawFormData = {
+            email: formData.get('email'),
+            password: formData.get('password'),
+        }
 
-export default function SignUp() {
+        const response = await fetch(`${process.env.API_URL}/auth/clinics/sign-up`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(rawFormData),
+        });
 
-
-    const handleSignUp = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        const formData = new FormData(event.currentTarget)
-        const email = formData.get("email") as string;
-        const password = formData.get("password") as string;
-        console.log(email, password);
+        console.log(response);
     }
+
     return (
         <div className="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden"
              style={{fontFamily: 'Inter, "Noto Sans", sans-serif'}}>
@@ -19,8 +26,7 @@ export default function SignUp() {
                 <div className="flex min-h-screen items-center justify-center bg-gray-100">
                     <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
                         <h2 className="text-2xl font-bold text-center text-gray-800">Crea tu Cuenta</h2>
-
-                        <form className="space-y-6" onSubmit={handleSignUp}>
+                        <form className="space-y-6" action={handleSignUp}>
                             {/* Correo Electrónico */}
                             <div>
                                 <label className="block mb-1 text-sm font-medium text-gray-600" htmlFor="email">Correo electronico</label>
@@ -36,8 +42,12 @@ export default function SignUp() {
 
                             {/* Contraseña */}
                             <div>
-                                <label className="block mb-1 text-sm font-medium text-gray-600"
-                                       htmlFor="password">Contraseña</label>
+                                <label
+                                    className="block mb-1 text-sm font-medium text-gray-600"
+                                    htmlFor="password"
+                                >
+                                    Contraseña
+                                </label>
                                 <input
                                     type="password"
                                     id="password"
@@ -48,24 +58,13 @@ export default function SignUp() {
                                 />
                             </div>
 
-                            {/* Confirmación de Contraseña */}
-                            <div>
-                                <label className="block mb-1 text-sm font-medium text-gray-600"
-                                       htmlFor="confirm-password">Confirma la contraseña</label>
-                                <input
-                                    type="password"
-                                    id="confirm-password"
-                                    name="confirm-password"
-                                    placeholder="Confirma la contraseña"
-                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    required
-                                />
-                            </div>
-
                             {/* Botón de Registro */}
-                            <button type="submit"
-                                    className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                            > Registrarse </button>
+                            <button
+                                type="submit"
+                                className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                            >
+                                Registrarse
+                            </button>
 
                             {/* Enlace para Iniciar Sesión */}
                             <p className="text-sm text-center text-gray-500">
@@ -78,5 +77,4 @@ export default function SignUp() {
             </div>
         </div>
     )
-        ;
 }

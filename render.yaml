@@ -1,3 +1,4 @@
+
 services:
   - name: supervet-api
     type: web
@@ -28,7 +29,6 @@ services:
           name: supervet-db
           property: password
 
-
   - name: supervet-web
     type: web
     runtime: node
@@ -37,6 +37,12 @@ services:
     buildCommand: npm install; npm run build
     startCommand: npm run start
     rootDir: ./frontend
+    envVars:
+      - key: API_URL
+        fromService:
+          name: supervet-api
+          type: web
+          property: host
 
 databases:
   - name: supervet-db

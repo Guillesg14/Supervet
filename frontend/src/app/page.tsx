@@ -3,7 +3,7 @@ import React from 'react';
 import Image from "next/image";
 
 
-export default function Home() {
+export default async function Home() {
     return (
         <div className="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden"
              style={{fontFamily: 'Inter, "Noto Sans", sans-serif'}}>

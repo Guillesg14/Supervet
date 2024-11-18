@@ -1,12 +1,21 @@
-import {FormEvent} from "react";
+export default async function LogInForm(){
+    const handleSignIn = async (formData: FormData) => {
+        'use server'
 
-export default function LogInForm(){
-    const handleSignIn = async (event: FormEvent<HTMLFormElement>) => {
-        event.preventDefault()
-        const formData = new FormData(event.currentTarget)
-        const email = formData.get("email") as string;
-        const password = formData.get("password") as string;
-        console.log(email, password);
+        const rawFormData = {
+            email: formData.get('email'),
+            password: formData.get('password'),
+        }
+
+        const response = await fetch(`${process.env.API_URL}/auth/clinics/sign-in`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(rawFormData),
+        });
+
+        console.log(response);
     }
     return (
         <div className="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden"
@@ -17,7 +26,7 @@ export default function LogInForm(){
                     <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
                         <h2 className="text-2xl font-bold text-center text-gray-800">Accede a tu cuenta</h2>
 
-                        <form className="space-y-6" onSubmit={handleSignIn}>
+                        <form className="space-y-6" action={handleSignIn}>
                             {/* Correo Electrónico */}
                             <div>
                                 <label className="block mb-1 text-sm font-medium text-gray-600" htmlFor="email">Correo

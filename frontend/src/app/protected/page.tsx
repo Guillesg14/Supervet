@@ -1,5 +1,5 @@
 
 
-export default function Protected() {
+export default async function Protected() {
   return ( <p>Hola protected</p>);
 }

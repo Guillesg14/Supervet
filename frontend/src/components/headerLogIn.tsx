@@ -1,6 +1,6 @@
 import Image from "next/image";
 
-export default function HeaderLogIn(){
+export default async function HeaderLogIn(){
     return (
         <header
             className="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#e7eef3] px-10 py-3">

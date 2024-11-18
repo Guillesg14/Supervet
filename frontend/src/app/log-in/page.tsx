@@ -4,7 +4,7 @@ import LogInForm from "@/components/logInForm";
 
 
 
-export default function LogIn() {
+export default async function LogIn() {
 
 
   return (

@@ -20,7 +20,7 @@ export const metadata: Metadata = {
   description: "Página para el proyecto",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;

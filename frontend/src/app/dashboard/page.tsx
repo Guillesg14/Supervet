@@ -1,3 +1,3 @@
-export default function Dashboard() {
+export default async function Dashboard() {
     return <p> por si acaso</p>
 }

@@ -1,7 +1,6 @@
 import '@/app/globals.css';
 import React from 'react';
 import Image from "next/image";
-import Footer from "@/components/footer";
 
 
 export default function Home() {
@@ -176,7 +175,7 @@ export default function Home() {
                     </div>
                 </div>
             </div>
-            <Footer />
+
         </div>
 
     );

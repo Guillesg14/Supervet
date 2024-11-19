@@ -7,7 +7,7 @@ export default async function SignUp() {
             password: formData.get('password'),
         }
 
-        const response = await fetch(`${process.env.API_URL}/auth/clinics/sign-up`, {
+        const response = await fetch(`${process.env.API_URL}.onrender.com/auth/clinics/sign-up`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

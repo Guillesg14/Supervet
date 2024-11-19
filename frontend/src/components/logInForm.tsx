@@ -7,7 +7,7 @@ export default async function LogInForm(){
             password: formData.get('password'),
         }
 
-        const response = await fetch(`${process.env.API_URL}.onrender.com/auth/clinics/sign-in`, {
+        const response = await fetch(`${process.env.API_URL}/auth/clinics/sign-in`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

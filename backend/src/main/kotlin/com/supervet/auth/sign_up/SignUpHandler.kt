@@ -9,8 +9,16 @@ import io.ktor.server.routing.*
 class SignUpHandler(private val signUp: SignUp) : Handler {
     override suspend fun invoke(ctx: RoutingContext) {
         val clinicSignUpRequest = ctx.call.receive<ClinicSignUpRequest>()
-        signUp(clinicSignUpRequest)
-        ctx.call.respond(HttpStatusCode.Created)
+       try {
+           signUp(clinicSignUpRequest)
+           ctx.call.respond(HttpStatusCode.Created)
+       } catch(e: Exception) {
+           when(e) {
+               is UserAlreadyExistsException -> ctx.call.respond(HttpStatusCode.Conflict)
+               else ->  ctx.call.respond(HttpStatusCode.InternalServerError)
+           }
+       }
+
     }
 }
 

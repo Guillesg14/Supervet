@@ -4,12 +4,13 @@ import at.favre.lib.crypto.bcrypt.BCrypt
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.http.HttpStatusCode.Companion.Created
 import org.jdbi.v3.core.kotlin.withHandleUnchecked
 import java.util.*
-import kotlin.test.*
+import kotlin.test.Test
+import kotlin.test.assertEquals
+import kotlin.test.assertTrue
 
-class ClinicRegistrationTest {
+class SignUpTest {
     @Test
     fun `should register a clinic`() = testApplicationWithDependencies { jdbi, client, customConfig ->
         val signUpPayload = object {
@@ -22,7 +23,7 @@ class ClinicRegistrationTest {
             setBody(signUpPayload)
         }
 
-        assertEquals(Created, response.status)
+        assertEquals(HttpStatusCode.Created, response.status)
 
         val createdUser = jdbi.withHandleUnchecked { handle ->
             handle.createQuery(
@@ -43,4 +44,5 @@ class ClinicRegistrationTest {
 
         assertTrue { BCrypt.verifyer().verify(signUpPayload.password.toCharArray(), createdUser.password).verified }
     }
+
 }

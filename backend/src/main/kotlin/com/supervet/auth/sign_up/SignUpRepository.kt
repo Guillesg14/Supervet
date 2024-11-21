@@ -35,5 +35,4 @@ class SignUpRepository(private val jdbi: Jdbi) {
        }
    }
 }
-
 class UserAlreadyExistsException(email: String) : Exception("User with email $email already exists.")

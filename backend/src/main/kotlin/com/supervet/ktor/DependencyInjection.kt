@@ -1,6 +1,8 @@
 package com.supervet.ktor
 
+import com.supervet.auth.sign_in.SignIn
 import com.supervet.auth.sign_in.SignInHandler
+import com.supervet.auth.sign_in.SignInRepository
 import com.supervet.auth.sign_up.SignUp
 import com.supervet.auth.sign_up.SignUpHandler
 import com.supervet.auth.sign_up.SignUpRepository
@@ -21,7 +23,9 @@ fun Application.configureDependencyInjection() {
     di {
         bind<DataSource>() with singleton { createDataSource() }
         bind<Jdbi>() with singleton { createJdbi() }
+        bind<SignInRepository>() with singleton { SignInRepository(instance()) }
         bind<SignUpRepository>() with singleton { SignUpRepository(instance()) }
+        bind<SignIn>() with singleton { SignIn(instance()) }
         bind<SignUp>() with singleton { SignUp(instance()) }
         bind<SignUpHandler>() with singleton { SignUpHandler(instance()) }
         bind<SignInHandler>() with singleton { SignInHandler(instance()) }

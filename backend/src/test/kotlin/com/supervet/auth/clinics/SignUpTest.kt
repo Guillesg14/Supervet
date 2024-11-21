@@ -2,6 +2,7 @@ package com.supervet.auth.clinics
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
+import com.supervet.auth.sign_up.ClinicSignUpRequest
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.http.HttpStatusCode.Companion.Conflict
@@ -14,10 +15,10 @@ import kotlin.test.assertTrue
 class SignUpTest {
     @Test
     fun `should register a clinic`() = testApplicationWithDependencies { jdbi, client, customConfig ->
-        val signUpPayload = object {
-            val email = "${UUID.randomUUID()}@test.test"
-            val password = UUID.randomUUID().toString()
-        }
+        val signUpPayload = ClinicSignUpRequest(
+            email = "${UUID.randomUUID()}@test.test",
+            password = UUID.randomUUID().toString()
+        )
 
         val response = client.post("auth/clinics/sign-up") {
             contentType(ContentType.Application.Json)
@@ -49,10 +50,11 @@ class SignUpTest {
     @Test
     fun `should not allow duplicate clinic registration`() =
         testApplicationWithDependencies { jdbi, client, customConfig ->
-            val signUpPayload = object {
-                val email = "${UUID.randomUUID()}@test.test"
-                val password = UUID.randomUUID().toString()
-            }
+
+            val signUpPayload = ClinicSignUpRequest(
+                email = "${UUID.randomUUID()}@test.test",
+                password = UUID.randomUUID().toString()
+            )
 
             client.post("auth/clinics/sign-up") {
                 contentType(ContentType.Application.Json)

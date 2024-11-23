@@ -1,3 +1,7 @@
+import {cookies} from "next/headers";
+import {redirect} from "next/navigation";
+
+
 export default async function LogInForm(){
     const handleSignIn = async (formData: FormData) => {
         'use server'
@@ -14,9 +18,12 @@ export default async function LogInForm(){
             },
             body: JSON.stringify(rawFormData),
         });
-
-        console.log(response);
+        const cookieStore = await cookies()
+        const responseBody = await response.json()
+        cookieStore.set("session", responseBody.token)
+        redirect("/dashboard")
     }
+
     return (
         <div className="relative flex size-full min-h-screen flex-col bg-slate-50 group/design-root overflow-x-hidden"
              style={{fontFamily: 'Inter, "Noto Sans", sans-serif'}}>

@@ -78,4 +78,5 @@ class SignInTest {
 
             assertEquals(HttpStatusCode.Unauthorized, response.status)
         }
+
 }

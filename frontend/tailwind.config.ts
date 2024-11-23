@@ -9,11 +9,16 @@ module.exports  = {
   theme: {
     extend: {
       colors: {
-        azulClaro: '#8ECAE6',
-        azul: '#219EBC',
-        azulOscuro: '#023047',
-        amarillo: '#FFB703',
-        naranja: '#FB8500',
+        blue1: '#8ecae6',
+        blue2: '#73bfdc',
+        blue3: '#58b4d1',
+        blue4: '#219ebc',
+        blue5: '#126782',
+        blue6: '#023047',
+        orange1: '#ffb703',
+        orange2: '#fd9e02',
+        orange3: '#fb8500',
+        orange4: '#fb9017',
         background: "var(--background)",
         foreground: "var(--foreground)",
       },

@@ -3,7 +3,7 @@ import Image from "next/image";
 export default async function Footer() {
     return (
         <footer className="border-t border-solid border-t-[#e7eef3] bg-white px-10 py-5">
-            <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex flex-col md:flex-row justify-center items-center gap-4">
                 {/* Logo y descripción */}
                 <div className="flex items-center gap-4 text-[#0e151b]">
                     <div className="size-14">
@@ -12,28 +12,6 @@ export default async function Footer() {
                     <p className="text-sm text-[#0e151b] leading-tight">
                         © 2024 Supervet. All rights reserved.
                     </p>
-                </div>
-
-                {/* Enlaces rápidos */}
-                <div className="flex gap-8">
-                    <a
-                        className="text-[#0e151b] text-sm font-medium leading-normal hover:text-blue-600"
-                        href="/privacy-policy"
-                    >
-                        Política de Privacidad
-                    </a>
-                    <a
-                        className="text-[#0e151b] text-sm font-medium leading-normal hover:text-blue-600"
-                        href="/terms"
-                    >
-                        Términos de Uso
-                    </a>
-                    <a
-                        className="text-[#0e151b] text-sm font-medium leading-normal hover:text-blue-600"
-                        href="/contact"
-                    >
-                        Contáctanos
-                    </a>
                 </div>
 
                 {/* Redes sociales */}

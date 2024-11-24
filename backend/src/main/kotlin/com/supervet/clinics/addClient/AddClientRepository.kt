@@ -1,6 +1,6 @@
-package com.supervet.clinics.add
+package com.supervet.clinics.addClient
 
-import com.supervet.auth.sign_up.ClinicSignUpRequest
+import at.favre.lib.crypto.bcrypt.BCrypt
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.useHandleUnchecked
 import org.postgresql.util.PSQLException
@@ -16,8 +16,8 @@ class AddClientRepository(private val jdbi: Jdbi) {
             jdbi.useHandleUnchecked { handle ->
                 handle.createUpdate(
                     """
-                    insert into clients(id, clinicId, name, surname, phone, email, created_at)
-                    values(:id, :clinicId ,:name, :surname, :phone, :email, now())
+                    insert into clients(id, clinicId, name, surname, phone, email, password, created_at)
+                    values(:id, :clinicId ,:name, :surname, :phone, :email, :password, now())
                 """.trimIndent()
                 )
                     .bind("id", UUID.randomUUID())
@@ -26,6 +26,7 @@ class AddClientRepository(private val jdbi: Jdbi) {
                     .bind("surname", addClientRequest.surname)
                     .bind("phone",addClientRequest.phone)
                     .bind("email", addClientRequest.email)
+                    .bind("password", BCrypt.withDefaults().hashToString(12, addClientRequest.password.toCharArray()))
                     .execute()
             }
         } catch (e: Exception) {

@@ -1,4 +1,4 @@
-package com.supervet.clinics.add
+package com.supervet.clinics.addClient
 
 import com.supervet.ktor.Handler
 import io.ktor.http.*
@@ -22,4 +22,4 @@ class AddClientHandler(private val addClient: AddClient) : Handler {
     }
 }
 
-data class AddClientRequest(val clinicId: String, val name: String, val surname: String, val phone: Number, val email: String )
+data class AddClientRequest(val clinicId: String, val name: String, val surname: String, val phone: Number, val email: String, val password: String )

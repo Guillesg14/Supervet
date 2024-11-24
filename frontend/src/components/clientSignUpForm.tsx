@@ -3,11 +3,14 @@ export default async function ClientSignUp() {
         'use server'
 
         const rawFormData = {
+            name: formData.get('name'),
+            surname: formData.get('surname'),
+            phone: formData.get('phone'),
             email: formData.get('email'),
             password: formData.get('password'),
         }
 
-        const response = await fetch(`https://${process.env.API_URL}.onrender.com/clinics/addClient`, {
+        const response = await fetch(`https://${process.env.API_URL}.onrender.com/auth/clients/sign-up`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -45,20 +48,20 @@ export default async function ClientSignUp() {
                                 <input
                                     type="text"
                                     id="text"
-                                    name="apellidos"
+                                    name="surname"
                                     placeholder="Enter your surname"
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
                             </div>
-                            {/* Correo Electrónico */}
+                            {/* Telefono */}
                             <div>
-                                <label className="block mb-1 text-sm font-medium text-gray-600" htmlFor="email">Correo electronico</label>
+                                <label className="block mb-1 text-sm font-medium text-gray-600" htmlFor="email">Teléfono</label>
                                 <input
-                                    type="email"
-                                    id="email"
-                                    name="email"
-                                    placeholder="Enter your email"
+                                    type="number"
+                                    id="phone"
+                                    name="phone"
+                                    placeholder="Enter your phone number"
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
@@ -90,18 +93,11 @@ export default async function ClientSignUp() {
                             </div>
 
                             {/* Botón de Registro */}
-                            <button
-                                type="submit"
+                            <button type="submit"
                                 className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
                             >
                                 Registrarse
                             </button>
-
-                            {/* Enlace para Iniciar Sesión */}
-                            <p className="text-sm text-center text-gray-500">
-                                ¿Ya tenias cuenta?
-                                <a href="/log-in" className="text-blue-600 hover:underline"> Log in</a>
-                            </p>
                         </form>
                     </div>
                 </div>

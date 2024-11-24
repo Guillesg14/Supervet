@@ -5,5 +5,6 @@ CREATE TABLE clients(
     surname text not null,
     phone numeric not null,
     email text unique not null,
+    password text not null,
     created_at timestamp not null
 )

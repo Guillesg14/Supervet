@@ -1,11 +1,10 @@
+import ClientSignUp from "@/components/clientSignUpForm";
 
-import ClinicSignUp from "@/components/clinicSignUpForm";
 
-
-export default async function SignUpPage(){
+export default async function ClientSignUpPage(){
     return(
         <>
-            <ClinicSignUp />
+            <ClientSignUp />
         </>
     )
 }

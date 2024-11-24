@@ -4,9 +4,9 @@ import com.supervet.auth.sign_in.*
 import com.supervet.auth.sign_up.SignUp
 import com.supervet.auth.sign_up.SignUpHandler
 import com.supervet.auth.sign_up.SignUpRepository
-import com.supervet.clinics.add.AddClient
-import com.supervet.clinics.add.AddClientHandler
-import com.supervet.clinics.add.AddClientRepository
+import com.supervet.clinics.addClient.AddClient
+import com.supervet.clinics.addClient.AddClientHandler
+import com.supervet.clinics.addClient.AddClientRepository
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -28,7 +28,7 @@ fun Application.configureDependencyInjection() {
         bind<SignUpRepository>() with singleton { SignUpRepository(instance()) }
         bind<AddClientRepository>() with singleton { AddClientRepository(instance()) }
         bind<AddClient>() with singleton { AddClient(instance())}
-        bind<AddClientHandler>() with singleton { AddClientHandler(instance())}
+        bind<AddClientHandler>() with singleton { AddClientHandler(instance()) }
         bind<PasswordVerifier>() with singleton { PasswordVerifier() }
         bind<JwtTokenCreator>() with singleton { JwtTokenCreator() }
         bind<SignIn>() with singleton { SignIn(instance(), instance(), instance()) }

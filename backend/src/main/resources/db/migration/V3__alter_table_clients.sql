@@ -1,0 +1,2 @@
+ALTER TABLE clients
+    ADD COLUMN password TEXT NOT NULL;

@@ -12,13 +12,17 @@ class SignInHandler(private val signIn: SignIn) : Handler {
         try {
             val token = signIn(clinicSignInRequest)
             ctx.call.respond(HttpStatusCode.OK, ClinicSignInResponse(token = token))
-        }catch (e: Exception) {
+        } catch (e: Exception) {
             when (e) {
-                is WrongPassword -> ctx.call.respond(HttpStatusCode.Unauthorized)
+                is UserDoesNotExistException,
+                is WrongPasswordException -> ctx.call.respond(HttpStatusCode.Unauthorized)
+
                 else -> ctx.call.respond(HttpStatusCode.InternalServerError)
             }
         }
     }
 }
-data class ClinicSignInRequest(val email: String, val password: String)
 
+// Las clases de I/O van en la capa de infra (http en este caso)
+data class ClinicSignInRequest(val email: String, val password: String)
+data class ClinicSignInResponse(val token: String)

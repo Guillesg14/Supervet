@@ -79,4 +79,18 @@ class SignInTest {
             assertEquals(HttpStatusCode.Unauthorized, response.status)
         }
 
+    @Test
+    fun `should return unauthorized if the user does not exist`() = testApplicationWithDependencies { jdbi, client, customConfig ->
+        val signInPayload = object {
+            val email = "${UUID.randomUUID()}@test.test"
+            val password = UUID.randomUUID().toString()
+        }
+
+        val response = client.post("auth/clinics/sign-in") {
+            contentType(ContentType.Application.Json)
+            setBody(signInPayload)
+        }
+
+        assertEquals(HttpStatusCode.Unauthorized, response.status)
+    }
 }

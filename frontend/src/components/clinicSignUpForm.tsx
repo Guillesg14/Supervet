@@ -1,4 +1,4 @@
-export default async function SignUp() {
+export default async function ClinicSignUp() {
     const handleSignUp = async (formData: FormData) => {
         'use server'
 

@@ -1,12 +1,12 @@
 
-import SignUp from "@/components/signUpForm";
+import ClinicSignUp from "@/components/clinicSignUpForm";
 import HeaderSignUp from "@/components/headerSignUp";
 
 export default async function SignUpPage(){
     return(
         <>
         <HeaderSignUp />
-        <SignUp />
+        <ClinicSignUp />
         </>
     )
 }

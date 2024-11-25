@@ -1,6 +1,7 @@
 import {redirect} from "next/navigation";
 
-export default async function ClientSignUp() {
+export default async function ClientSignUp( { searchParams }) {
+    const clinicId = searchParams.clinic_id;
     const handleSignUp = async (formData: FormData) => {
         'use server'
 
@@ -10,6 +11,7 @@ export default async function ClientSignUp() {
             phone: formData.get('phone'),
             email: formData.get('email'),
             password: formData.get('password'),
+            clinicId: clinicId
         }
 
         const response = await fetch(`https://${process.env.API_URL}.onrender.com/auth/clients/sign-up`, {

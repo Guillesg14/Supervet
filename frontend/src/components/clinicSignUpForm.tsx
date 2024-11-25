@@ -1,3 +1,5 @@
+import {redirect} from "next/navigation";
+
 export default async function ClinicSignUp() {
     const handleSignUp = async (formData: FormData) => {
         'use server'
@@ -14,8 +16,15 @@ export default async function ClinicSignUp() {
             },
             body: JSON.stringify(rawFormData),
         });
-
         console.log(response);
+        if (response.ok) {
+            // Redirigir si la respuesta es exitosa
+            redirect('./log-in');
+        } else {
+            const errorData = await response.json();
+            console.error("Error al registrarse:", errorData.message || "Error desconocido");
+
+        }
     }
 
     return (

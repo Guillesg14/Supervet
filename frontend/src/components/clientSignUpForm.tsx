@@ -1,3 +1,5 @@
+import {redirect} from "next/navigation";
+
 export default async function ClientSignUp() {
     const handleSignUp = async (formData: FormData) => {
         'use server'
@@ -17,8 +19,15 @@ export default async function ClientSignUp() {
             },
             body: JSON.stringify(rawFormData),
         });
-
         console.log(response);
+        if (response.ok) {
+            // Redirigir si la respuesta es exitosa
+            redirect('./log-in');
+        } else {
+            const errorData = await response.json();
+            console.error("Error al registrarse:", errorData.message || "Error desconocido");
+
+        }
     }
 
     return (

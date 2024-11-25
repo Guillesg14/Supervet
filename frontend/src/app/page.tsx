@@ -15,10 +15,8 @@ export default async function Home() {
                     </div>
                     <div className="flex flex-1 justify-end gap-8">
                         <div className="flex items-center gap-9">
-                            <a className="text-[#0e151b] text-sm font-medium leading-normal" href="">Servicios a
-                                Clinicas</a>
-                            <a className="text-[#0e151b] text-sm font-medium leading-normal" href="#">Servicios a
-                                Pacientes</a>
+                            <a className="text-[#0e151b] text-sm font-medium leading-normal" href="#clinicas">Servicios a Clinicas</a>
+                            <a className="text-[#0e151b] text-sm font-medium leading-normal" href="#clientes">Servicios a Clientes</a>
                         </div>
                         <div className="flex gap-2">
                             <a href="/log-in"
@@ -26,7 +24,7 @@ export default async function Home() {
                             >
                                 <span className="truncate">Log in</span>
                             </a>
-                            <a href="/sign-up"
+                            <a href="/clinics/sign-up"
                                className=" bg-blue3 flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-xl h-10 px-4 bg-[#e7eef3] text-[#0e151b] text-sm font-bold leading-normal tracking-[0.015em]"
                             >
                                 <span className="truncate">Sign-up</span>
@@ -131,7 +129,7 @@ export default async function Home() {
 
                         {/* PARA TU CLINICA */}
 
-                        <div className="w-full h-auto bg-blue1 flex-col">
+                        <div id="clinicas" className="w-full h-auto bg-blue1 flex-col">
                             <div className="w-full flex mt-10 mb-10 ml-10 justify-start">
                                 <h1 className="text-5xl text-white">Para tu clínica</h1>
                             </div>
@@ -156,7 +154,7 @@ export default async function Home() {
 
                         {/* PARA LOS CLIENTES */}
 
-                        <div className="w-full h-auto  bg-blue2 flex-col">
+                        <div id="clientes"  className="w-full h-auto  bg-blue2 flex-col">
                             <div className="w-full flex mt-10 mb-10 ml-10 justify-start">
                                 <h1 className="text-5xl text-white">Para los clientes</h1>
                             </div>

@@ -5,7 +5,7 @@ interface ClientSignUpProps {
     searchParams: { clinic_id?: string };
 }
 
-export default async function ClientSignUp({ searchParams }: ClientSignUpProps) {
+export default function ClientSignUp({ searchParams }: ClientSignUpProps) {
     const clinicId = searchParams.clinic_id;
 
     if (!clinicId) {

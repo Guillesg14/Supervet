@@ -4,7 +4,6 @@ import com.supervet.auth.clinics.sign_in.*
 import com.supervet.auth.clinics.sign_up.ClinicSignUp
 import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clinics.sign_up.SignUpRepository
-import com.supervet.auth.clients.sign_up.ClientSignUp
 import com.supervet.auth.clients.sign_up.AddClientHandler
 import com.supervet.auth.clients.sign_up.AddClientRepository
 import com.zaxxer.hikari.HikariConfig

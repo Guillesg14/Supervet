@@ -1,12 +1,12 @@
 package com.supervet.ktor
 
-import com.supervet.auth.sign_in.*
-import com.supervet.auth.sign_up.SignUp
-import com.supervet.auth.sign_up.SignUpHandler
-import com.supervet.auth.sign_up.SignUpRepository
-import com.supervet.clinics.addClient.AddClient
-import com.supervet.clinics.addClient.AddClientHandler
-import com.supervet.clinics.addClient.AddClientRepository
+import com.supervet.auth.clinics.sign_in.*
+import com.supervet.auth.clinics.sign_up.ClinicSignUp
+import com.supervet.auth.clinics.sign_up.SignUpHandler
+import com.supervet.auth.clinics.sign_up.SignUpRepository
+import com.supervet.auth.clients.sign_up.ClientSignUp
+import com.supervet.auth.clients.sign_up.AddClientHandler
+import com.supervet.auth.clients.sign_up.AddClientRepository
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -24,18 +24,17 @@ fun Application.configureDependencyInjection() {
     di {
         bind<DataSource>() with singleton { createDataSource() }
         bind<Jdbi>() with singleton { createJdbi() }
-        bind<SignInRepository>() with singleton { SignInRepository(instance()) }
+        bind<ClinicSignInRepository>() with singleton { ClinicSignInRepository(instance()) }
         bind<SignUpRepository>() with singleton { SignUpRepository(instance()) }
         bind<AddClientRepository>() with singleton { AddClientRepository(instance()) }
-        bind<AddClient>() with singleton { AddClient(instance())}
+        bind<ClientSignUp>() with singleton { ClientSignUp(instance()) }
         bind<AddClientHandler>() with singleton { AddClientHandler(instance()) }
         bind<PasswordVerifier>() with singleton { PasswordVerifier() }
         bind<JwtTokenCreator>() with singleton { JwtTokenCreator() }
         bind<SignIn>() with singleton { SignIn(instance(), instance(), instance()) }
-        bind<SignUp>() with singleton { SignUp(instance()) }
+        bind<ClinicSignUp>() with singleton { ClinicSignUp(instance()) }
         bind<SignUpHandler>() with singleton { SignUpHandler(instance()) }
         bind<SignInHandler>() with singleton { SignInHandler(instance()) }
-
     }
 }
 

@@ -1,11 +1,10 @@
-package com.supervet.auth.sign_in
+package com.supervet.auth.clinics.sign_in
 
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.withHandleUnchecked
 import java.util.*
 
-class SignInRepository(private val jdbi: Jdbi) {
-
+class ClinicSignInRepository(private val jdbi: Jdbi) {
     fun getUserFrom(email: String) =
         jdbi.withHandleUnchecked { handle ->
             handle.createQuery(

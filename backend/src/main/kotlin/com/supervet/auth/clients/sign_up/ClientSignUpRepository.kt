@@ -1,4 +1,4 @@
-package com.supervet.clinics.addClient
+package com.supervet.auth.clients.sign_up
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import org.jdbi.v3.core.Jdbi
@@ -24,7 +24,7 @@ class AddClientRepository(private val jdbi: Jdbi) {
                     .bind("clinicId", addClientRequest.clinicId)
                     .bind("name", addClientRequest.name)
                     .bind("surname", addClientRequest.surname)
-                    .bind("phone",addClientRequest.phone)
+                    .bind("phone", addClientRequest.phone)
                     .bind("email", addClientRequest.email)
                     .bind("password", BCrypt.withDefaults().hashToString(12, addClientRequest.password.toCharArray()))
                     .execute()
@@ -39,4 +39,5 @@ class AddClientRepository(private val jdbi: Jdbi) {
         }
     }
 }
+
 class ClientAlreadyExistsException(email: String) : Exception("client with email $email already exists.")

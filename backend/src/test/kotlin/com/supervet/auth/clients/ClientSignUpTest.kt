@@ -1,4 +1,4 @@
-package com.supervet.clients;
+package com.supervet.auth.clients
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import kotlin.random.Random
@@ -12,10 +12,10 @@ import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
 
-class AddClientTest {
+class ClientSignUpTest {
     @Test
     fun `should register a client`() = testApplicationWithDependencies { jdbi, client, customConfig ->
-         val addClientPayload = mapOf(
+        val addClientPayload = mapOf(
             "clinicId" to UUID.randomUUID().toString(),
             "name" to UUID.randomUUID().toString(),
             "surname" to UUID.randomUUID().toString(),

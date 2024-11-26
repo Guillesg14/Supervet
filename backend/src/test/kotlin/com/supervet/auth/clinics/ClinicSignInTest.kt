@@ -4,7 +4,7 @@ import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
-import com.supervet.auth.sign_in.ClinicSignInResponse
+import com.supervet.auth.clinics.sign_in.ClinicSignInResponse
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -13,7 +13,7 @@ import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class SignInTest {
+class ClinicSignInTest {
     @Test
     fun `should login a clinic`() = testApplicationWithDependencies { jdbi, client, customConfig ->
         val signInPayload = object {

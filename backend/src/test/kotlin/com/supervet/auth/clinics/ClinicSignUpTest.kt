@@ -2,7 +2,7 @@ package com.supervet.auth.clinics
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
-import com.supervet.auth.sign_up.ClinicSignUpRequest
+import com.supervet.auth.clinics.sign_up.ClinicSignUpRequest
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.http.HttpStatusCode.Companion.Conflict
@@ -12,7 +12,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
-class SignUpTest {
+class ClinicSignUpTest {
     @Test
     fun `should register a clinic`() = testApplicationWithDependencies { jdbi, client, customConfig ->
         val signUpPayload = ClinicSignUpRequest(

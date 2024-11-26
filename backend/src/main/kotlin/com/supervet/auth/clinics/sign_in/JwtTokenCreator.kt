@@ -1,6 +1,8 @@
-package com.supervet.auth.sign_in
+package com.supervet.auth.clinics.sign_in
+
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
+
 class JwtTokenCreator {
     fun createToken(user: User): String =
         JWT.create()

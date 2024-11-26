@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Footer() {
     return (
@@ -16,30 +17,30 @@ export default async function Footer() {
 
                 {/* Redes sociales */}
                 <div className="flex gap-4">
-                    <a
+                    <Link
                         href="https://facebook.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[#0e151b] hover:text-blue-600"
                     >
                         <Image src="/icons/facebook.png" alt="Facebook" className="h-6 w-6" width={40} height={40} />
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                         href="https://twitter.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[#0e151b] hover:text-blue-600"
                     >
                         <Image src="/icons/twitter.png" alt="Twitter" className="h-6 w-6" width={40} height={40} />
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                         href="https://instagram.com"
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[#0e151b] hover:text-blue-600"
                     >
                         <Image src="/icons/instagram.png" alt="Instagram" className="h-6 w-6" width={40} height={40}  />
-                    </a>
+                    </Link>
                 </div>
             </div>
         </footer>

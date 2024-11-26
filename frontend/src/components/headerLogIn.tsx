@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function HeaderLogIn(){
     return (
@@ -12,8 +13,8 @@ export default async function HeaderLogIn(){
             </div>
             <div className="flex flex-1 justify-end gap-8">
                 <div className="flex items-center gap-9">
-                    <a className="text-[#0e151b] text-sm font-medium leading-normal" href="../">Inicio</a>
-                    <a className="text-[#0e151b] text-sm font-medium leading-normal" href="./sign-up">¿Aún no tienes cuenta?</a>
+                    <Link className="text-[#0e151b] text-sm font-medium leading-normal" href="../">Inicio</Link>
+                    <Link className="text-[#0e151b] text-sm font-medium leading-normal" href="../app/clinics/sign-up">¿Aún no tienes cuenta?</Link>
                 </div>
             </div>
         </header>

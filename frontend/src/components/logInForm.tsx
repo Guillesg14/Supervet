@@ -1,5 +1,6 @@
 import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
+import Link from "next/link";
 
 
 export default async function LogInForm(){
@@ -70,8 +71,9 @@ export default async function LogInForm(){
 
                             {/* Enlace para Iniciar Sesión */}
                             <p className="text-sm text-center text-gray-500">
-                                ¿Aún no tienes cuenta?
-                                <a href="sign-up" className="text-blue-600 hover:underline"> Crea tu cuenta</a>
+                                ¿Eres una clínica y aún no tienes cuenta?
+                                <Link href="../app/clinics/sign-up" className="text-blue-600 hover:underline"> Crea tu cuenta</Link>
+                                Si eres un cliente, contacta primero con tu clínica.
                             </p>
                         </form>
                     </div>

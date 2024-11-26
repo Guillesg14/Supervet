@@ -1,6 +1,6 @@
 package com.supervet.ktor
 
-import com.supervet.auth.clinics.sign_in.SignInHandler
+import com.supervet.auth.sign_in.SignInHandler
 import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clients.sign_up.AddClientHandler
 import io.ktor.serialization.jackson.*
@@ -26,12 +26,14 @@ fun Application.configureRouting() {
 
     routing {
         route("auth") {
+            post("sign-in", executeInvoke<SignInHandler>())
+
             route("clients") {
                 post("sign-up", executeInvoke<AddClientHandler>())
             }
+
             route("clinics") {
                 post("sign-up", executeInvoke<SignUpHandler>())
-                post("sign-in", executeInvoke<SignInHandler>())
             }
         }
     }

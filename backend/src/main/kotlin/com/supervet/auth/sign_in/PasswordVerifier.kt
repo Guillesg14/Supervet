@@ -1,4 +1,4 @@
-package com.supervet.auth.clinics.sign_in
+package com.supervet.auth.sign_in
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 

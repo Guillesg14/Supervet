@@ -1,11 +1,12 @@
 package com.supervet.ktor
 
-import com.supervet.auth.clinics.sign_in.*
 import com.supervet.auth.clinics.sign_up.ClinicSignUp
 import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clinics.sign_up.SignUpRepository
+import com.supervet.auth.clients.sign_up.ClientSignUp
 import com.supervet.auth.clients.sign_up.AddClientHandler
 import com.supervet.auth.clients.sign_up.AddClientRepository
+import com.supervet.auth.sign_in.*
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -23,7 +24,7 @@ fun Application.configureDependencyInjection() {
     di {
         bind<DataSource>() with singleton { createDataSource() }
         bind<Jdbi>() with singleton { createJdbi() }
-        bind<ClinicSignInRepository>() with singleton { ClinicSignInRepository(instance()) }
+        bind<SignInRepository>() with singleton { SignInRepository(instance()) }
         bind<SignUpRepository>() with singleton { SignUpRepository(instance()) }
         bind<AddClientRepository>() with singleton { AddClientRepository(instance()) }
         bind<ClientSignUp>() with singleton { ClientSignUp(instance()) }

@@ -1,17 +1,13 @@
 // components/AddClientSection.tsx
 import React from "react";
 import { cookies } from 'next/headers';
-import jwt from 'jsonwebtoken';
+
 
 export async function getUserIdFromCookie() {
-    const cookieStore = await cookies();
-    const token = cookieStore.get('session');
-    if (!token) {
-        console.error('Token not found in cookies');
-        return null;
-    }
-    const decoded = jwt.decode(token);
-    return decoded?.user_id || null;
+    const cookieStore = await cookies()
+    const token = cookieStore.get('session')
+    console.log(token)
+    return ("12345")
 }
 
 const AddClientSection: () => Promise<React.JSX.Element> = async () => {

@@ -1,27 +1,21 @@
 // components/AddClientSection.tsx
 import React from "react";
-import jwt from "jsonwebtoken";
-import { cookies } from "next/headers";
+import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
 
-
-async function getClinicIdFromToken(): Promise<string | null> {
+export async function getUserIdFromCookie() {
     const cookieStore = await cookies();
-    const token = cookieStore.get("session")?.value;
-
+    const token = cookieStore.get('session');
     if (!token) {
+        console.error('Token not found in cookies');
         return null;
     }
-
-    try {
-        const decoded = jwt.verify(token, "supervet");
-        return decoded.user_id as string;
-    } catch (error) {
-        console.error("Error decoding JWT:", error);
-        return null;
-    }
+    const decoded = jwt.decode(token);
+    return decoded?.user_id || null;
 }
+
 const AddClientSection: () => Promise<React.JSX.Element> = async () => {
-    const clinicId = await getClinicIdFromToken();
+    const clinicId = await getUserIdFromCookie();
 
     if (!clinicId) {
         return (

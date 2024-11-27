@@ -9,7 +9,7 @@ export default async function ClinicSignUp() {
             email: formData.get('email'),
             password: formData.get('password'),
         }
-        console.log(process.env.API_URL)
+
         const response = await fetch(`https://${process.env.API_URL}.onrender.com/auth/clinics/sign-up`, {
             method: "POST",
             headers: {
@@ -17,14 +17,12 @@ export default async function ClinicSignUp() {
             },
             body: JSON.stringify(rawFormData),
         });
-        console.log(response);
+
         if (response.ok) {
-            // Redirigir si la respuesta es exitosa
-            redirect("/app");
+            redirect("/clinics/dashboard");
         } else {
             const errorData = await response.json();
             console.error("Error al registrarse:", errorData.message || "Error desconocido");
-
         }
     }
 

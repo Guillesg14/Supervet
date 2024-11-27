@@ -1,11 +1,11 @@
-// app/clients/sign-up/page.tsx
+
 import { redirect } from "next/navigation";
 
 interface ClientSignUpProps {
     searchParams: { clinic_id?: string };
 }
 
-export default function ClientSignUp({ searchParams }: ClientSignUpProps) {
+export default function ClientSignUpForm({ searchParams }: ClientSignUpProps) {
     const clinicId = searchParams.clinic_id;
 
     if (!clinicId) {

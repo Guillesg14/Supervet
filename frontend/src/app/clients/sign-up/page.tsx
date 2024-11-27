@@ -1,12 +1,12 @@
 // app/clients/sign-up/page.tsx
-import ClientSignUp from "@/components/clientSignUpForm";
-
-export default function ClientSignUpPage({searchParams,}: {
+import ClientSignUpForm from "@/components/clientSignUpForm";
+interface PageProps {
     searchParams: { clinic_id?: string };
-}) {
+}
+export default function ClientSignUpPage({ searchParams }: PageProps) {
     return (
         <>
-            <ClientSignUp searchParams={searchParams} />
+            <ClientSignUpForm searchParams={searchParams} />
         </>
     );
 }

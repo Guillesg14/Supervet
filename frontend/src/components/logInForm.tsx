@@ -23,7 +23,7 @@ export default async function LogInForm(){
         const cookieStore = await cookies()
         const responseBody = await response.json()
         cookieStore.set("session", responseBody.token)
-        redirect("/clinics/dashboard/page.tsx")
+        redirect("/clinics/dashboard")
     }
 
     return (

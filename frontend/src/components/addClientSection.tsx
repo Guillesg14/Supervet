@@ -1,27 +1,34 @@
 // components/AddClientSection.tsx
 import React from "react";
-import { cookies } from 'next/headers';
+import {cookies, headers} from 'next/headers';
+import {jwtDecode, JwtPayload} from "jwt-decode";
+import {redirect} from "next/navigation";
 
+
+
+type JWT = JwtPayload & {
+    user_id: string;
+}
 
 export async function getUserIdFromCookie() {
     const cookieStore = await cookies()
-    const token = cookieStore.get('session')
-    console.log(token)
-    return ("12345")
+    const token = cookieStore.get('session')?.value
+
+    if (!token) {
+        redirect("/log-in")
+    }
+
+    const decodedToken = jwtDecode<JWT>(token)
+    return (decodedToken.user_id)
 }
 
 const AddClientSection: () => Promise<React.JSX.Element> = async () => {
+    const headersList = await headers();
+    const domain = headersList.get('host') || "";
+
     const clinicId = await getUserIdFromCookie();
 
-    if (!clinicId) {
-        return (
-            <p className="text-red-500">
-                No se pudo obtener la información de la clínica. Por favor, inicie sesión nuevamente.
-            </p>
-        );
-    }
-
-    const registrationLink = `https://supervet-web.onrender.com/clients/sign-up?clinic_id=${clinicId}`;
+    const registrationLink = `https://${domain}/clients/sign-up?clinic_id=${clinicId}`;
 
     return (
         <div className="mt-4 p-4 border rounded-lg bg-gray-50">

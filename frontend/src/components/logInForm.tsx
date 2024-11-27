@@ -12,13 +12,14 @@ export default async function LogInForm(){
             password: formData.get('password'),
         }
 
-        const response = await fetch(`https://${process.env.API_URL}.onrender.com/auth/clinics/sign-in`, {
+        const response = await fetch(`https://${process.env.API_URL}.onrender.com/auth/sign-in`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(rawFormData),
         });
+        console.log(response.body)
         const cookieStore = await cookies()
         const responseBody = await response.json()
         cookieStore.set("session", responseBody.token)

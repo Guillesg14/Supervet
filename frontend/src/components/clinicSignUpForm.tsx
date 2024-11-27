@@ -79,7 +79,7 @@ export default async function ClinicSignUp() {
                             {/* Enlace para Iniciar Sesión */}
                             <p className="text-sm text-center text-gray-500">
                                 ¿Ya tenias cuenta?
-                                <Link href="../app/log-in" className="text-blue-600 hover:underline"> Log in</Link>
+                                <Link href="/log-in" className="text-blue-600 hover:underline"> Log in</Link>
                             </p>
                         </form>
                     </div>

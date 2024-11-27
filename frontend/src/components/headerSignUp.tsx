@@ -13,8 +13,8 @@ export default async function HeaderSignUp(){
             </div>
             <div className="flex flex-1 justify-end gap-8">
                 <div className="flex items-center gap-9">
-                    <Link className="text-[#0e151b] text-sm font-medium leading-normal" href="../">Inicio</Link>
-                    <Link className="text-[#0e151b] text-sm font-medium leading-normal" href="../app/log-in">¿Ya tenias cuenta?</Link>
+                    <Link className="text-[#0e151b] text-sm font-medium leading-normal" href="/">Inicio</Link>
+                    <Link className="text-[#0e151b] text-sm font-medium leading-normal" href="/log-in">¿Ya tenias cuenta?</Link>
                 </div>
             </div>
         </header>

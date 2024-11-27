@@ -23,7 +23,7 @@ export default async function LogInForm(){
         const cookieStore = await cookies()
         const responseBody = await response.json()
         cookieStore.set("session", responseBody.token)
-        redirect("/clinics/dashboard")
+        redirect("/clinics/dashboard/page.tsx")
     }
 
     return (
@@ -73,7 +73,7 @@ export default async function LogInForm(){
                             {/* Enlace para Iniciar Sesión */}
                             <p className="text-sm text-center text-gray-500">
                                 ¿Eres una clínica y aún no tienes cuenta?
-                                <Link href="../app/clinics/sign-up" className="text-blue-600 hover:underline"> Crea tu cuenta</Link>
+                                <Link href="/clinics/sign-up" className="text-blue-600 hover:underline"> Crea tu cuenta</Link>
                                 Si eres un cliente, contacta primero con tu clínica.
                             </p>
                         </form>

@@ -1,13 +1,12 @@
-
+'use client'
 import { redirect } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 
-interface ClientSignUpProps {
-    searchParams: { clinic_id?: string };
-}
 
-export default function ClientSignUpForm({ searchParams }: ClientSignUpProps) {
-    const clinicId = searchParams.clinic_id;
-
+export default function ClientSignUpForm() {
+   const searchParams = useSearchParams()
+    const clinicId = searchParams.get('clinic_id')
+    console.log(clinicId)
     if (!clinicId) {
         return (
             <p className="text-red-500">
@@ -17,7 +16,6 @@ export default function ClientSignUpForm({ searchParams }: ClientSignUpProps) {
     }
 
     const handleSignUp = async (formData: FormData) => {
-        "use server";
 
         const rawFormData = {
             name: formData.get("name"),

@@ -1,4 +1,3 @@
-
 // components/AddClientSection.tsx
 import React from "react";
 import jwt from "jsonwebtoken";

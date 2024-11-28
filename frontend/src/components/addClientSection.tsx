@@ -3,6 +3,7 @@ import React from "react";
 import {cookies, headers} from 'next/headers';
 import {jwtDecode, JwtPayload} from "jwt-decode";
 import {redirect} from "next/navigation";
+import Link from "next/link";
 
 
 
@@ -37,7 +38,7 @@ const AddClientSection: () => Promise<React.JSX.Element> = async () => {
                 Comparte este enlace con el cliente para que complete su registro:
             </p>
             <div className="mt-2 p-2 bg-gray-100 border rounded">
-                <code className="text-blue-600">{registrationLink}</code>
+                <Link href={registrationLink} className="text-blue-600">{registrationLink}</Link>
             </div>
         </div>
     );

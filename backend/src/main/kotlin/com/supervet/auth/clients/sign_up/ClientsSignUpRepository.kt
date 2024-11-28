@@ -12,7 +12,6 @@ private const val FOREIGN_KEY_EXCEPTION = "23503"
 class AddClientRepository(private val jdbi: Jdbi) {
 
     fun saveClient(clientSignUpRequest: ClientSignUpRequest) {
-
         try {
             jdbi.inTransactionUnchecked { handle ->
                 val userId = UUID.randomUUID()

@@ -1,6 +1,5 @@
 package com.supervet.auth.clinics.sign_up
 
-
 class ClinicSignUp(private val clinicSignUpRepository: SignUpRepository) {
     operator fun invoke(clinicSignUpRequest: ClinicSignUpRequest) {
         clinicSignUpRepository.saveClinic(clinicSignUpRequest)

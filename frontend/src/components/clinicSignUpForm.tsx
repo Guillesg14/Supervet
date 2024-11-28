@@ -19,7 +19,7 @@ export default async function ClinicSignUp() {
         });
 
         if (response.ok) {
-            redirect("/clinics/dashboard");
+            redirect("/log-in");
         } else {
             const errorData = await response.json();
             console.error("Error al registrarse:", errorData.message || "Error desconocido");

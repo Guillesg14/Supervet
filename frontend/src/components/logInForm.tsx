@@ -19,7 +19,6 @@ export default async function LogInForm(){
             },
             body: JSON.stringify(rawFormData),
         });
-        console.log(response.body)
         const cookieStore = await cookies()
         const responseBody = await response.json()
         cookieStore.set("session", responseBody.token)

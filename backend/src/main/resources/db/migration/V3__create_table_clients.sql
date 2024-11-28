@@ -8,5 +8,5 @@ create table clients
     phone     text        not null,
     created_at timestamp default current_timestamp,
     foreign key (user_id) references users (id) on delete cascade,
-    foreign key (clinic_id) references clinics (id) on delete cascade
+    foreign key (clinic_id) references users (id) on delete cascade
 );

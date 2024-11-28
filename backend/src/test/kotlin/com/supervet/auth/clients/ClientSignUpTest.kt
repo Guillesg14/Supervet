@@ -28,8 +28,6 @@ class ClientSignUpTest {
             "phone" to Random.nextInt(100_000_000, 1_000_000_000)
         )
 
-        val clinicUserId = UUID.randomUUID()
-
         jdbi.useHandleUnchecked { handle ->
             handle.createUpdate(
                 """
@@ -37,10 +35,10 @@ class ClientSignUpTest {
                     values(:id, :email, :password, :type)
                 """.trimIndent()
             )
-                .bind("id", clinicUserId)
+                .bind("id", UUID.fromString(clientSignUpPayload["clinicId"].toString()))
                 .bind("email", "${UUID.randomUUID()}@test.test")
                 .bind("password", UUID.randomUUID().toString())
-                .bind("type", "CLIENT")
+                .bind("type", "CLINIC")
                 .execute()
         }
 
@@ -51,8 +49,8 @@ class ClientSignUpTest {
                     values(:id, :user_id)
                 """.trimIndent()
             )
-                .bind("id", UUID.fromString(clientSignUpPayload["clinicId"].toString()))
-                .bind("user_id", clinicUserId)
+                .bind("id", UUID.randomUUID())
+                .bind("user_id", UUID.fromString(clientSignUpPayload["clinicId"].toString()))
                 .execute()
         }
 
@@ -109,14 +107,12 @@ class ClientSignUpTest {
         testApplicationWithDependencies { jdbi, client, customConfig ->
             val clientSignUpPayload = mapOf(
                 "clinicId" to UUID.randomUUID().toString(),
+                "email" to "${UUID.randomUUID()}@test.test",
+                "password" to UUID.randomUUID().toString(),
                 "name" to UUID.randomUUID().toString(),
                 "surname" to UUID.randomUUID().toString(),
-                "phone" to Random.nextInt(100_000_000, 1_000_000_000),
-                "email" to "${UUID.randomUUID()}@test.test",
-                "password" to UUID.randomUUID().toString()
+                "phone" to Random.nextInt(100_000_000, 1_000_000_000)
             )
-
-            val clinicUserId = UUID.randomUUID()
 
             jdbi.useHandleUnchecked { handle ->
                 handle.createUpdate(
@@ -125,10 +121,10 @@ class ClientSignUpTest {
                     values(:id, :email, :password, :type)
                 """.trimIndent()
                 )
-                    .bind("id", clinicUserId)
+                    .bind("id", UUID.fromString(clientSignUpPayload["clinicId"].toString()))
                     .bind("email", "${UUID.randomUUID()}@test.test")
                     .bind("password", UUID.randomUUID().toString())
-                    .bind("type", "CLIENT")
+                    .bind("type", "CLINIC")
                     .execute()
             }
 
@@ -139,8 +135,8 @@ class ClientSignUpTest {
                     values(:id, :user_id)
                 """.trimIndent()
                 )
-                    .bind("id", UUID.fromString(clientSignUpPayload["clinicId"].toString()))
-                    .bind("user_id", clinicUserId)
+                    .bind("id", UUID.randomUUID())
+                    .bind("user_id", UUID.fromString(clientSignUpPayload["clinicId"].toString()))
                     .execute()
             }
 

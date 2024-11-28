@@ -1,12 +1,14 @@
+
 'use client'
+
 import { redirect } from "next/navigation";
 import { useSearchParams } from "next/navigation";
-
+import {handleSignUp} from "@/actions/handleClientSignUp";
 
 export default function ClientSignUpForm() {
-   const searchParams = useSearchParams()
+    const searchParams = useSearchParams()
     const clinicId = searchParams.get('clinic_id')
-    console.log(clinicId)
+
     if (!clinicId) {
         return (
             <p className="text-red-500">
@@ -14,40 +16,6 @@ export default function ClientSignUpForm() {
             </p>
         );
     }
-
-    const handleSignUp = async (formData: FormData) => {
-
-        const rawFormData = {
-            name: formData.get("name"),
-            surname: formData.get("surname"),
-            phone: formData.get("phone"),
-            email: formData.get("email"),
-            password: formData.get("password"),
-            clinicId, // Agrega el ID de la clínica al payload
-        };
-
-        const response = await fetch(
-            `https://${process.env.API_URL}.onrender.com/auth/clients/sign-up`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(rawFormData),
-            }
-        );
-
-        if (response.ok) {
-            // Redirige si el registro es exitoso
-            redirect("./log-in");
-        } else {
-            const errorData = await response.json();
-            console.error(
-                "Error al registrarse:",
-                errorData.message || "Error desconocido"
-            );
-        }
-    };
 
     return (
         <div className="relative flex w-full h-[80vh] flex-col bg-slate-50 group/design-root overflow-x-hidden"
@@ -143,6 +111,7 @@ export default function ClientSignUpForm() {
                                     required
                                 />
                             </div>
+                            <input type="hidden" name="clinic_id" value={clinicId} />
                             {/* Botón de Registro */}
                             <button
                                 type="submit"

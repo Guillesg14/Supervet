@@ -11,7 +11,7 @@ export default async function ClinicSignUp() {
         }
 
         const response = await fetch(`https://${process.env.API_URL}.onrender.com/auth/clinics/sign-up`, {
-            method: "POST",
+            method: 'POST',
             headers: {
                 "Content-Type": "application/json",
             },

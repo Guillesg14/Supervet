@@ -6,11 +6,11 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 
-class SignInHandler(private val clinicSignIn: SignIn) : Handler {
+class SignInHandler(private val userSignIn: SignIn) : Handler {
     override suspend fun invoke(ctx: RoutingContext) {
-        val clinicSignInRequest = ctx.call.receive<ClinicSignInRequest>()
+        val userSignInRequest = ctx.call.receive<UserSignInRequest>()
         try {
-            val token = clinicSignIn(clinicSignInRequest)
+            val token = userSignIn(userSignInRequest)
             ctx.call.respond(HttpStatusCode.OK, ClinicSignInResponse(token = token))
         } catch (e: Exception) {
             when (e) {
@@ -23,5 +23,5 @@ class SignInHandler(private val clinicSignIn: SignIn) : Handler {
     }
 }
 
-data class ClinicSignInRequest(val email: String, val password: String)
+data class UserSignInRequest(val email: String, val password: String)
 data class ClinicSignInResponse(val token: String)

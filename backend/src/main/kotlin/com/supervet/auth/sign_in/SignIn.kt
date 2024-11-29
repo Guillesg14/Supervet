@@ -7,11 +7,11 @@ class SignIn(
     private val passwordVerifier: PasswordVerifier,
     private val jwtTokenCreator: JwtTokenCreator
 ) {
-    operator fun invoke(clinicSignInRequest: ClinicSignInRequest): String {
-        val user = signInRepository.getUserFrom(clinicSignInRequest.email)
-            ?: throw UserDoesNotExistException(clinicSignInRequest.email)
+    operator fun invoke(userSignInRequest: UserSignInRequest): String {
+        val user = signInRepository.getUserFrom(userSignInRequest.email)
+            ?: throw UserDoesNotExistException(userSignInRequest.email)
 
-        if (!passwordVerifier.isValid(clinicSignInRequest.password, user.password)) {
+        if (!passwordVerifier.isValid(userSignInRequest.password, user.password)) {
             throw WrongPasswordException(user.email)
         }
 

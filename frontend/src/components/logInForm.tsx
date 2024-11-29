@@ -1,7 +1,11 @@
 import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
 import Link from "next/link";
+import {jwtDecode, JwtPayload} from "jwt-decode";
 
+type JWT = JwtPayload & {
+    type: string;
+}
 
 export default async function LogInForm(){
     const handleSignIn = async (formData: FormData) => {
@@ -22,7 +26,17 @@ export default async function LogInForm(){
         const cookieStore = await cookies()
         const responseBody = await response.json()
         cookieStore.set("session", responseBody.token)
-        redirect("/clinics/dashboard")
+        const decodedToken = jwtDecode<JWT>(responseBody.token)
+        if ( decodedToken.type == "CLINIC" ){
+            redirect("/clinics/dashboard")
+        }
+        if ( decodedToken.type == "CLIENT" ){
+            redirect("/clients/dashboard")
+        }
+        else {
+            redirect("/login")
+        }
+
     }
 
     return (

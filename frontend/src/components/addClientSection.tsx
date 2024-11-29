@@ -23,6 +23,8 @@ export async function getUserIdFromCookie() {
     return (decodedToken.user_id)
 }
 
+export
+
 const AddClientSection: () => Promise<React.JSX.Element> = async () => {
     const headersList = await headers();
     const domain = headersList.get('host') || "";

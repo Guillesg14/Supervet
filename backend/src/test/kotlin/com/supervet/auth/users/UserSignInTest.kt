@@ -1,4 +1,4 @@
-package com.supervet.auth.clinics
+package com.supervet.auth.users
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
@@ -13,7 +13,7 @@ import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class ClinicSignInTest {
+class UserSignInTest {
     @Test
     fun `should login a clinic`() = testApplicationWithDependencies { jdbi, client, customConfig ->
         val clinicSignInPayload = mapOf(

@@ -1,7 +1,6 @@
 
 'use client'
 
-import { redirect } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import {handleSignUp} from "@/actions/handleClientSignUp";
 

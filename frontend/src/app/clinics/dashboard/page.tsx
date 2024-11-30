@@ -1,10 +1,11 @@
-import AddClientSection from "@/components/addClientSection";
+import Navbar from "@/components/navbar";
 
 export default async function Dashboard() {
     return(
         <>
-        <p> DASHBOARD DE CLINICAS</p>
-        <AddClientSection />
+        <Navbar />
+            <p>Este es el dashboard de clinicas</p>
+
         </>
     );
 }

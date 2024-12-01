@@ -1,4 +1,4 @@
-package com.supervet.auth.data.show_clients
+package com.supervet.data.show_clients
 
 
 import com.supervet.ktor.Handler

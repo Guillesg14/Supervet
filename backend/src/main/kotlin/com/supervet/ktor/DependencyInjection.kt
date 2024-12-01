@@ -3,9 +3,11 @@ package com.supervet.ktor
 import com.supervet.auth.clinics.sign_up.ClinicSignUp
 import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clinics.sign_up.SignUpRepository
-import com.supervet.auth.clients.sign_up.ClientSignUp
 import com.supervet.auth.clients.sign_up.AddClientHandler
 import com.supervet.auth.clients.sign_up.AddClientRepository
+import com.supervet.data.show_clients.ClientsShow
+import com.supervet.data.show_clients.ClientsShowHandler
+import com.supervet.data.show_clients.ShowClientsRepository
 import com.supervet.auth.sign_in.*
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -27,7 +29,9 @@ fun Application.configureDependencyInjection() {
         bind<SignInRepository>() with singleton { SignInRepository(instance()) }
         bind<SignUpRepository>() with singleton { SignUpRepository(instance()) }
         bind<AddClientRepository>() with singleton { AddClientRepository(instance()) }
-        bind<ClientSignUp>() with singleton { ClientSignUp(instance()) }
+        bind<ShowClientsRepository>() with singleton { ShowClientsRepository(instance()) }
+        bind<ClientsShow>() with singleton { ClientsShow(instance()) }
+        bind<ClientsShowHandler>() with singleton { ClientsShowHandler(instance()) }
         bind<AddClientHandler>() with singleton { AddClientHandler(instance()) }
         bind<PasswordVerifier>() with singleton { PasswordVerifier() }
         bind<JwtTokenCreator>() with singleton { JwtTokenCreator() }

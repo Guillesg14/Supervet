@@ -1,4 +1,4 @@
-package com.supervet.auth.data.show_clients
+package com.supervet.data.show_clients
 
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.inTransactionUnchecked
@@ -27,10 +27,4 @@ class ShowClientsRepository(private val jdbi: Jdbi) {
         }
     }
 }
-
-data class Client(
-    val name: String,
-    val surname: String,
-    val phone: String
-)
 

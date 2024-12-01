@@ -1,13 +1,19 @@
 import { getUserIdFromCookie } from "@/components/addClientSection";
+interface Client {
+    name: string;
+    surname: string;
+    phone: string;
+}
 
 export default async function ShowClients() {
     const clinicId = await getUserIdFromCookie();
-    console.log("el id de la clinica es " + clinicId)
-    console.log(`https://${process.env.API_URL}.onrender.com/data/show-clients`)
-    async function fetchClients() {
+    console.log("el id de la clinica es " + clinicId);
+
+
+    async function fetchClients(): Promise<Client[]> {
         try {
             const response = await fetch(
-                `https://${process.env.API_URL}.onrender.com/auth/data/show_clients`,
+                `https://${process.env.API_URL}.onrender.com/data/show_clients`,
                 {
                     method: "POST",
                     headers: {
@@ -16,19 +22,20 @@ export default async function ShowClients() {
                     body: JSON.stringify({ clinicId: clinicId }),
                 }
             );
-            console.log(response)
+            console.log(response);
 
             // Imprimir estado de la respuesta y detalles del error
             if (!response.ok) {
-                const errorDetails = await response.text(); // Obtener el cuerpo de la respuesta (si lo hay)
+                const errorDetails = await response.text();
                 console.error(`Error fetching clients. Status: ${response.status}, Details: ${errorDetails}`);
                 throw new Error(`Failed to fetch clients: ${response.status} ${errorDetails}`);
             }
 
-            return await response.json();
+            const clients: Client[] = await response.json();
+            return clients;
         } catch (err) {
             console.error("Error fetching clients:", err);
-            return [];
+            return []; // Retorna un array vacío en caso de error
         }
     }
 

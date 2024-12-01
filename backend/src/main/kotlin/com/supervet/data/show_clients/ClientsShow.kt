@@ -1,4 +1,4 @@
-package com.supervet.auth.data.show_clients
+package com.supervet.data.show_clients
 
 class ClientsShow(private val clientsShowRepository: ShowClientsRepository) {
     operator fun invoke(clientsShowRequest: ClientsShowRequest): List<Client> {
@@ -12,3 +12,9 @@ class ClientsShow(private val clientsShowRepository: ShowClientsRepository) {
     }
 }
 class ClientsDoesNotExistException(clinicId: String) : Exception("no clients found for clinic with $clinicId")
+data class Client(
+    val name: String,
+    val surname: String,
+    val phone: String
+)
+

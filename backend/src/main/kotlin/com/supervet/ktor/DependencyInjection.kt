@@ -5,6 +5,9 @@ import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clinics.sign_up.SignUpRepository
 import com.supervet.auth.clients.sign_up.AddClientHandler
 import com.supervet.auth.clients.sign_up.AddClientRepository
+import com.supervet.auth.patients.add.AddPatientHandler
+import com.supervet.auth.patients.add.AddPatientRepository
+import com.supervet.auth.patients.add.PatientAdd
 import com.supervet.data.show_clients.ClientsShow
 import com.supervet.data.show_clients.ClientsShowHandler
 import com.supervet.data.show_clients.ShowClientsRepository
@@ -26,17 +29,20 @@ fun Application.configureDependencyInjection() {
     di {
         bind<DataSource>() with singleton { createDataSource() }
         bind<Jdbi>() with singleton { createJdbi() }
+        bind<AddPatientRepository>() with singleton {AddPatientRepository(instance())}
         bind<SignInRepository>() with singleton { SignInRepository(instance()) }
         bind<SignUpRepository>() with singleton { SignUpRepository(instance()) }
         bind<AddClientRepository>() with singleton { AddClientRepository(instance()) }
         bind<ShowClientsRepository>() with singleton { ShowClientsRepository(instance()) }
+        bind<PatientAdd>() with singleton { PatientAdd(instance()) }
         bind<ClientsShow>() with singleton { ClientsShow(instance()) }
-        bind<ClientsShowHandler>() with singleton { ClientsShowHandler(instance()) }
-        bind<AddClientHandler>() with singleton { AddClientHandler(instance()) }
         bind<PasswordVerifier>() with singleton { PasswordVerifier() }
         bind<JwtTokenCreator>() with singleton { JwtTokenCreator() }
         bind<SignIn>() with singleton { SignIn(instance(), instance(), instance()) }
         bind<ClinicSignUp>() with singleton { ClinicSignUp(instance()) }
+        bind<AddPatientHandler>() with singleton {AddPatientHandler(instance())}
+        bind<ClientsShowHandler>() with singleton { ClientsShowHandler(instance()) }
+        bind<AddClientHandler>() with singleton { AddClientHandler(instance()) }
         bind<SignUpHandler>() with singleton { SignUpHandler(instance()) }
         bind<SignInHandler>() with singleton { SignInHandler(instance()) }
     }

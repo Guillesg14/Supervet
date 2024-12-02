@@ -3,6 +3,7 @@ package com.supervet.ktor
 import com.supervet.auth.sign_in.SignInHandler
 import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clients.sign_up.AddClientHandler
+import com.supervet.auth.patients.add.AddPatientHandler
 import com.supervet.data.show_clients.ClientsShowHandler
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -36,10 +37,13 @@ fun Application.configureRouting() {
             route("clinics") {
                 post("sign-up", executeInvoke<SignUpHandler>())
             }
+            route("patients") {
+                post("add", executeInvoke<AddPatientHandler>())
 
-        }
-        route("data"){
-            post("show_clients", executeInvoke<ClientsShowHandler>())
+            }
+            route("data") {
+                post("show_clients", executeInvoke<ClientsShowHandler>())
+            }
         }
     }
 }

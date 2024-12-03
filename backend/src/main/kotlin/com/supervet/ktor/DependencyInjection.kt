@@ -13,6 +13,9 @@ import com.supervet.clinics.show_clients.ClientsShow
 import com.supervet.clinics.show_clients.ClientsShowHandler
 import com.supervet.clinics.show_clients.ShowClientsRepository
 import com.supervet.auth.sign_in.*
+import com.supervet.clinics.delete_client.DeleteClient
+import com.supervet.clinics.delete_client.DeleteClientHandler
+import com.supervet.clinics.delete_client.DeleteClientRepository
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -47,6 +50,9 @@ fun Application.configureDependencyInjection() {
         bind<AddClientHandler>() with singleton { AddClientHandler(instance()) }
         bind<SignUpHandler>() with singleton { SignUpHandler(instance()) }
         bind<SignInHandler>() with singleton { SignInHandler(instance()) }
+        bind<DeleteClientRepository>() with singleton { DeleteClientRepository(instance()) }
+        bind<DeleteClient>() with singleton { DeleteClient(instance()) }
+        bind<DeleteClientHandler>() with singleton { DeleteClientHandler(instance()) }
     }
 }
 

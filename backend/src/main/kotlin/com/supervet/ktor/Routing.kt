@@ -5,8 +5,10 @@ import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clients.sign_up.AddClientHandler
 import com.supervet.auth.patients.add.AddPatientHandler
 import com.supervet.clinics.show_clients.ClientsShowHandler
+import com.supervet.clinics.delete_client.DeleteClientHandler
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
+import io.ktor.server.auth.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.routing.*
 import org.kodein.di.instance
@@ -43,6 +45,11 @@ fun Application.configureRouting() {
             }
             route("data") {
                 post("show_clients", executeInvoke<ClientsShowHandler>())
+            }
+        }
+        authenticate("clinics") {
+            route("clinics") {
+                delete("delete-client/{client-id}", executeInvoke<DeleteClientHandler>())
             }
         }
     }

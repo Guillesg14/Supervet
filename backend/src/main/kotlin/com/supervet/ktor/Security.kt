@@ -5,25 +5,25 @@ import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
+import sun.security.util.KeyUtil.validate
 
 fun Application.configureSecurity() {
-    // Please read the jwt property from the config file if you are using EngineMain
-    val jwtAudience = "jwt-audience"
-    val jwtDomain = "https://jwt-provider-domain/"
-    val jwtRealm = "ktor sample app"
-    val jwtSecret = "secret"
     authentication {
-        jwt {
-            realm = jwtRealm
+        jwt("clinics") {
+            realm = "supervet"
             verifier(
                 JWT
-                    .require(Algorithm.HMAC256(jwtSecret))
-                    .withAudience(jwtAudience)
-                    .withIssuer(jwtDomain)
+                    .require(Algorithm.HMAC512("supervet"))
+                    .withAudience("supervet")
+                    .withIssuer("supervet")
                     .build()
             )
-            validate { credential ->
-                if (credential.payload.audience.contains(jwtAudience)) JWTPrincipal(credential.payload) else null
+            validate { token ->
+                if (token.payload.getClaim("user_id").asString() != "") {
+                    JWTPrincipal(token.payload)
+                } else {
+                    null
+                }
             }
         }
     }

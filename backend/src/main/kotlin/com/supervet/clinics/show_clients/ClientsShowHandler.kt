@@ -1,4 +1,4 @@
-package com.supervet.data.show_clients
+package com.supervet.clinics.show_clients
 
 
 import com.supervet.ktor.Handler

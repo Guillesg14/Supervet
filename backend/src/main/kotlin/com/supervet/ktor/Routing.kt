@@ -4,7 +4,7 @@ import com.supervet.auth.sign_in.SignInHandler
 import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clients.sign_up.AddClientHandler
 import com.supervet.auth.patients.add.AddPatientHandler
-import com.supervet.data.show_clients.ClientsShowHandler
+import com.supervet.clinics.show_clients.ClientsShowHandler
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
 import io.ktor.server.plugins.contentnegotiation.*

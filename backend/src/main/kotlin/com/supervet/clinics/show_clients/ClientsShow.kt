@@ -1,4 +1,4 @@
-package com.supervet.data.show_clients
+package com.supervet.clinics.show_clients
 
 class ClientsShow(private val clientsShowRepository: ShowClientsRepository) {
     operator fun invoke(clientsShowRequest: ClientsShowRequest): List<Client> {

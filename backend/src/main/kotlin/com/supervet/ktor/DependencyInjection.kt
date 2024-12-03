@@ -9,9 +9,9 @@ import com.supervet.auth.clients.sign_up.ClientSignUp
 import com.supervet.auth.patients.add.AddPatientHandler
 import com.supervet.auth.patients.add.AddPatientRepository
 import com.supervet.auth.patients.add.PatientAdd
-import com.supervet.data.show_clients.ClientsShow
-import com.supervet.data.show_clients.ClientsShowHandler
-import com.supervet.data.show_clients.ShowClientsRepository
+import com.supervet.clinics.show_clients.ClientsShow
+import com.supervet.clinics.show_clients.ClientsShowHandler
+import com.supervet.clinics.show_clients.ShowClientsRepository
 import com.supervet.auth.sign_in.*
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource

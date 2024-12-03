@@ -4,10 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navigation = [
-    { name: 'Dashboard', href: '/clinics/dashboard', current: true },
     { name: 'Clientes', href: '/clinics/clinic_clients', current: true },
     { name: 'Pacientes', href: '/clinics/patients', current: false },
-    { name: 'Calendar', href: '#', current: false },
 ]
 
 function classNames(...classes: string[]): string {

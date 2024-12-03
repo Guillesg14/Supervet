@@ -13,16 +13,18 @@ class AddPatientRepository(private val jdbi: Jdbi) {
 
         try {
             jdbi.useTransactionUnchecked { handle ->
-                val patientId = UUID.randomUUID()
+
+                val id = UUID.randomUUID()
                 handle.createUpdate(
                     """
-                    INSERT INTO patients (owner_id, owner_name, patient_id, name, breed, age, weight, status, appointment)
-                    VALUES (:ownerId, :ownerName, :patientId, :name, :breed, :age, :weight, :status, :appointment)
+                    INSERT INTO patients (id, owner_id, owner_name, patient_id, name, breed, age, weight, status, appointment)
+                    VALUES (:id, :ownerId, :ownerName, :patientId, :name, :breed, :age, :weight, :status, :appointment)
                     """.trimIndent()
                 )
+                    .bind("id", id)
                     .bind("owner_id", patientAddRequest.owner_id)
                     .bind("owner_name", patientAddRequest.owner_name)
-                    .bind("patient_id", patientId)
+                    .bind("patient_id", UUID.fromString(patientAddRequest.patient_id))
                     .bind("name", patientAddRequest.name)
                     .bind("breed", patientAddRequest.breed)
                     .bind("age", patientAddRequest.age)

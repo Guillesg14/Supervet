@@ -1,5 +1,7 @@
 import { getUserIdFromCookie } from "@/components/addClientSection";
+import DeleteClientButton from "@/components/DeleteClientButton";
 interface Client {
+    id: string;
     name: string;
     surname: string;
     phone: string;
@@ -61,7 +63,7 @@ export default async function ShowClients() {
                         </thead>
                         <tbody className="bg-white divide-y divide-gray-200">
                         {clients.map((client) => (
-                            <tr key={client.name}>
+                            <tr key={client.id}>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     {client.name}
                                 </td>
@@ -70,6 +72,9 @@ export default async function ShowClients() {
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                     {client.phone}
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    <DeleteClientButton clientId={client.id} />
                                 </td>
                             </tr>
                         ))}

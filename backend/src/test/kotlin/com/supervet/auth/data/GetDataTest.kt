@@ -79,7 +79,7 @@ class GetDataTest {
         }
 
         // 5. Realizamos la petición al endpoint
-        val response = client.post("data/show_clients") {
+        val response = client.post("/auth/data/show_clients") {
             contentType(ContentType.Application.Json)
             setBody("""{"clinicId": "$clinicUserId"}""")
         }

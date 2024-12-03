@@ -7,13 +7,12 @@ interface Client {
 
 export default async function ShowClients() {
     const clinicId = await getUserIdFromCookie();
-    console.log("el id de la clinica es " + clinicId);
 
 
     async function fetchClients(): Promise<Client[]> {
         try {
             const response = await fetch(
-                `https://${process.env.API_URL}.onrender.com/data/show_clients`,
+                `https://${process.env.API_URL}.onrender.com/auth/data/show_clients`,
                 {
                     method: "POST",
                     headers: {
@@ -22,7 +21,6 @@ export default async function ShowClients() {
                     body: JSON.stringify({ clinicId: clinicId }),
                 }
             );
-            console.log(response);
 
             // Imprimir estado de la respuesta y detalles del error
             if (!response.ok) {

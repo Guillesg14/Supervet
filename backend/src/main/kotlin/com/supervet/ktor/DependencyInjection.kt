@@ -5,6 +5,7 @@ import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clinics.sign_up.SignUpRepository
 import com.supervet.auth.clients.sign_up.AddClientHandler
 import com.supervet.auth.clients.sign_up.AddClientRepository
+import com.supervet.auth.clients.sign_up.ClientSignUp
 import com.supervet.auth.patients.add.AddPatientHandler
 import com.supervet.auth.patients.add.AddPatientRepository
 import com.supervet.auth.patients.add.PatientAdd
@@ -36,6 +37,7 @@ fun Application.configureDependencyInjection() {
         bind<ShowClientsRepository>() with singleton { ShowClientsRepository(instance()) }
         bind<PatientAdd>() with singleton { PatientAdd(instance()) }
         bind<ClientsShow>() with singleton { ClientsShow(instance()) }
+        bind<ClientSignUp>() with singleton { ClientSignUp(instance()) }
         bind<PasswordVerifier>() with singleton { PasswordVerifier() }
         bind<JwtTokenCreator>() with singleton { JwtTokenCreator() }
         bind<SignIn>() with singleton { SignIn(instance(), instance(), instance()) }

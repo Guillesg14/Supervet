@@ -1,6 +1,8 @@
 package com.supervet.auth.data
 
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
+import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -87,33 +89,14 @@ class GetDataTest {
         // 6. Comprobamos la respuesta
         assertEquals(HttpStatusCode.OK, response.status)
 
-        val clientsFromDb = jdbi.withHandleUnchecked { handle ->
-            handle.createQuery(
-                """
-            SELECT name, surname, phone
-            FROM clients
-            WHERE clinic_id = :clinic_id
-            """.trimIndent()
-            )
-                .bind("clinic_id", clinicUserId)
-                .map { rs, _ ->
-                    mapOf(
-                        "name" to rs.getString("name"),
-                        "surname" to rs.getString("surname"),
-                        "phone" to rs.getString("phone")
-                    )
-                }
-                .list()
-        }
-
         val clientsResponse = response.body<List<Map<String, String>>>()
 
-        assertEquals(clientsFromDb.size, clientsResponse.size)
-        clientsFromDb.forEachIndexed { index, clientFromDb ->
-            val clientInResponse = clientsResponse[index]
-            assertEquals(clientFromDb["name"], clientInResponse["name"])
-            assertEquals(clientFromDb["surname"], clientInResponse["surname"])
-            assertEquals(clientFromDb["phone"], clientInResponse["phone"])
-        }
+        assertEquals(1, clientsResponse.size)
+
+        val client = clientsResponse.find { it["id"] == clientId.toString() }
+        client shouldNotBe null
+        client?.get("name") shouldBe "Test Name"
+        client?.get("surname") shouldBe "Test Surname"
+        client?.get("phone") shouldBe "123456789"
     }
 }

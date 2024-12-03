@@ -10,7 +10,7 @@ class ShowClientsRepository(private val jdbi: Jdbi) {
         return jdbi.inTransactionUnchecked { handle ->
             handle.createQuery(
                 """
-                SELECT name, surname, phone
+                SELECT id, name, surname, phone
                 FROM clients
                 WHERE clinic_id = :clinic_id
                 """.trimIndent()
@@ -18,6 +18,7 @@ class ShowClientsRepository(private val jdbi: Jdbi) {
                 .bind("clinic_id", UUID.fromString(clinicId))
                 .map { rs, _ ->
                     Client(
+                        id = UUID.fromString(rs.getString("id")),
                         name = rs.getString("name"),
                         surname = rs.getString("surname"),
                         phone = rs.getString("phone")

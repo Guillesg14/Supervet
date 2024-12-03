@@ -19,6 +19,7 @@ class DeleteClientTest {
     fun `should remove a client`() = testApplicationWithDependencies { jdbi, client, customConfig ->
         val clinicId = UUID.randomUUID()
         val clinicEmail = "${UUID.randomUUID()}@test.test"
+        val clientUserId = UUID.randomUUID()
         val clientId = UUID.randomUUID()
 
         jdbi.useHandleUnchecked { handle ->
@@ -54,7 +55,7 @@ class DeleteClientTest {
                     values(:id, :email, :password, :type)
                 """.trimIndent()
             )
-                .bind("id", clientId)
+                .bind("id", clientUserId)
                 .bind("email", "${UUID.randomUUID()}@test.test")
                 .bind("password", UUID.randomUUID().toString())
                 .bind("type", "CLINIC")
@@ -68,8 +69,8 @@ class DeleteClientTest {
                     values(:id, :user_id, :clinic_id ,:name, :surname, :phone)
                 """.trimIndent()
             )
-                .bind("id", UUID.randomUUID())
-                .bind("user_id", clientId)
+                .bind("id", clientId)
+                .bind("user_id", clientUserId)
                 .bind("clinic_id", clinicId)
                 .bind("name", "Testname")
                 .bind("surname", "Testsurname")

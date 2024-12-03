@@ -14,7 +14,7 @@ class DeleteClientRepository(
                 """
                     select 1
                     from clients
-                    where user_id = :clientId and clinic_id = :clinicId
+                    where id = :clientId and clinic_id = :clinicId
                 """.trimIndent()
             )
                 .bind("clientId", clientId)
@@ -27,17 +27,12 @@ class DeleteClientRepository(
         jdbi.useTransactionUnchecked { handle ->
             handle.createUpdate(
                 """
-                    delete from clients
-                    where user_id = :clientId
-                """.trimIndent()
-            )
-                .bind("clientId", clientId)
-                .execute()
-
-            handle.createUpdate(
-                """
-                    DELETE FROM users
-                    WHERE id = :clientId
+                    delete from users
+                    where id = (
+                        select user_id
+                        from clients 
+                        where id = :clientId
+                    )
                 """.trimIndent()
             )
                 .bind("clientId", clientId)

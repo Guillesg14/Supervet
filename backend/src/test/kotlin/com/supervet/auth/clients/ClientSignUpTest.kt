@@ -23,7 +23,7 @@ class ClientSignUpTest {
         val clientEmail = "${UUID.randomUUID()}@test.test"
 
         val clientSignUpPayload = mapOf(
-            "clinicId" to clinic.id,
+            "clinicId" to clinic.userId,
             "email" to clientEmail,
             "password" to UUID.randomUUID().toString(),
             "name" to UUID.randomUUID().toString(),
@@ -88,7 +88,7 @@ class ClientSignUpTest {
             val clientEmail = "${UUID.randomUUID()}@test.test"
 
             val clientSignUpPayload = mapOf(
-                "clinicId" to clinic.id,
+                "clinicId" to clinic.userId,
                 "email" to clientEmail,
                 "password" to UUID.randomUUID().toString(),
                 "name" to UUID.randomUUID().toString(),

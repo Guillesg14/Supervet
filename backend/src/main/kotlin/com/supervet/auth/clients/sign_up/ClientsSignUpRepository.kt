@@ -30,27 +30,30 @@ class AddClientRepository(private val jdbi: Jdbi) {
                     .bind("type", "CLIENT")
                     .execute()
 
-                handle.createUpdate(
+                val updatedRows = handle.createUpdate(
                     """
-                    insert into clients(id, user_id, clinic_id, name, surname, phone)
-                    values(:id, :user_id, :clinic_id ,:name, :surname, :phone)
+                    insert into clients(id, user_id, clinic_id, name, surname, phone) 
+                    select :id, :user_id, c.id ,:name, :surname, :phone
+                    from clinics c
+                    where user_id = :clinicUserId
                 """.trimIndent()
                 )
                     .bind("id", UUID.randomUUID())
                     .bind("user_id", userId)
-                    .bind("clinic_id", UUID.fromString(clientSignUpRequest.clinicId))
+                    .bind("clinicUserId", UUID.fromString(clientSignUpRequest.clinicId))
                     .bind("name", clientSignUpRequest.name)
                     .bind("surname", clientSignUpRequest.surname)
                     .bind("phone", clientSignUpRequest.phone)
                     .execute()
-            }
-        } catch (e: Exception) {
-            val cause = e.cause as PSQLException
 
-            when (cause.sqlState) {
+                if (updatedRows == 0) {
+                    throw ClinicDoesNotExistException(clientSignUpRequest.clinicId)
+                }
+            }
+        } catch (e: PSQLException) {
+            when (e.sqlState) {
                 UNIQUE_VIOLATION -> throw ClientAlreadyExistsException(clientSignUpRequest.email)
                 FOREIGN_KEY_EXCEPTION -> throw ClinicDoesNotExistException(clientSignUpRequest.clinicId)
-                else -> throw e
             }
         }
     }

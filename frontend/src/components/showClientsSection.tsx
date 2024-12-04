@@ -1,5 +1,8 @@
-import { getUserIdFromCookie } from "@/components/addClientSection";
-import DeleteClientButton from "@/components/DeleteClientButton";
+import {getUserIdFromCookie} from "@/components/addClientSection";
+import {redirect} from "next/navigation";
+import {cookies} from "next/headers";
+import {revalidatePath, revalidateTag} from "next/cache";
+
 interface Client {
     id: string;
     name: string;
@@ -10,7 +13,6 @@ interface Client {
 export default async function ShowClients() {
     const clinicId = await getUserIdFromCookie();
 
-
     async function fetchClients(): Promise<Client[]> {
         try {
             const response = await fetch(
@@ -20,7 +22,10 @@ export default async function ShowClients() {
                     headers: {
                         "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ clinicId: clinicId }),
+                    body: JSON.stringify({clinicId: clinicId}),
+                    next: {
+                        tags: ["showClients"]
+                    }
                 }
             );
 
@@ -36,6 +41,42 @@ export default async function ShowClients() {
         } catch (err) {
             console.error("Error fetching clients:", err);
             return []; // Retorna un array vacío en caso de error
+        }
+    }
+
+    async function handleDeleteClient(formData: FormData) {
+        'use server'
+
+        console.log(formData)
+        const clientId = formData.get("clientId");
+        const cookieStore = await cookies()
+        const token = cookieStore.get('session')?.value
+
+        if (!token) {
+            redirect("/log-in")
+        }
+
+        try {
+            const response = await fetch(
+                `https://${process.env.API_URL}.onrender.com/clinics/delete-client/${clientId}`,
+                {
+                    method: "DELETE",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (!response.ok) {
+                const errorDetails = await response.text();
+                console.error(`Error deleting client. Status: ${response.status}, Details: ${errorDetails}`);
+                throw new Error(`Failed to delete client: ${response.status} ${errorDetails}`);
+            }
+
+            revalidatePath("/clinics/clinic_clients")
+            redirect("/clinics/clinic_clients")
+        } catch (err) {
+            console.error("Error deleting client:", err);
         }
     }
 
@@ -74,7 +115,15 @@ export default async function ShowClients() {
                                     {client.phone}
                                 </td>
                                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                    <DeleteClientButton clientId={client.id} />
+                                    <form action={handleDeleteClient}>
+                                        <input type="hidden" name="clientId" value={client.id}/>
+                                        <button
+                                            type="submit"
+                                            className="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900"
+                                        >
+                                            Eliminar
+                                        </button>
+                                    </form>
                                 </td>
                             </tr>
                         ))}

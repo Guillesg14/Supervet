@@ -1,7 +1,7 @@
 import {getUserIdFromCookie} from "@/components/addClientSection";
 import {redirect} from "next/navigation";
 import {cookies} from "next/headers";
-import {revalidatePath, revalidateTag} from "next/cache";
+import {revalidatePath} from "next/cache";
 
 interface Client {
     id: string;
@@ -23,9 +23,6 @@ export default async function ShowClients() {
                         "Content-Type": "application/json",
                     },
                     body: JSON.stringify({clinicId: clinicId}),
-                    next: {
-                        tags: ["showClients"]
-                    }
                 }
             );
 
@@ -47,7 +44,6 @@ export default async function ShowClients() {
     async function handleDeleteClient(formData: FormData) {
         'use server'
 
-        console.log(formData)
         const clientId = formData.get("clientId");
         const cookieStore = await cookies()
         const token = cookieStore.get('session')?.value

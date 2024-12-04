@@ -16,6 +16,9 @@ import com.supervet.auth.sign_in.*
 import com.supervet.clinics.delete_client.DeleteClient
 import com.supervet.clinics.delete_client.DeleteClientHandler
 import com.supervet.clinics.delete_client.DeleteClientRepository
+import com.supervet.clients.show_data.ClientDataShow
+import com.supervet.clients.show_data.ClientDataShowHandler
+import com.supervet.clients.show_data.ShowClientDataRepository
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -33,11 +36,13 @@ fun Application.configureDependencyInjection() {
     di {
         bind<DataSource>() with singleton { createDataSource() }
         bind<Jdbi>() with singleton { createJdbi() }
+        bind<ShowClientDataRepository>() with singleton {ShowClientDataRepository(instance())}
         bind<AddPatientRepository>() with singleton {AddPatientRepository(instance())}
         bind<SignInRepository>() with singleton { SignInRepository(instance()) }
         bind<SignUpRepository>() with singleton { SignUpRepository(instance()) }
         bind<AddClientRepository>() with singleton { AddClientRepository(instance()) }
         bind<ShowClientsRepository>() with singleton { ShowClientsRepository(instance()) }
+        bind<ClientDataShow>() with singleton { ClientDataShow(instance()) }
         bind<PatientAdd>() with singleton { PatientAdd(instance()) }
         bind<ClientsShow>() with singleton { ClientsShow(instance()) }
         bind<ClientSignUp>() with singleton { ClientSignUp(instance()) }
@@ -45,6 +50,7 @@ fun Application.configureDependencyInjection() {
         bind<JwtTokenCreator>() with singleton { JwtTokenCreator() }
         bind<SignIn>() with singleton { SignIn(instance(), instance(), instance()) }
         bind<ClinicSignUp>() with singleton { ClinicSignUp(instance()) }
+        bind<ClientDataShowHandler>() with singleton {ClientDataShowHandler(instance())}
         bind<AddPatientHandler>() with singleton {AddPatientHandler(instance())}
         bind<ClientsShowHandler>() with singleton { ClientsShowHandler(instance()) }
         bind<AddClientHandler>() with singleton { AddClientHandler(instance()) }

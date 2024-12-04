@@ -5,8 +5,8 @@ import java.util.*
 class DeleteClient(
     private val deleteClientRepository: DeleteClientRepository
 ) {
-    fun deleteClient(clientId: UUID, clinicId: UUID) {
-        if (deleteClientRepository.clientBelongsToClinic(clientId, clinicId)) {
+    operator fun invoke(clientId: UUID, clinicUserId: UUID) {
+        if (deleteClientRepository.clientBelongsToClinic(clientId, clinicUserId)) {
             deleteClientRepository.delete(clientId)
         }
     }

@@ -16,27 +16,12 @@ import kotlin.test.assertEquals
 class SignInTest {
     @Test
     fun `should login a clinic`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
-        val clinicSignInPayload = mapOf(
-            "email" to "${UUID.randomUUID()}@test.test",
-            "password" to UUID.randomUUID().toString()
-        )
+        val clinic = testRepository.createClinic()
 
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
-                    insert into users(id, email, password, type)
-                    values(:id, :email, :password, :type)
-                """.trimIndent()
-            )
-                .bind("id", UUID.randomUUID())
-                .bind("email", clinicSignInPayload["email"])
-                .bind(
-                    "password",
-                    BCrypt.withDefaults().hashToString(12, clinicSignInPayload["password"]?.toCharArray())
-                )
-                .bind("type", "CLINIC")
-                .execute()
-        }
+        val clinicSignInPayload = mapOf(
+            "email" to clinic.email,
+            "password" to clinic.password,
+        )
 
         val response = client.post("auth/sign-in") {
             contentType(ContentType.Application.Json)
@@ -47,35 +32,21 @@ class SignInTest {
 
         val jwt = JWT.require(Algorithm.HMAC512("supervet")).build().verify(response.body<ClinicSignInResponse>().token)
 
-        assertEquals(jwt.claims["email"]?.asString(), clinicSignInPayload["email"])
+        assertEquals(jwt.claims["email"]?.asString(),clinic.email)
         assertEquals(jwt.claims["type"]?.asString(), "CLINIC")
     }
 
     @Test
-    fun `should login a client`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
+    fun `should login a client`() = testApplicationWithDependencies { testRepository, jdbi, httpClient, customConfig ->
+        val clinic = testRepository.createClinic()
+        val client = testRepository.createClient(clinic)
+
         val clientSignInPayload = mapOf(
-            "email" to "${UUID.randomUUID()}@test.test",
-            "password" to UUID.randomUUID().toString()
+            "email" to client.email,
+            "password" to client.password,
         )
 
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
-                    insert into users(id, email, password, type)
-                    values(:id, :email, :password, :type)
-                """.trimIndent()
-            )
-                .bind("id", UUID.randomUUID())
-                .bind("email", clientSignInPayload["email"])
-                .bind(
-                    "password",
-                    BCrypt.withDefaults().hashToString(12, clientSignInPayload["password"]?.toCharArray())
-                )
-                .bind("type", "CLIENT")
-                .execute()
-        }
-
-        val response = client.post("auth/sign-in") {
+        val response = httpClient.post("auth/sign-in") {
             contentType(ContentType.Application.Json)
             setBody(clientSignInPayload)
         }
@@ -91,28 +62,12 @@ class SignInTest {
     @Test
     fun `should return unauthorized if the password is not correct`() =
         testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
+            val clinic = testRepository.createClinic()
+
             val clinicSignInPayload = mapOf(
-                "email" to "${UUID.randomUUID()}@test.test",
+                "email" to clinic.email,
                 "password" to UUID.randomUUID().toString()
             )
-
-            jdbi.useHandleUnchecked { handle ->
-
-                handle.createUpdate(
-                    """
-                        insert into users(id, email, password, type)
-                        values(:id, :email, :password, :type)
-                    """.trimIndent()
-                )
-                    .bind("id", UUID.randomUUID())
-                    .bind("email", clinicSignInPayload["email"])
-                    .bind(
-                        "password",
-                        BCrypt.withDefaults().hashToString(12, UUID.randomUUID().toString().toCharArray())
-                    )
-                    .bind("type", "CLINIC")
-                    .execute()
-            }
 
             val response = client.post("auth/sign-in") {
                 contentType(ContentType.Application.Json)

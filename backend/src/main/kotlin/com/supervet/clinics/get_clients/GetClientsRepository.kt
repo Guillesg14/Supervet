@@ -5,16 +5,21 @@ import org.jdbi.v3.core.kotlin.inTransactionUnchecked
 import java.util.*
 
 class GetClientsRepository(private val jdbi: Jdbi) {
-    fun getClientsByClinicId(clinicId: UUID): List<Client> {
+    fun getClientsByClinicId(clinicUserId: UUID): List<Client> {
         return jdbi.inTransactionUnchecked { handle ->
             handle.createQuery(
                 """
                 SELECT id, name, surname, phone
                 FROM clients
-                WHERE clinic_id = :clinic_id
+                WHERE clinic_id = (
+                    SELECT c.id
+                    FROM clinics c
+                    JOIN users u on u.id = c.user_id
+                    WHERE u.id = :clinicUserId
+                )
                 """.trimIndent()
             )
-                .bind("clinic_id", clinicId)
+                .bind("clinicUserId", clinicUserId)
                 .map { rs, _ ->
                     Client(
                         id = UUID.fromString(rs.getString("id")),

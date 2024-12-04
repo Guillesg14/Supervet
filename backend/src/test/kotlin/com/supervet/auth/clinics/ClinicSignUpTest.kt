@@ -17,13 +17,13 @@ import kotlin.test.assertTrue
 
 class ClinicSignUpTest {
     @Test
-    fun `should register a clinic`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
+    fun `should register a clinic`() = testApplicationWithDependencies { testRepository, jdbi, httpClient, customConfig ->
         val clinicSignUpPayload = ClinicSignUpRequest(
             email = "${UUID.randomUUID()}@test.test",
             password = UUID.randomUUID().toString()
         )
 
-        val response = client.post("auth/clinics/sign-up") {
+        val response = httpClient.post("auth/clinics/sign-up") {
             contentType(ContentType.Application.Json)
             setBody(clinicSignUpPayload)
         }
@@ -70,20 +70,20 @@ class ClinicSignUpTest {
 
     @Test
     fun `should not allow duplicate clinic registration`() =
-        testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
+        testApplicationWithDependencies { testRepository, jdbi, httpClient, customConfig ->
             val clinicSignUpPayload = ClinicSignUpRequest(
                 email = "${UUID.randomUUID()}@test.test",
                 password = UUID.randomUUID().toString()
             )
 
-            val response = client.post("auth/clinics/sign-up") {
+            val response = httpClient.post("auth/clinics/sign-up") {
                 contentType(ContentType.Application.Json)
                 setBody(clinicSignUpPayload)
             }
 
             assertEquals(Created, response.status)
 
-            val duplicateResponse = client.post("auth/clinics/sign-up") {
+            val duplicateResponse = httpClient.post("auth/clinics/sign-up") {
                 contentType(ContentType.Application.Json)
                 setBody(clinicSignUpPayload)
             }

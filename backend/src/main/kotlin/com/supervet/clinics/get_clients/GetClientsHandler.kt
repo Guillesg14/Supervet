@@ -12,9 +12,9 @@ import java.util.*
 
 class GetClientsHandler(private val getClients: GetClients) : Handler {
     override suspend fun invoke(ctx: RoutingContext) {
-        val clinicId = UUID.fromString(ctx.call.principal<JWTPrincipal>()!!.payload.getClaim("user_id").asString())
+        val clinicUserId = UUID.fromString(ctx.call.principal<JWTPrincipal>()!!.payload.getClaim("user_id").asString())
 
-        val clients = getClients(clinicId)
+        val clients = getClients(clinicUserId)
         ctx.call.respond(HttpStatusCode.OK, clients)
     }
 }

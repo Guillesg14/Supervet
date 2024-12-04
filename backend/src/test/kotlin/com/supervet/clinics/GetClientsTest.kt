@@ -16,78 +16,19 @@ import kotlin.test.assertEquals
 
 class GetClientsTest {
     @Test
-    fun `should get clients list`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
-        val clinicUserId = UUID.randomUUID()
-        val clinicEmail = "${UUID.randomUUID()}@test.test"
-        val clinicId = UUID.randomUUID()
-        val clientUserId = UUID.randomUUID()
-        val clientId = UUID.randomUUID()
-
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
-            INSERT INTO users (id, email, password, type)
-            VALUES (:id, :email, :password, :type);
-            """.trimIndent()
-            )
-                .bind("id", clinicUserId)
-                .bind("email", clinicEmail)
-                .bind("password", "hashed_password")
-                .bind("type", "CLINIC")
-                .execute()
-        }
-
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
-            INSERT INTO clinics (id, user_id)
-            VALUES (:id, :user_id);
-            """.trimIndent()
-            )
-                .bind("id", clinicId)
-                .bind("user_id", clinicUserId)
-                .execute()
-        }
-
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
-            INSERT INTO users (id, email, password, type)
-            VALUES (:id, :email, :password, :type);
-            """.trimIndent()
-            )
-                .bind("id", clientUserId)
-                .bind("email", "${UUID.randomUUID()}@test.test")
-                .bind("password", "hashed_password")
-                .bind("type", "CLIENT")
-                .execute()
-        }
-
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
-            INSERT INTO clients (id, user_id, clinic_id, name, surname, phone)
-            VALUES (:id, :user_id, :clinic_id, :name, :surname, :phone);
-            """.trimIndent()
-            )
-                .bind("id", clientId)
-                .bind("user_id", clientUserId)
-                .bind("clinic_id", clinicId)
-                .bind("name", "Test Name")
-                .bind("surname", "Test Surname")
-                .bind("phone", "123456789")
-                .execute()
-        }
+    fun `should get clients list`() = testApplicationWithDependencies { testRepository, jdbi, httpClient, customConfig ->
+        val clinic = testRepository.createClinic()
+        val client = testRepository.createClient(clinic)
 
         val token = JWT.create()
             .withAudience("supervet")
             .withIssuer("supervet")
             .withClaim("type", "CLINIC")
-            .withClaim("user_id", clinicId.toString())
-            .withClaim("email", clinicEmail)
+            .withClaim("user_id", clinic.userId.toString())
+            .withClaim("email", clinic.email)
             .sign(Algorithm.HMAC512("supervet"))
 
-        val response = client.get("/clinics/clients") {
+        val response = httpClient.get("/clinics/clients") {
             bearerAuth(token)
         }
 
@@ -97,10 +38,11 @@ class GetClientsTest {
 
         assertEquals(1, clientsResponse.size)
 
-        val client = clientsResponse.find { it["id"] == clientId.toString() }
-        client shouldNotBe null
-        client?.get("name") shouldBe "Test Name"
-        client?.get("surname") shouldBe "Test Surname"
-        client?.get("phone") shouldBe "123456789"
+        clientsResponse.find { it["id"] == client.id.toString() }.let {
+            it shouldNotBe null
+            it?.get("name") shouldBe client.name
+            it?.get("surname") shouldBe client.surname
+            it?.get("phone") shouldBe client.phone
+        }
     }
 }

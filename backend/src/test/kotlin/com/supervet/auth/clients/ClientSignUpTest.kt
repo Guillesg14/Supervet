@@ -19,12 +19,11 @@ import kotlin.test.assertTrue
 class ClientSignUpTest {
     @Test
     fun `should register a client`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
-        val clinicUserId = UUID.randomUUID()
-        val clinicId = UUID.randomUUID()
+        val clinic = testRepository.createClinic()
         val clientEmail = "${UUID.randomUUID()}@test.test"
 
         val clientSignUpPayload = mapOf(
-            "clinicId" to clinicId,
+            "clinicId" to clinic.id,
             "email" to clientEmail,
             "password" to UUID.randomUUID().toString(),
             "name" to UUID.randomUUID().toString(),
@@ -32,31 +31,6 @@ class ClientSignUpTest {
             "phone" to Random.nextInt(100_000_000, 1_000_000_000)
         )
 
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
-                    insert into users(id, email, password, type)
-                    values(:id, :email, :password, :type)
-                """.trimIndent()
-            )
-                .bind("id", clinicUserId)
-                .bind("email", "${UUID.randomUUID()}@test.test")
-                .bind("password", UUID.randomUUID().toString())
-                .bind("type", "CLINIC")
-                .execute()
-        }
-
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
-                    insert into clinics(id, user_id)
-                    values(:id, :user_id)
-                """.trimIndent()
-            )
-                .bind("id", clinicId)
-                .bind("user_id", clinicUserId)
-                .execute()
-        }
 
         val response = client.post("auth/clients/sign-up") {
             contentType(ContentType.Application.Json)
@@ -88,6 +62,7 @@ class ClientSignUpTest {
             BCrypt.verifyer()
                 .verify((clientSignUpPayload["password"] as String).toCharArray(), createdClient.password).verified
         }
+
         assertEquals("CLIENT", createdClient.type)
 
         assertDoesNotThrow {
@@ -109,44 +84,17 @@ class ClientSignUpTest {
     @Test
     fun `should not allow duplicate client registration`() =
         testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
-            val clinicUserId = UUID.randomUUID()
-            val clinicId = UUID.randomUUID()
+            val clinic = testRepository.createClinic()
             val clientEmail = "${UUID.randomUUID()}@test.test"
 
             val clientSignUpPayload = mapOf(
-                "clinicId" to clinicId,
+                "clinicId" to clinic.id,
                 "email" to clientEmail,
                 "password" to UUID.randomUUID().toString(),
                 "name" to UUID.randomUUID().toString(),
                 "surname" to UUID.randomUUID().toString(),
                 "phone" to Random.nextInt(100_000_000, 1_000_000_000)
             )
-
-            jdbi.useHandleUnchecked { handle ->
-                handle.createUpdate(
-                    """
-                    insert into users(id, email, password, type)
-                    values(:id, :email, :password, :type)
-                """.trimIndent()
-                )
-                    .bind("id", clinicUserId)
-                    .bind("email", "${UUID.randomUUID()}@test.test")
-                    .bind("password", UUID.randomUUID().toString())
-                    .bind("type", "CLINIC")
-                    .execute()
-            }
-
-            jdbi.useHandleUnchecked { handle ->
-                handle.createUpdate(
-                    """
-                    insert into clinics(id, user_id)
-                    values(:id, :user_id)
-                """.trimIndent()
-                )
-                    .bind("id", clinicId)
-                    .bind("user_id", clinicUserId)
-                    .execute()
-            }
 
             client.post("auth/clients/sign-up") {
                 contentType(ContentType.Application.Json)
@@ -191,7 +139,7 @@ class ClientSignUpTest {
 
     @Test
     fun `should return not found if the clinic does not exist`() =
-        testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
+        testApplicationWithDependencies { testRepository, jdbi, httpClient, customConfig ->
             val clientSignUpPayload = mapOf(
                 "clinicId" to UUID.randomUUID().toString(),
                 "name" to UUID.randomUUID().toString(),
@@ -201,7 +149,7 @@ class ClientSignUpTest {
                 "password" to UUID.randomUUID().toString()
             )
 
-            val response = client.post("auth/clients/sign-up") {
+            val response = httpClient.post("auth/clients/sign-up") {
                 contentType(ContentType.Application.Json)
                 setBody(clientSignUpPayload)
             }

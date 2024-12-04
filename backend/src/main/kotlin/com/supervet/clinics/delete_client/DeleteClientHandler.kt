@@ -13,9 +13,9 @@ class DeleteClientHandler(
 ): Handler {
     override suspend fun invoke(ctx: RoutingContext) {
         val clientId = UUID.fromString(ctx.call.parameters["client-id"]!!)
-        val clinicId = UUID.fromString(ctx.call.principal<JWTPrincipal>()!!.payload.getClaim("user_id").asString())
+        val clinicUserId = UUID.fromString(ctx.call.principal<JWTPrincipal>()!!.payload.getClaim("user_id").asString())
 
-        deleteClient.deleteClient(clientId, clinicId)
+        deleteClient(clientId, clinicUserId)
 
         ctx.call.respond(HttpStatusCode.NoContent)
     }

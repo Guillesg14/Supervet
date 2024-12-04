@@ -8,17 +8,22 @@ import java.util.*
 class DeleteClientRepository(
     private val jdbi: Jdbi
 ) {
-    fun clientBelongsToClinic(clientId: UUID, clinicId: UUID): Boolean =
+    fun clientBelongsToClinic(clientId: UUID, clinicUserId: UUID): Boolean =
         jdbi.withHandleUnchecked { handle ->
             handle.createQuery(
                 """
-                    select 1
-                    from clients
-                    where id = :clientId and clinic_id = :clinicId
+                    SELECT 1
+                    FROM clients
+                    WHERE id = :clientId AND clinic_id = (
+                        SELECT c.id
+                        FROM clients c
+                        JOIN users u on u.id = c.user_id
+                        WHERE u.id = :clinicUserId
+                    )
                 """.trimIndent()
             )
                 .bind("clientId", clientId)
-                .bind("clinicId", clinicId)
+                .bind("clinicUserId", clinicUserId)
                 .mapTo(Boolean::class.java)
                 .findOne().orElse(false)
         }

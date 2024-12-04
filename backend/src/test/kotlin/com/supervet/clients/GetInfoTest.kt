@@ -15,78 +15,19 @@ import kotlin.test.assertEquals
 
 class GetInfoTest {
     @Test
-    fun `should get client info`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
-        val clinicUserId = UUID.randomUUID()
-        val clinicId = UUID.randomUUID()
-        val clientUserId = UUID.randomUUID()
-        val clientId = UUID.randomUUID()
-        val clientEmail = "${UUID.randomUUID()}@test.test"
-
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
-            INSERT INTO users (id, email, password, type)
-            VALUES (:id, :email, :password, :type);
-            """.trimIndent()
-            )
-                .bind("id", clinicUserId)
-                .bind("email", "clinic@test.com")
-                .bind("password", "hashed_password")
-                .bind("type", "CLINIC")
-                .execute()
-        }
-
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
-            INSERT INTO clinics (id, user_id)
-            VALUES (:id, :user_id);
-            """.trimIndent()
-            )
-                .bind("id", clinicId)
-                .bind("user_id", clinicUserId)
-                .execute()
-        }
-
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
-            INSERT INTO users (id, email, password, type)
-            VALUES (:id, :email, :password, :type);
-            """.trimIndent()
-            )
-                .bind("id", clientUserId)
-                .bind("email", clientEmail)
-                .bind("password", "hashed_password")
-                .bind("type", "CLIENT")
-                .execute()
-        }
-
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
-            INSERT INTO clients (id, user_id, clinic_id, name, surname, phone)
-            VALUES (:id, :user_id, :clinic_id, :name, :surname, :phone);
-            """.trimIndent()
-            )
-                .bind("id", clientId)
-                .bind("user_id", clientUserId)
-                .bind("clinic_id", clinicId)
-                .bind("name", "Test Name")
-                .bind("surname", "Test Surname")
-                .bind("phone", "123456789")
-                .execute()
-        }
+    fun `should get client info`() = testApplicationWithDependencies { testRepository, jdbi, httpClient, customConfig ->
+        val clinic = testRepository.createClinic()
+        val client = testRepository.createClient(clinic)
 
         val token = JWT.create()
             .withAudience("supervet")
             .withIssuer("supervet")
             .withClaim("type", "CLIENT")
-            .withClaim("user_id", clientUserId.toString())
-            .withClaim("email", clientEmail)
+            .withClaim("user_id", client.userId.toString())
+            .withClaim("email", client.email)
             .sign(Algorithm.HMAC512("supervet"))
 
-        val response = client.get("/clients/info") {
+        val response = httpClient.get("/clients/info") {
             bearerAuth(token)
         }
 
@@ -100,7 +41,7 @@ class GetInfoTest {
             WHERE user_id = :user_id
             """.trimIndent()
             )
-                .bind("user_id", clientUserId)
+                .bind("user_id", client.userId)
                 .map { rs, _ ->
                     mapOf(
                         "id" to UUID.fromString(rs.getString("id")),

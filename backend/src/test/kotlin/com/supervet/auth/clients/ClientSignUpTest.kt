@@ -18,7 +18,7 @@ import kotlin.test.assertTrue
 
 class ClientSignUpTest {
     @Test
-    fun `should register a client`() = testApplicationWithDependencies { jdbi, client, customConfig ->
+    fun `should register a client`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
         val clinicUserId = UUID.randomUUID()
         val clinicId = UUID.randomUUID()
         val clientEmail = "${UUID.randomUUID()}@test.test"
@@ -108,7 +108,7 @@ class ClientSignUpTest {
 
     @Test
     fun `should not allow duplicate client registration`() =
-        testApplicationWithDependencies { jdbi, client, customConfig ->
+        testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
             val clinicUserId = UUID.randomUUID()
             val clinicId = UUID.randomUUID()
             val clientEmail = "${UUID.randomUUID()}@test.test"
@@ -191,7 +191,7 @@ class ClientSignUpTest {
 
     @Test
     fun `should return not found if the clinic does not exist`() =
-        testApplicationWithDependencies { jdbi, client, customConfig ->
+        testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
             val clientSignUpPayload = mapOf(
                 "clinicId" to UUID.randomUUID().toString(),
                 "name" to UUID.randomUUID().toString(),

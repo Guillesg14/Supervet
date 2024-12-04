@@ -16,7 +16,7 @@ import kotlin.test.assertNotNull
 
 class CreatePatientTest {
     @Test
-    fun `should add a new patient`() = testApplicationWithDependencies { jdbi, client, customConfig ->
+    fun `should add a new patient`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
         val clinicUserId = UUID.randomUUID()
         val clinicId = UUID.randomUUID()
         val clinicEmail = "${UUID.randomUUID()}@test.test"
@@ -127,135 +127,136 @@ class CreatePatientTest {
     }
 
     @Test
-    fun `should not add a new patient if the client does not belong to the clinic`() = testApplicationWithDependencies { jdbi, client, customConfig ->
-        val clinicUserId = UUID.randomUUID()
-        val clinicId = UUID.randomUUID()
-        val clinicEmail = "${UUID.randomUUID()}@test.test"
-        val otherClinicUserId = UUID.randomUUID()
-        val otherClinicId = UUID.randomUUID()
-        val clientUserId = UUID.randomUUID()
-        val clientId = UUID.randomUUID()
+    fun `should not add a new patient if the client does not belong to the clinic`() =
+        testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
+            val clinicUserId = UUID.randomUUID()
+            val clinicId = UUID.randomUUID()
+            val clinicEmail = "${UUID.randomUUID()}@test.test"
+            val otherClinicUserId = UUID.randomUUID()
+            val otherClinicId = UUID.randomUUID()
+            val clientUserId = UUID.randomUUID()
+            val clientId = UUID.randomUUID()
 
-        val createPatientPayload = mapOf(
-            "clientId" to clientId.toString(),
-            "name" to "Buddy",
-            "breed" to "Golden Retriever",
-            "age" to "3",
-            "weight" to 25,
-            "status" to "Healthy",
-        )
+            val createPatientPayload = mapOf(
+                "clientId" to clientId.toString(),
+                "name" to "Buddy",
+                "breed" to "Golden Retriever",
+                "age" to "3",
+                "weight" to 25,
+                "status" to "Healthy",
+            )
 
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
+            jdbi.useHandleUnchecked { handle ->
+                handle.createUpdate(
+                    """
                     insert into users(id, email, password, type)
                     values(:id, :email, :password, :type)
                 """.trimIndent()
-            )
-                .bind("id", clinicUserId)
-                .bind("email", clinicEmail)
-                .bind("password", UUID.randomUUID().toString())
-                .bind("type", "CLINIC")
-                .execute()
-        }
+                )
+                    .bind("id", clinicUserId)
+                    .bind("email", clinicEmail)
+                    .bind("password", UUID.randomUUID().toString())
+                    .bind("type", "CLINIC")
+                    .execute()
+            }
 
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
+            jdbi.useHandleUnchecked { handle ->
+                handle.createUpdate(
+                    """
                     insert into clinics(id, user_id)
                     values(:id, :user_id)
                 """.trimIndent()
-            )
-                .bind("id", clinicId)
-                .bind("user_id", clinicUserId)
-                .execute()
-        }
+                )
+                    .bind("id", clinicId)
+                    .bind("user_id", clinicUserId)
+                    .execute()
+            }
 
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
+            jdbi.useHandleUnchecked { handle ->
+                handle.createUpdate(
+                    """
                     insert into users(id, email, password, type)
                     values(:id, :email, :password, :type)
                 """.trimIndent()
-            )
-                .bind("id", otherClinicUserId)
-                .bind("email", "${UUID.randomUUID()}@test.test")
-                .bind("password", UUID.randomUUID().toString())
-                .bind("type", "CLINIC")
-                .execute()
-        }
+                )
+                    .bind("id", otherClinicUserId)
+                    .bind("email", "${UUID.randomUUID()}@test.test")
+                    .bind("password", UUID.randomUUID().toString())
+                    .bind("type", "CLINIC")
+                    .execute()
+            }
 
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
+            jdbi.useHandleUnchecked { handle ->
+                handle.createUpdate(
+                    """
                     insert into clinics(id, user_id)
                     values(:id, :user_id)
                 """.trimIndent()
-            )
-                .bind("id", otherClinicId)
-                .bind("user_id", otherClinicUserId)
-                .execute()
-        }
+                )
+                    .bind("id", otherClinicId)
+                    .bind("user_id", otherClinicUserId)
+                    .execute()
+            }
 
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
+            jdbi.useHandleUnchecked { handle ->
+                handle.createUpdate(
+                    """
                     insert into users(id, email, password, type)
                     values(:id, :email, :password, :type)
                 """.trimIndent()
-            )
-                .bind("id", clientUserId)
-                .bind("email", "${UUID.randomUUID()}@test.test")
-                .bind("password", UUID.randomUUID().toString())
-                .bind("type", "CLIENT")
-                .execute()
-        }
+                )
+                    .bind("id", clientUserId)
+                    .bind("email", "${UUID.randomUUID()}@test.test")
+                    .bind("password", UUID.randomUUID().toString())
+                    .bind("type", "CLIENT")
+                    .execute()
+            }
 
-        jdbi.useHandleUnchecked { handle ->
-            handle.createUpdate(
-                """
+            jdbi.useHandleUnchecked { handle ->
+                handle.createUpdate(
+                    """
                     insert into clients(id, user_id, clinic_id, name, surname, phone)
                     values(:id, :user_id, :clinic_id ,:name, :surname, :phone)
                 """.trimIndent()
-            )
-                .bind("id", clientId)
-                .bind("user_id", clientUserId)
-                .bind("clinic_id", otherClinicId)
-                .bind("name", "Testname")
-                .bind("surname", "Testsurname")
-                .bind("phone", "666777888")
-                .execute()
-        }
+                )
+                    .bind("id", clientId)
+                    .bind("user_id", clientUserId)
+                    .bind("clinic_id", otherClinicId)
+                    .bind("name", "Testname")
+                    .bind("surname", "Testsurname")
+                    .bind("phone", "666777888")
+                    .execute()
+            }
 
-        val token = JWT.create()
-            .withAudience("supervet")
-            .withIssuer("supervet")
-            .withClaim("type", "CLINIC")
-            .withClaim("user_id", clinicUserId.toString())
-            .withClaim("email", clinicEmail)
-            .sign(Algorithm.HMAC512("supervet"))
+            val token = JWT.create()
+                .withAudience("supervet")
+                .withIssuer("supervet")
+                .withClaim("type", "CLINIC")
+                .withClaim("user_id", clinicUserId.toString())
+                .withClaim("email", clinicEmail)
+                .sign(Algorithm.HMAC512("supervet"))
 
-        val response = client.post("clinics/create-patient") {
-            bearerAuth(token)
-            contentType(ContentType.Application.Json)
-            setBody(createPatientPayload)
-        }
+            val response = client.post("clinics/create-patient") {
+                bearerAuth(token)
+                contentType(ContentType.Application.Json)
+                setBody(createPatientPayload)
+            }
 
-        assertEquals(HttpStatusCode.Unauthorized, response.status)
+            assertEquals(HttpStatusCode.Unauthorized, response.status)
 
-        assertThrows<IllegalStateException> {
-            jdbi.withHandleUnchecked { handle ->
-                handle.createQuery(
-                    """
+            assertThrows<IllegalStateException> {
+                jdbi.withHandleUnchecked { handle ->
+                    handle.createQuery(
+                        """
                 select name, breed, age, weight, status, client_id
                 from patients
                 where client_id = :clientId
                 """.trimIndent()
-                )
-                    .bind("clientId", clientId)
-                    .map(MapMapper())
-                    .one()
+                    )
+                        .bind("clientId", clientId)
+                        .map(MapMapper())
+                        .one()
+                }
             }
         }
-    }
 }

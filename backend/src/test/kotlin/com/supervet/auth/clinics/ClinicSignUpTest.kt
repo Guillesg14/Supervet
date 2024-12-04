@@ -17,7 +17,7 @@ import kotlin.test.assertTrue
 
 class ClinicSignUpTest {
     @Test
-    fun `should register a clinic`() = testApplicationWithDependencies { jdbi, client, customConfig ->
+    fun `should register a clinic`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
         val clinicSignUpPayload = ClinicSignUpRequest(
             email = "${UUID.randomUUID()}@test.test",
             password = UUID.randomUUID().toString()
@@ -70,7 +70,7 @@ class ClinicSignUpTest {
 
     @Test
     fun `should not allow duplicate clinic registration`() =
-        testApplicationWithDependencies { jdbi, client, customConfig ->
+        testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
             val clinicSignUpPayload = ClinicSignUpRequest(
                 email = "${UUID.randomUUID()}@test.test",
                 password = UUID.randomUUID().toString()

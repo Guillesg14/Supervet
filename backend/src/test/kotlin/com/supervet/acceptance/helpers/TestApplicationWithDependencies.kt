@@ -12,7 +12,7 @@ import io.ktor.server.testing.*
 import org.jdbi.v3.core.Jdbi
 
 
-fun testApplicationWithDependencies(body: suspend (Jdbi, HttpClient, MapApplicationConfig) -> Unit) {
+fun testApplicationWithDependencies(body: suspend (TestRepository, Jdbi, HttpClient, MapApplicationConfig) -> Unit) {
     testApplication {
         val postgresContainer = PostgresTestContainer()
         val customConfig = MapApplicationConfig(
@@ -42,6 +42,8 @@ fun testApplicationWithDependencies(body: suspend (Jdbi, HttpClient, MapApplicat
 
         startApplication()
 
-        body(postgresContainer.jdbi, client, customConfig)
+        val testRepository = TestRepository(jdbi = postgresContainer.jdbi)
+
+        body(testRepository, postgresContainer.jdbi, client, customConfig)
     }
 }

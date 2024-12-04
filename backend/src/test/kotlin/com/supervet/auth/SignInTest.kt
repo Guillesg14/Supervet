@@ -15,7 +15,7 @@ import kotlin.test.assertEquals
 
 class SignInTest {
     @Test
-    fun `should login a clinic`() = testApplicationWithDependencies { jdbi, client, customConfig ->
+    fun `should login a clinic`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
         val clinicSignInPayload = mapOf(
             "email" to "${UUID.randomUUID()}@test.test",
             "password" to UUID.randomUUID().toString()
@@ -30,7 +30,10 @@ class SignInTest {
             )
                 .bind("id", UUID.randomUUID())
                 .bind("email", clinicSignInPayload["email"])
-                .bind("password", BCrypt.withDefaults().hashToString(12, clinicSignInPayload["password"]?.toCharArray()))
+                .bind(
+                    "password",
+                    BCrypt.withDefaults().hashToString(12, clinicSignInPayload["password"]?.toCharArray())
+                )
                 .bind("type", "CLINIC")
                 .execute()
         }
@@ -49,7 +52,7 @@ class SignInTest {
     }
 
     @Test
-    fun `should login a client`() = testApplicationWithDependencies { jdbi, client, customConfig ->
+    fun `should login a client`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
         val clientSignInPayload = mapOf(
             "email" to "${UUID.randomUUID()}@test.test",
             "password" to UUID.randomUUID().toString()
@@ -64,7 +67,10 @@ class SignInTest {
             )
                 .bind("id", UUID.randomUUID())
                 .bind("email", clientSignInPayload["email"])
-                .bind("password", BCrypt.withDefaults().hashToString(12, clientSignInPayload["password"]?.toCharArray()))
+                .bind(
+                    "password",
+                    BCrypt.withDefaults().hashToString(12, clientSignInPayload["password"]?.toCharArray())
+                )
                 .bind("type", "CLIENT")
                 .execute()
         }
@@ -84,7 +90,7 @@ class SignInTest {
 
     @Test
     fun `should return unauthorized if the password is not correct`() =
-        testApplicationWithDependencies { jdbi, client, customConfig ->
+        testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
             val clinicSignInPayload = mapOf(
                 "email" to "${UUID.randomUUID()}@test.test",
                 "password" to UUID.randomUUID().toString()
@@ -118,7 +124,7 @@ class SignInTest {
 
     @Test
     fun `should return unauthorized if the user does not exist`() =
-        testApplicationWithDependencies { jdbi, client, customConfig ->
+        testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
             val clinicSignInPayload = mapOf(
                 "email" to "${UUID.randomUUID()}@test.test",
                 "password" to UUID.randomUUID().toString()

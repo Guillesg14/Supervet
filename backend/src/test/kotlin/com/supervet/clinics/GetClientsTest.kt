@@ -16,7 +16,7 @@ import kotlin.test.assertEquals
 
 class GetClientsTest {
     @Test
-    fun `should get clients list`() = testApplicationWithDependencies { jdbi, client, customConfig ->
+    fun `should get clients list`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
         val clinicUserId = UUID.randomUUID()
         val clinicEmail = "${UUID.randomUUID()}@test.test"
         val clinicId = UUID.randomUUID()

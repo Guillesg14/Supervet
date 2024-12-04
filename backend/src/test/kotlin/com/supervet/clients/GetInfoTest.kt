@@ -15,7 +15,7 @@ import kotlin.test.assertEquals
 
 class GetInfoTest {
     @Test
-    fun `should get client info`() = testApplicationWithDependencies { jdbi, client, customConfig ->
+    fun `should get client info`() = testApplicationWithDependencies { testRepository, jdbi, client, customConfig ->
         val clinicUserId = UUID.randomUUID()
         val clinicId = UUID.randomUUID()
         val clientUserId = UUID.randomUUID()

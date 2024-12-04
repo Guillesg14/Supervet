@@ -1,12 +1,25 @@
 'use client'
 
+import {cookies} from "next/headers";
+import {redirect} from "next/navigation";
+
 export default function DeleteClientButton({clientId}: {clientId: string}) {
     async function handleDeleteClient(id: string) {
+        const cookieStore = await cookies()
+        const token = cookieStore.get('session')?.value
+
+        if (!token) {
+            redirect("/log-in")
+        }
+
         try {
             const response = await fetch(
                 `https://${process.env.NEXT_PUBLIC_API_URL}.onrender.com/clinics/delete-client/${id}`,
                 {
                     method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
                 }
             );
 

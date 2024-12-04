@@ -1,7 +1,7 @@
-package com.supervet.auth.data
+package com.supervet.clients
 
-
-
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
 import io.ktor.client.call.*
 import io.ktor.client.request.*
@@ -13,13 +13,14 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 
-class ClientGetGataTest {
+class GetInfoTest {
     @Test
-    fun `should get a client data`() = testApplicationWithDependencies { jdbi, client, customConfig ->
+    fun `should get client info`() = testApplicationWithDependencies { jdbi, client, customConfig ->
         val clinicUserId = UUID.randomUUID()
         val clinicId = UUID.randomUUID()
         val clientUserId = UUID.randomUUID()
         val clientId = UUID.randomUUID()
+        val clientEmail = "${UUID.randomUUID()}@test.test"
 
         jdbi.useHandleUnchecked { handle ->
             handle.createUpdate(
@@ -55,7 +56,7 @@ class ClientGetGataTest {
             """.trimIndent()
             )
                 .bind("id", clientUserId)
-                .bind("email", "client@test.com")
+                .bind("email", clientEmail)
                 .bind("password", "hashed_password")
                 .bind("type", "CLIENT")
                 .execute()
@@ -77,17 +78,24 @@ class ClientGetGataTest {
                 .execute()
         }
 
-        val response = client.post("/auth/data/show_client_data") {
-            contentType(ContentType.Application.Json)
-            setBody("""{"userId": "$clientUserId"}""")
+        val token = JWT.create()
+            .withAudience("supervet")
+            .withIssuer("supervet")
+            .withClaim("type", "CLIENT")
+            .withClaim("user_id", clientUserId.toString())
+            .withClaim("email", clientEmail)
+            .sign(Algorithm.HMAC512("supervet"))
+
+        val response = client.get("/clients/info") {
+            bearerAuth(token)
         }
 
         assertEquals(HttpStatusCode.OK, response.status)
 
-        val clientsFromDb = jdbi.withHandleUnchecked { handle ->
+        val clientFromDb = jdbi.withHandleUnchecked { handle ->
             handle.createQuery(
                 """
-            SELECT name, surname, phone, user_id
+            SELECT id, name, surname, phone
             FROM clients
             WHERE user_id = :user_id
             """.trimIndent()
@@ -95,22 +103,18 @@ class ClientGetGataTest {
                 .bind("user_id", clientUserId)
                 .map { rs, _ ->
                     mapOf(
-                        "user_id" to UUID.fromString(rs.getString("user_id")),
+                        "id" to UUID.fromString(rs.getString("id")),
                         "name" to rs.getString("name"),
                         "surname" to rs.getString("surname"),
                         "phone" to rs.getString("phone")
                     )
                 }
-                .list()
+                .one()
         }
-        val clientsResponse = response.body<List<Map<String, String>>>()
-        assertEquals(clientsFromDb.size, clientsResponse.size)
-        clientsFromDb.forEachIndexed { index, clientFromDb ->
-            val clientInResponse = clientsResponse[index]
-            assertEquals(clientFromDb["name"], clientInResponse["name"])
-            assertEquals(clientFromDb["surname"], clientInResponse["surname"])
-            assertEquals(clientFromDb["phone"], clientInResponse["phone"])
-            assertEquals(clientFromDb["user_id"], clientUserId)
-        }
+        val clientsResponse = response.body<Map<String, String>>()
+        assertEquals(clientFromDb["id"].toString(), clientsResponse["id"])
+        assertEquals(clientFromDb["name"], clientsResponse["name"])
+        assertEquals(clientFromDb["surname"], clientsResponse["surname"])
+        assertEquals(clientFromDb["phone"], clientsResponse["phone"])
     }
 }

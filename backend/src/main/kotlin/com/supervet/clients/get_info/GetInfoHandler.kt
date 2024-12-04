@@ -1,23 +1,22 @@
-package com.supervet.clients.show_data
-
+package com.supervet.clients.get_info
 
 import com.supervet.ktor.Handler
 import io.ktor.http.*
-import io.ktor.server.application.*
-import io.ktor.server.request.*
+import io.ktor.server.auth.*
+import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import java.util.*
 
-class ClientDataShowHandler(private val clientDataShow: ClientDataShow) : Handler {
+class GetInfoHandler(private val getInfo: GetInfo) : Handler {
 
     override suspend fun invoke(ctx: RoutingContext) {
-        val clientDataShowRequest = ctx.call.receive<ClientDataShowRequest>()
+        val clientId = UUID.fromString(ctx.call.principal<JWTPrincipal>()!!.payload.getClaim("user_id").asString())
 
         try {
-            val client = clientDataShow(clientDataShowRequest)
+            val client = getInfo(clientId)
             ctx.call.respond(HttpStatusCode.OK, client)
         } catch (e: Exception) {
-            ctx.application.log.error(e.stackTraceToString())
             when (e) {
                 is ClientDoesNotExistException -> ctx.call.respond(HttpStatusCode.NotFound)
                 else -> ctx.call.respond(HttpStatusCode.InternalServerError)
@@ -25,8 +24,3 @@ class ClientDataShowHandler(private val clientDataShow: ClientDataShow) : Handle
         }
     }
 }
-
-
-data class ClientDataShowRequest(
-    val userId: String,
-)

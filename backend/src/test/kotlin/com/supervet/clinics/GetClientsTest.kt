@@ -1,5 +1,7 @@
-package com.supervet.auth.data
+package com.supervet.clinics
 
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -10,14 +12,17 @@ import org.jdbi.v3.core.kotlin.useHandleUnchecked
 import java.util.*
 import kotlin.test.Test
 import kotlin.test.assertEquals
-import org.jdbi.v3.core.kotlin.withHandleUnchecked
 
 
-class GetDataTest {
+class GetClientsTest {
     @Test
-    fun `should get clients data`() = testApplicationWithDependencies { jdbi, client, customConfig ->
-        // 1. Creamos un usuario para la clínica
+    fun `should get clients list`() = testApplicationWithDependencies { jdbi, client, customConfig ->
         val clinicUserId = UUID.randomUUID()
+        val clinicEmail = "${UUID.randomUUID()}@test.test"
+        val clinicId = UUID.randomUUID()
+        val clientUserId = UUID.randomUUID()
+        val clientId = UUID.randomUUID()
+
         jdbi.useHandleUnchecked { handle ->
             handle.createUpdate(
                 """
@@ -26,14 +31,12 @@ class GetDataTest {
             """.trimIndent()
             )
                 .bind("id", clinicUserId)
-                .bind("email", "clinic@test.com")
+                .bind("email", clinicEmail)
                 .bind("password", "hashed_password")
                 .bind("type", "CLINIC")
                 .execute()
         }
 
-        // 2. Insertamos la clínica asociada al usuario
-        val clinicId = UUID.randomUUID()
         jdbi.useHandleUnchecked { handle ->
             handle.createUpdate(
                 """
@@ -46,8 +49,6 @@ class GetDataTest {
                 .execute()
         }
 
-        // 3. Creamos un usuario para el cliente
-        val clientUserId = UUID.randomUUID()
         jdbi.useHandleUnchecked { handle ->
             handle.createUpdate(
                 """
@@ -56,14 +57,12 @@ class GetDataTest {
             """.trimIndent()
             )
                 .bind("id", clientUserId)
-                .bind("email", "client@test.com")
+                .bind("email", "${UUID.randomUUID()}@test.test")
                 .bind("password", "hashed_password")
                 .bind("type", "CLIENT")
                 .execute()
         }
 
-        // 4. Insertamos un cliente asociado al usuario y la clínica
-        val clientId = UUID.randomUUID()
         jdbi.useHandleUnchecked { handle ->
             handle.createUpdate(
                 """
@@ -73,20 +72,25 @@ class GetDataTest {
             )
                 .bind("id", clientId)
                 .bind("user_id", clientUserId)
-                .bind("clinic_id", clinicUserId)
+                .bind("clinic_id", clinicId)
                 .bind("name", "Test Name")
                 .bind("surname", "Test Surname")
                 .bind("phone", "123456789")
                 .execute()
         }
 
-        // 5. Realizamos la petición al endpoint
-        val response = client.post("/auth/data/show_clients") {
-            contentType(ContentType.Application.Json)
-            setBody("""{"clinicId": "$clinicUserId"}""")
+        val token = JWT.create()
+            .withAudience("supervet")
+            .withIssuer("supervet")
+            .withClaim("type", "CLINIC")
+            .withClaim("user_id", clinicId.toString())
+            .withClaim("email", clinicEmail)
+            .sign(Algorithm.HMAC512("supervet"))
+
+        val response = client.get("/clinics/clients") {
+            bearerAuth(token)
         }
 
-        // 6. Comprobamos la respuesta
         assertEquals(HttpStatusCode.OK, response.status)
 
         val clientsResponse = response.body<List<Map<String, String>>>()

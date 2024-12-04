@@ -5,7 +5,6 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
 import io.ktor.client.request.*
 import io.ktor.http.*
-import org.jdbi.v3.core.kotlin.mapTo
 import org.jdbi.v3.core.kotlin.useHandleUnchecked
 import java.util.*
 import kotlin.test.Test
@@ -13,18 +12,18 @@ import kotlin.test.assertEquals
 import org.jdbi.v3.core.kotlin.withHandleUnchecked
 import org.jdbi.v3.core.mapper.MapMapper
 import org.junit.jupiter.api.assertThrows
-import java.time.Instant.now
 import kotlin.test.assertNotNull
 
 class CreatePatientTest {
     @Test
     fun `should add a new patient`() = testApplicationWithDependencies { jdbi, client, customConfig ->
         val clinicUserId = UUID.randomUUID()
+        val clinicId = UUID.randomUUID()
         val clinicEmail = "${UUID.randomUUID()}@test.test"
         val clientUserId = UUID.randomUUID()
         val clientId = UUID.randomUUID()
 
-        val patientAddPayload = mapOf(
+        val createPatientPayload = mapOf(
             "clientId" to clientId.toString(),
             "name" to "Buddy",
             "breed" to "Golden Retriever",
@@ -54,7 +53,7 @@ class CreatePatientTest {
                     values(:id, :user_id)
                 """.trimIndent()
             )
-                .bind("id", UUID.randomUUID())
+                .bind("id", clinicId)
                 .bind("user_id", clinicUserId)
                 .execute()
         }
@@ -69,7 +68,7 @@ class CreatePatientTest {
                 .bind("id", clientUserId)
                 .bind("email", "${UUID.randomUUID()}@test.test")
                 .bind("password", UUID.randomUUID().toString())
-                .bind("type", "CLINIC")
+                .bind("type", "CLIENT")
                 .execute()
         }
 
@@ -82,7 +81,7 @@ class CreatePatientTest {
             )
                 .bind("id", clientId)
                 .bind("user_id", clientUserId)
-                .bind("clinic_id", clinicUserId)
+                .bind("clinic_id", clinicId)
                 .bind("name", "Testname")
                 .bind("surname", "Testsurname")
                 .bind("phone", "666777888")
@@ -100,7 +99,7 @@ class CreatePatientTest {
         val response = client.post("clinics/create-patient") {
             bearerAuth(token)
             contentType(ContentType.Application.Json)
-            setBody(patientAddPayload)
+            setBody(createPatientPayload)
         }
 
         assertEquals(HttpStatusCode.Created, response.status)
@@ -119,23 +118,25 @@ class CreatePatientTest {
         }
 
         assertNotNull(createdPatient)
-        assertEquals(patientAddPayload["clientId"], createdPatient["client_id"].toString())
-        assertEquals(patientAddPayload["name"], createdPatient["name"])
-        assertEquals(patientAddPayload["breed"], createdPatient["breed"])
-        assertEquals(patientAddPayload["age"], createdPatient["age"])
-        assertEquals(patientAddPayload["weight"], createdPatient["weight"])
-        assertEquals(patientAddPayload["status"], createdPatient["status"])
+        assertEquals(createPatientPayload["clientId"], createdPatient["client_id"].toString())
+        assertEquals(createPatientPayload["name"], createdPatient["name"])
+        assertEquals(createPatientPayload["breed"], createdPatient["breed"])
+        assertEquals(createPatientPayload["age"], createdPatient["age"])
+        assertEquals(createPatientPayload["weight"], createdPatient["weight"])
+        assertEquals(createPatientPayload["status"], createdPatient["status"])
     }
 
     @Test
     fun `should not add a new patient if the client does not belong to the clinic`() = testApplicationWithDependencies { jdbi, client, customConfig ->
         val clinicUserId = UUID.randomUUID()
+        val clinicId = UUID.randomUUID()
         val clinicEmail = "${UUID.randomUUID()}@test.test"
         val otherClinicUserId = UUID.randomUUID()
+        val otherClinicId = UUID.randomUUID()
         val clientUserId = UUID.randomUUID()
         val clientId = UUID.randomUUID()
 
-        val patientAddPayload = mapOf(
+        val createPatientPayload = mapOf(
             "clientId" to clientId.toString(),
             "name" to "Buddy",
             "breed" to "Golden Retriever",
@@ -165,7 +166,7 @@ class CreatePatientTest {
                     values(:id, :user_id)
                 """.trimIndent()
             )
-                .bind("id", UUID.randomUUID())
+                .bind("id", clinicId)
                 .bind("user_id", clinicUserId)
                 .execute()
         }
@@ -191,7 +192,7 @@ class CreatePatientTest {
                     values(:id, :user_id)
                 """.trimIndent()
             )
-                .bind("id", UUID.randomUUID())
+                .bind("id", otherClinicId)
                 .bind("user_id", otherClinicUserId)
                 .execute()
         }
@@ -206,7 +207,7 @@ class CreatePatientTest {
                 .bind("id", clientUserId)
                 .bind("email", "${UUID.randomUUID()}@test.test")
                 .bind("password", UUID.randomUUID().toString())
-                .bind("type", "CLINIC")
+                .bind("type", "CLIENT")
                 .execute()
         }
 
@@ -219,7 +220,7 @@ class CreatePatientTest {
             )
                 .bind("id", clientId)
                 .bind("user_id", clientUserId)
-                .bind("clinic_id", otherClinicUserId)
+                .bind("clinic_id", otherClinicId)
                 .bind("name", "Testname")
                 .bind("surname", "Testsurname")
                 .bind("phone", "666777888")
@@ -237,7 +238,7 @@ class CreatePatientTest {
         val response = client.post("clinics/create-patient") {
             bearerAuth(token)
             contentType(ContentType.Application.Json)
-            setBody(patientAddPayload)
+            setBody(createPatientPayload)
         }
 
         assertEquals(HttpStatusCode.Unauthorized, response.status)

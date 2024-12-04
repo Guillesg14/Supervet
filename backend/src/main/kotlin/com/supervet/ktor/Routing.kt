@@ -5,7 +5,7 @@ import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clients.sign_up.AddClientHandler
 import com.supervet.clinics.create_patient.CreatePatientHandler
 import com.supervet.clients.show_data.ClientDataShowHandler
-import com.supervet.clinics.show_clients.ClientsShowHandler
+import com.supervet.clinics.get_clients.GetClientsHandler
 import com.supervet.clinics.delete_client.DeleteClientHandler
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -41,12 +41,13 @@ fun Application.configureRouting() {
                 post("sign-up", executeInvoke<SignUpHandler>())
             }
             route("data") {
-                post("show_clients", executeInvoke<ClientsShowHandler>())
+                post("show_clients", executeInvoke<GetClientsHandler>())
                 post( "show_client_data", executeInvoke<ClientDataShowHandler>())
             }
         }
         authenticate("clinics") {
             route("clinics") {
+                get("clients", executeInvoke<GetClientsHandler>())
                 delete("delete-client/{client-id}", executeInvoke<DeleteClientHandler>())
                 post("create-patient", executeInvoke<CreatePatientHandler>())
             }

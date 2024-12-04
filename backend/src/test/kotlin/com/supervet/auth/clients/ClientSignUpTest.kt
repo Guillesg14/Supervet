@@ -19,9 +19,13 @@ import kotlin.test.assertTrue
 class ClientSignUpTest {
     @Test
     fun `should register a client`() = testApplicationWithDependencies { jdbi, client, customConfig ->
+        val clinicUserId = UUID.randomUUID()
+        val clinicId = UUID.randomUUID()
+        val clientEmail = "${UUID.randomUUID()}@test.test"
+
         val clientSignUpPayload = mapOf(
-            "clinicId" to UUID.randomUUID().toString(),
-            "email" to "${UUID.randomUUID()}@test.test",
+            "clinicId" to clinicId,
+            "email" to clientEmail,
             "password" to UUID.randomUUID().toString(),
             "name" to UUID.randomUUID().toString(),
             "surname" to UUID.randomUUID().toString(),
@@ -35,7 +39,7 @@ class ClientSignUpTest {
                     values(:id, :email, :password, :type)
                 """.trimIndent()
             )
-                .bind("id", UUID.fromString(clientSignUpPayload["clinicId"].toString()))
+                .bind("id", clinicUserId)
                 .bind("email", "${UUID.randomUUID()}@test.test")
                 .bind("password", UUID.randomUUID().toString())
                 .bind("type", "CLINIC")
@@ -49,8 +53,8 @@ class ClientSignUpTest {
                     values(:id, :user_id)
                 """.trimIndent()
             )
-                .bind("id", UUID.randomUUID())
-                .bind("user_id", UUID.fromString(clientSignUpPayload["clinicId"].toString()))
+                .bind("id", clinicId)
+                .bind("user_id", clinicUserId)
                 .execute()
         }
 
@@ -69,7 +73,7 @@ class ClientSignUpTest {
                     where email = :email
                 """.trimIndent()
             )
-                .bind("email", clientSignUpPayload["email"])
+                .bind("email", clientEmail)
                 .map { rs, _ ->
                     object {
                         val id = UUID.fromString(rs.getString("id"))
@@ -105,9 +109,13 @@ class ClientSignUpTest {
     @Test
     fun `should not allow duplicate client registration`() =
         testApplicationWithDependencies { jdbi, client, customConfig ->
+            val clinicUserId = UUID.randomUUID()
+            val clinicId = UUID.randomUUID()
+            val clientEmail = "${UUID.randomUUID()}@test.test"
+
             val clientSignUpPayload = mapOf(
-                "clinicId" to UUID.randomUUID().toString(),
-                "email" to "${UUID.randomUUID()}@test.test",
+                "clinicId" to clinicId,
+                "email" to clientEmail,
                 "password" to UUID.randomUUID().toString(),
                 "name" to UUID.randomUUID().toString(),
                 "surname" to UUID.randomUUID().toString(),
@@ -121,7 +129,7 @@ class ClientSignUpTest {
                     values(:id, :email, :password, :type)
                 """.trimIndent()
                 )
-                    .bind("id", UUID.fromString(clientSignUpPayload["clinicId"].toString()))
+                    .bind("id", clinicUserId)
                     .bind("email", "${UUID.randomUUID()}@test.test")
                     .bind("password", UUID.randomUUID().toString())
                     .bind("type", "CLINIC")
@@ -135,8 +143,8 @@ class ClientSignUpTest {
                     values(:id, :user_id)
                 """.trimIndent()
                 )
-                    .bind("id", UUID.randomUUID())
-                    .bind("user_id", UUID.fromString(clientSignUpPayload["clinicId"].toString()))
+                    .bind("id", clinicId)
+                    .bind("user_id", clinicUserId)
                     .execute()
             }
 
@@ -160,7 +168,7 @@ class ClientSignUpTest {
                     where email = :email
                 """.trimIndent()
                 )
-                    .bind("email", clientSignUpPayload["email"] as String)
+                    .bind("email", clientEmail)
                     .mapTo(UUID::class.java)
                     .one()
             }

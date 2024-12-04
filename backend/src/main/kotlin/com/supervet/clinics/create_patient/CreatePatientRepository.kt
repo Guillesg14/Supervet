@@ -12,11 +12,16 @@ class CreatePatientRepository(private val jdbi: Jdbi) {
                 """
                     select 1
                     from clients
-                    where id = :clientId and clinic_id = :clinicId
+                    where id = :clientId and clinic_id = (
+                        select c.id
+                        from users u
+                        join clinics c on u.id = c.user_id
+                        where u.id = :clinicUserId
+                    )
                 """.trimIndent()
             )
                 .bind("clientId", clientId)
-                .bind("clinicId", clinicId)
+                .bind("clinicUserId", clinicId)
                 .mapTo(Boolean::class.java)
                 .findOne().orElse(false)
         }

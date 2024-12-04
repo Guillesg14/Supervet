@@ -1,12 +1,11 @@
-package com.supervet.clinics.show_clients
+package com.supervet.clinics.get_clients
 
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.inTransactionUnchecked
 import java.util.*
 
-
-class ShowClientsRepository(private val jdbi: Jdbi) {
-    fun getClientsByClinicId(clinicId: String): List<Client> {
+class GetClientsRepository(private val jdbi: Jdbi) {
+    fun getClientsByClinicId(clinicId: UUID): List<Client> {
         return jdbi.inTransactionUnchecked { handle ->
             handle.createQuery(
                 """
@@ -15,7 +14,7 @@ class ShowClientsRepository(private val jdbi: Jdbi) {
                 WHERE clinic_id = :clinic_id
                 """.trimIndent()
             )
-                .bind("clinic_id", UUID.fromString(clinicId))
+                .bind("clinic_id", clinicId)
                 .map { rs, _ ->
                     Client(
                         id = UUID.fromString(rs.getString("id")),

@@ -9,9 +9,9 @@ import com.supervet.auth.clients.sign_up.ClientSignUp
 import com.supervet.clinics.create_patient.CreatePatientHandler
 import com.supervet.clinics.create_patient.CreatePatientRepository
 import com.supervet.clinics.create_patient.CreatePatient
-import com.supervet.clinics.show_clients.ClientsShow
-import com.supervet.clinics.show_clients.ClientsShowHandler
-import com.supervet.clinics.show_clients.ShowClientsRepository
+import com.supervet.clinics.get_clients.GetClients
+import com.supervet.clinics.get_clients.GetClientsHandler
+import com.supervet.clinics.get_clients.GetClientsRepository
 import com.supervet.auth.sign_in.*
 import com.supervet.clinics.delete_client.DeleteClient
 import com.supervet.clinics.delete_client.DeleteClientHandler
@@ -41,10 +41,10 @@ fun Application.configureDependencyInjection() {
         bind<SignInRepository>() with singleton { SignInRepository(instance()) }
         bind<SignUpRepository>() with singleton { SignUpRepository(instance()) }
         bind<AddClientRepository>() with singleton { AddClientRepository(instance()) }
-        bind<ShowClientsRepository>() with singleton { ShowClientsRepository(instance()) }
+        bind<GetClientsRepository>() with singleton { GetClientsRepository(instance()) }
         bind<ClientDataShow>() with singleton { ClientDataShow(instance()) }
         bind<CreatePatient>() with singleton { CreatePatient(instance()) }
-        bind<ClientsShow>() with singleton { ClientsShow(instance()) }
+        bind<GetClients>() with singleton { GetClients(instance()) }
         bind<ClientSignUp>() with singleton { ClientSignUp(instance()) }
         bind<PasswordVerifier>() with singleton { PasswordVerifier() }
         bind<JwtTokenCreator>() with singleton { JwtTokenCreator() }
@@ -52,7 +52,7 @@ fun Application.configureDependencyInjection() {
         bind<ClinicSignUp>() with singleton { ClinicSignUp(instance()) }
         bind<ClientDataShowHandler>() with singleton {ClientDataShowHandler(instance())}
         bind<CreatePatientHandler>() with singleton { CreatePatientHandler(instance()) }
-        bind<ClientsShowHandler>() with singleton { ClientsShowHandler(instance()) }
+        bind<GetClientsHandler>() with singleton { GetClientsHandler(instance()) }
         bind<AddClientHandler>() with singleton { AddClientHandler(instance()) }
         bind<SignUpHandler>() with singleton { SignUpHandler(instance()) }
         bind<SignInHandler>() with singleton { SignInHandler(instance()) }

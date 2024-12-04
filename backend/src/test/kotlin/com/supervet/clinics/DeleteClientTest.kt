@@ -17,8 +17,9 @@ import kotlin.test.assertEquals
 class DeleteClientTest {
     @Test
     fun `should remove a client`() = testApplicationWithDependencies { jdbi, client, customConfig ->
-        val clinicId = UUID.randomUUID()
+        val clinicUserId = UUID.randomUUID()
         val clinicEmail = "${UUID.randomUUID()}@test.test"
+        val clinicId = UUID.randomUUID()
         val clientUserId = UUID.randomUUID()
         val clientId = UUID.randomUUID()
 
@@ -29,7 +30,7 @@ class DeleteClientTest {
                     values(:id, :email, :password, :type)
                 """.trimIndent()
             )
-                .bind("id", clinicId)
+                .bind("id", clinicUserId)
                 .bind("email", clinicEmail)
                 .bind("password", UUID.randomUUID().toString())
                 .bind("type", "CLINIC")
@@ -43,8 +44,8 @@ class DeleteClientTest {
                     values(:id, :user_id)
                 """.trimIndent()
             )
-                .bind("id", UUID.randomUUID())
-                .bind("user_id", clinicId)
+                .bind("id", clinicId)
+                .bind("user_id", clinicUserId)
                 .execute()
         }
 
@@ -58,7 +59,7 @@ class DeleteClientTest {
                 .bind("id", clientUserId)
                 .bind("email", "${UUID.randomUUID()}@test.test")
                 .bind("password", UUID.randomUUID().toString())
-                .bind("type", "CLINIC")
+                .bind("type", "CLIENT")
                 .execute()
         }
 
@@ -82,7 +83,7 @@ class DeleteClientTest {
             .withAudience("supervet")
             .withIssuer("supervet")
             .withClaim("type", "CLINIC")
-            .withClaim("user_id", clinicId.toString())
+            .withClaim("user_id", clinicUserId.toString())
             .withClaim("email", clinicEmail)
             .sign(Algorithm.HMAC512("supervet"))
 
@@ -125,8 +126,10 @@ class DeleteClientTest {
 
     @Test
     fun `should not remove a client if the client does not belong to the clinic`() = testApplicationWithDependencies { jdbi, client, customConfig ->
+        val clinicIntruderUserId = UUID.randomUUID()
         val clinicIntruderId = UUID.randomUUID()
         val clinicIntruderEmail = "${UUID.randomUUID()}@test.test"
+        val clinicOwnerUserId = UUID.randomUUID()
         val clinicOwnerId = UUID.randomUUID()
         val clientId = UUID.randomUUID()
 
@@ -137,7 +140,7 @@ class DeleteClientTest {
                     values(:id, :email, :password, :type)
                 """.trimIndent()
             )
-                .bind("id", clinicOwnerId)
+                .bind("id", clinicOwnerUserId)
                 .bind("email", "${UUID.randomUUID()}@test.test")
                 .bind("password", UUID.randomUUID().toString())
                 .bind("type", "CLINIC")
@@ -151,8 +154,8 @@ class DeleteClientTest {
                     values(:id, :user_id)
                 """.trimIndent()
             )
-                .bind("id", UUID.randomUUID())
-                .bind("user_id", clinicOwnerId)
+                .bind("id", clinicOwnerId)
+                .bind("user_id", clinicOwnerUserId)
                 .execute()
         }
 
@@ -163,7 +166,7 @@ class DeleteClientTest {
                     values(:id, :email, :password, :type)
                 """.trimIndent()
             )
-                .bind("id", clinicIntruderId)
+                .bind("id", clinicIntruderUserId)
                 .bind("email", clinicIntruderEmail)
                 .bind("password", UUID.randomUUID().toString())
                 .bind("type", "CLINIC")
@@ -177,8 +180,8 @@ class DeleteClientTest {
                     values(:id, :user_id)
                 """.trimIndent()
             )
-                .bind("id", UUID.randomUUID())
-                .bind("user_id", clinicIntruderId)
+                .bind("id", clinicIntruderId)
+                .bind("user_id", clinicIntruderUserId)
                 .execute()
         }
 
@@ -216,7 +219,7 @@ class DeleteClientTest {
             .withAudience("supervet")
             .withIssuer("supervet")
             .withClaim("type", "CLINIC")
-            .withClaim("user_id", clinicIntruderId.toString())
+            .withClaim("user_id", clinicIntruderUserId.toString())
             .withClaim("email", clinicIntruderEmail)
             .sign(Algorithm.HMAC512("supervet"))
 

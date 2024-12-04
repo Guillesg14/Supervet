@@ -16,8 +16,11 @@ import kotlin.test.assertEquals
 class ClientGetGataTest {
     @Test
     fun `should get a client data`() = testApplicationWithDependencies { jdbi, client, customConfig ->
-        // 1. Creamos un usuario para la clínica
         val clinicUserId = UUID.randomUUID()
+        val clinicId = UUID.randomUUID()
+        val clientUserId = UUID.randomUUID()
+        val clientId = UUID.randomUUID()
+
         jdbi.useHandleUnchecked { handle ->
             handle.createUpdate(
                 """
@@ -32,8 +35,6 @@ class ClientGetGataTest {
                 .execute()
         }
 
-        // 2. Insertamos la clínica asociada al usuario
-        val clinicId = UUID.randomUUID()
         jdbi.useHandleUnchecked { handle ->
             handle.createUpdate(
                 """
@@ -46,8 +47,6 @@ class ClientGetGataTest {
                 .execute()
         }
 
-        // 3. Creamos un usuario para el cliente
-        val clientUserId = UUID.randomUUID()
         jdbi.useHandleUnchecked { handle ->
             handle.createUpdate(
                 """
@@ -62,8 +61,6 @@ class ClientGetGataTest {
                 .execute()
         }
 
-        // 4. Insertamos un cliente asociado al usuario y la clínica
-        val clientId = UUID.randomUUID()
         jdbi.useHandleUnchecked { handle ->
             handle.createUpdate(
                 """
@@ -73,20 +70,18 @@ class ClientGetGataTest {
             )
                 .bind("id", clientId)
                 .bind("user_id", clientUserId)
-                .bind("clinic_id", clinicUserId)
+                .bind("clinic_id", clinicId)
                 .bind("name", "Test Name")
                 .bind("surname", "Test Surname")
                 .bind("phone", "123456789")
                 .execute()
         }
 
-        // 5. Realizamos la petición al endpoint
         val response = client.post("/auth/data/show_client_data") {
             contentType(ContentType.Application.Json)
             setBody("""{"userId": "$clientUserId"}""")
         }
 
-        // 6. Comprobamos la respuesta
         assertEquals(HttpStatusCode.OK, response.status)
 
         val clientsFromDb = jdbi.withHandleUnchecked { handle ->

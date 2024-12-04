@@ -13,16 +13,8 @@ class ClientsShowHandler(private val clientsShow: ClientsShow) : Handler {
     override suspend fun invoke(ctx: RoutingContext) {
         val clientsShowRequest = ctx.call.receive<ClientsShowRequest>()
 
-        try {
-            val clients = clientsShow(clientsShowRequest)
-            ctx.call.respond(HttpStatusCode.OK, clients) // Devuelve los clientes encontrados
-        } catch (e: Exception) {
-            ctx.application.log.error(e.stackTraceToString())
-            when (e) {
-                is ClientsDoesNotExistException -> ctx.call.respond(HttpStatusCode.NotFound)
-                else -> ctx.call.respond(HttpStatusCode.InternalServerError)
-            }
-        }
+        val clients = clientsShow(clientsShowRequest)
+        ctx.call.respond(HttpStatusCode.OK, clients)
     }
 }
 

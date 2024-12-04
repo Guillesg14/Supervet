@@ -43,11 +43,6 @@ services:
           name: supervet-api
           type: web
           property: host
-      - key: NEXT_PUBLIC_API_URL
-        fromService:
-          name: supervet-api
-          type: web
-          property: host
 
 databases:
   - name: supervet-db

@@ -6,9 +6,9 @@ import com.supervet.auth.clinics.sign_up.SignUpRepository
 import com.supervet.auth.clients.sign_up.AddClientHandler
 import com.supervet.auth.clients.sign_up.AddClientRepository
 import com.supervet.auth.clients.sign_up.ClientSignUp
-import com.supervet.auth.patients.add.AddPatientHandler
-import com.supervet.auth.patients.add.AddPatientRepository
-import com.supervet.auth.patients.add.PatientAdd
+import com.supervet.clinics.create_patient.CreatePatientHandler
+import com.supervet.clinics.create_patient.CreatePatientRepository
+import com.supervet.clinics.create_patient.CreatePatient
 import com.supervet.clinics.show_clients.ClientsShow
 import com.supervet.clinics.show_clients.ClientsShowHandler
 import com.supervet.clinics.show_clients.ShowClientsRepository
@@ -37,13 +37,13 @@ fun Application.configureDependencyInjection() {
         bind<DataSource>() with singleton { createDataSource() }
         bind<Jdbi>() with singleton { createJdbi() }
         bind<ShowClientDataRepository>() with singleton {ShowClientDataRepository(instance())}
-        bind<AddPatientRepository>() with singleton {AddPatientRepository(instance())}
+        bind<CreatePatientRepository>() with singleton { CreatePatientRepository(instance()) }
         bind<SignInRepository>() with singleton { SignInRepository(instance()) }
         bind<SignUpRepository>() with singleton { SignUpRepository(instance()) }
         bind<AddClientRepository>() with singleton { AddClientRepository(instance()) }
         bind<ShowClientsRepository>() with singleton { ShowClientsRepository(instance()) }
         bind<ClientDataShow>() with singleton { ClientDataShow(instance()) }
-        bind<PatientAdd>() with singleton { PatientAdd(instance()) }
+        bind<CreatePatient>() with singleton { CreatePatient(instance()) }
         bind<ClientsShow>() with singleton { ClientsShow(instance()) }
         bind<ClientSignUp>() with singleton { ClientSignUp(instance()) }
         bind<PasswordVerifier>() with singleton { PasswordVerifier() }
@@ -51,7 +51,7 @@ fun Application.configureDependencyInjection() {
         bind<SignIn>() with singleton { SignIn(instance(), instance(), instance()) }
         bind<ClinicSignUp>() with singleton { ClinicSignUp(instance()) }
         bind<ClientDataShowHandler>() with singleton {ClientDataShowHandler(instance())}
-        bind<AddPatientHandler>() with singleton {AddPatientHandler(instance())}
+        bind<CreatePatientHandler>() with singleton { CreatePatientHandler(instance()) }
         bind<ClientsShowHandler>() with singleton { ClientsShowHandler(instance()) }
         bind<AddClientHandler>() with singleton { AddClientHandler(instance()) }
         bind<SignUpHandler>() with singleton { SignUpHandler(instance()) }

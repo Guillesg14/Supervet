@@ -3,7 +3,7 @@ package com.supervet.ktor
 import com.supervet.auth.sign_in.SignInHandler
 import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clients.sign_up.AddClientHandler
-import com.supervet.auth.patients.add.AddPatientHandler
+import com.supervet.clinics.create_patient.CreatePatientHandler
 import com.supervet.clients.show_data.ClientDataShowHandler
 import com.supervet.clinics.show_clients.ClientsShowHandler
 import com.supervet.clinics.delete_client.DeleteClientHandler
@@ -40,10 +40,6 @@ fun Application.configureRouting() {
             route("clinics") {
                 post("sign-up", executeInvoke<SignUpHandler>())
             }
-            route("patients") {
-                post("add", executeInvoke<AddPatientHandler>())
-
-            }
             route("data") {
                 post("show_clients", executeInvoke<ClientsShowHandler>())
                 post( "show_client_data", executeInvoke<ClientDataShowHandler>())
@@ -52,6 +48,7 @@ fun Application.configureRouting() {
         authenticate("clinics") {
             route("clinics") {
                 delete("delete-client/{client-id}", executeInvoke<DeleteClientHandler>())
+                post("create-patient", executeInvoke<CreatePatientHandler>())
             }
         }
     }

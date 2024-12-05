@@ -1,7 +1,6 @@
 
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
-import { getUserIdFromCookie } from "@/components/addClientSection";
 
 interface Client {
     id: string;
@@ -11,7 +10,6 @@ interface Client {
 }
 
 export default async function AddPatientForm() {
-    const clinicId = getUserIdFromCookie();
     const cookieStore = await cookies();
     const token = cookieStore.get("session")?.value;
 
@@ -47,36 +45,36 @@ export default async function AddPatientForm() {
 
     const clients = await fetchClients();
 
-    const handlePatientRegistration = async (formData: FormData) => {
+    async function handlePatientRegistration(formData: FormData) {
+        'use server'
         const rawFormData = {
+            clientId: formData.get("client"),
             name: formData.get("name"),
             breed: formData.get("breed"),
             age: formData.get("age"),
             weight: formData.get("weight"),
             status: formData.get("status"),
-            clientId: formData.get("client"),
-            clinicId,
         };
-    try {
-        const response = await fetch(
-            `https://${process.env.API_URL}.onrender.com/clinics/create-patient`,
-            {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(rawFormData),
-                 }
+        try {
+            const response = await fetch(
+                `https://${process.env.API_URL}.onrender.com/clinics/create-patient`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify(rawFormData),
+                }
             );
-        if (!response.ok) {
-            const errorDetails = await response.text();
-            console.error(`Error adding patient. Status: ${response.status}, Details: ${errorDetails}`);
-            throw new Error(`Failed to add patient: ${response.status} ${errorDetails}`);
-        }
+            if (!response.ok) {
+                const errorDetails = await response.text();
+                console.error(`Error adding patient. Status: ${response.status}, Details: ${errorDetails}`);
+                throw new Error(`Failed to add patient: ${response.status} ${errorDetails}`);
+            }
 
         } catch (err){
-        console.error("Error creating patient :", err);
-    }
+            console.error("Error creating patient :", err);
+        }
     }
 
 

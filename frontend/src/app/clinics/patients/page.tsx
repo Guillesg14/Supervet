@@ -1,5 +1,6 @@
 import Navbar from "@/components/navbar";
-import AddPatientForm from "@/components/addPatientSection";
+import AddPatientForm from "@/components/addPatientForm";
+
 
 export default async function Patients() {
     return(

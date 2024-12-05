@@ -1,4 +1,4 @@
-import {getUserIdFromCookie} from "@/components/addClientSection";
+
 import {redirect} from "next/navigation";
 import {cookies} from "next/headers";
 import {revalidatePath} from "next/cache";
@@ -11,20 +11,24 @@ interface Client {
 }
 
 export default async function ShowClients() {
-    const clinicId = await getUserIdFromCookie();
+    const cookieStore = await cookies()
+    const token = cookieStore.get('session')?.value
+
+    if (!token) {
+        redirect("/log-in")
+    }
 
     async function fetchClients(): Promise<Client[]> {
         try {
             const response = await fetch(
-                `https://${process.env.API_URL}.onrender.com/auth/data/show_clients`,
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({clinicId: clinicId}),
+            `https://${process.env.API_URL}.onrender.com/clinics/clients`,
+            {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${token}`
                 }
-            );
+            }
+        );
 
             // Imprimir estado de la respuesta y detalles del error
             if (!response.ok) {

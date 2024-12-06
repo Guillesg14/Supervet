@@ -3,7 +3,7 @@ package com.supervet.acceptance.helpers
 import at.favre.lib.crypto.bcrypt.BCrypt
 import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.inTransactionUnchecked
-import org.jdbi.v3.core.kotlin.useHandleUnchecked
+import org.jdbi.v3.core.kotlin.useTransactionUnchecked
 import java.util.*
 import kotlin.random.Random
 
@@ -73,6 +73,26 @@ class TestRepository(
 
         return client
     }
+    fun createPatient(client: Client): Patient {
+        val patient = Patient()
+            jdbi.useTransactionUnchecked { handle ->
+            handle.createUpdate(
+                """
+                    INSERT INTO patients (id, client_id, name, breed, age, weight, status)
+                    VALUES (:id, :clientId, :name, :breed, :age, :weight, :status)
+                    """.trimIndent()
+            )
+                .bind("id", UUID.randomUUID())
+                .bind("clientId", client.id)
+                .bind("name", patient.name)
+                .bind("breed", patient.breed)
+                .bind("age", patient.age)
+                .bind("weight", patient.weight)
+                .bind("status", patient.status)
+                .execute()
+        }
+        return patient
+    }
 }
 
 data class Clinic(
@@ -90,4 +110,12 @@ data class Client(
     val name: String = UUID.randomUUID().toString(),
     val surname: String = UUID.randomUUID().toString(),
     val phone: String = Random.nextInt(100_000_000, 1_000_000_000).toString(),
+)
+data class Patient(
+    val clientId: UUID = UUID.randomUUID(),
+    val name: String = UUID.randomUUID().toString(),
+    val breed: String = UUID.randomUUID().toString(),
+    val age: Int = Random.nextInt(0, 100),
+    val weight: Int = Random.nextInt(0, 100),
+    val status: String = UUID.randomUUID().toString(),
 )

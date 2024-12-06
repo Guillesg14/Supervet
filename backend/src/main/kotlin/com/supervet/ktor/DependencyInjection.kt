@@ -19,6 +19,9 @@ import com.supervet.clinics.delete_client.DeleteClientRepository
 import com.supervet.clients.get_info.GetInfo
 import com.supervet.clients.get_info.GetInfoHandler
 import com.supervet.clients.get_info.GetInfoRepository
+import com.supervet.clinics.get_patients.GetPatients
+import com.supervet.clinics.get_patients.GetPatientsHandler
+import com.supervet.clinics.get_patients.GetPatientsRepository
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -59,6 +62,9 @@ fun Application.configureDependencyInjection() {
         bind<DeleteClientRepository>() with singleton { DeleteClientRepository(instance()) }
         bind<DeleteClient>() with singleton { DeleteClient(instance()) }
         bind<DeleteClientHandler>() with singleton { DeleteClientHandler(instance()) }
+        bind<GetPatientsRepository>() with singleton { GetPatientsRepository(instance()) }
+        bind<GetPatients>() with singleton { GetPatients(instance()) }
+        bind<GetPatientsHandler>() with singleton { GetPatientsHandler(instance()) }
     }
 }
 

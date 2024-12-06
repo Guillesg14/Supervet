@@ -1,0 +1,13 @@
+package com.supervet.clinics.get_patients
+
+
+import com.supervet.ktor.Handler
+import io.ktor.server.routing.*
+import java.util.*
+
+class GetPatientsHandler (private val getPatients: GetPatients): Handler {
+    override suspend fun invoke(ctx: RoutingContext){
+        val clientId = UUID.fromString(ctx.call.parameters["client-id"]!!)
+        getPatients(clientId)
+    }
+}

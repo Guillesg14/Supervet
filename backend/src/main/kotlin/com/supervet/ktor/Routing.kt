@@ -7,6 +7,7 @@ import com.supervet.clinics.create_patient.CreatePatientHandler
 import com.supervet.clients.get_info.GetInfoHandler
 import com.supervet.clinics.get_clients.GetClientsHandler
 import com.supervet.clinics.delete_client.DeleteClientHandler
+import com.supervet.clinics.get_patients.GetPatientsHandler
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
@@ -47,6 +48,7 @@ fun Application.configureRouting() {
                 get("clients", executeInvoke<GetClientsHandler>())
                 delete("delete-client/{client-id}", executeInvoke<DeleteClientHandler>())
                 post("create-patient", executeInvoke<CreatePatientHandler>())
+                get("clients/{client-id}/patients", executeInvoke<GetPatientsHandler>())
             }
         }
 

@@ -6,7 +6,6 @@ import com.supervet.acceptance.helpers.testApplicationWithDependencies
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import org.jdbi.v3.core.kotlin.useHandleUnchecked
 import org.jdbi.v3.core.kotlin.withHandleUnchecked
 import java.util.*
 import kotlin.test.Test

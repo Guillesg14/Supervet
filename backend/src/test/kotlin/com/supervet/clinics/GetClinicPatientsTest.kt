@@ -12,9 +12,9 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 
-class GetPatientsTest {
+class GetClinicPatientsTest {
     @Test
-    fun `should get patients`() =
+    fun `should get clinics patients`() =
         testApplicationWithDependencies { testRepository, jdbi, httpClient, customConfig ->
             val clinic = testRepository.createClinic()
             val client = testRepository.createClient(clinic)
@@ -39,9 +39,6 @@ class GetPatientsTest {
             assertEquals(1, patientsResponse.size)
 
             val patientResponse = patientsResponse.find { it["clientId"] == client.id.toString() }
-            client
-            patient
-
 
             patientResponse.shouldNotBeNull()
             patientResponse["name"] shouldBe patient.name

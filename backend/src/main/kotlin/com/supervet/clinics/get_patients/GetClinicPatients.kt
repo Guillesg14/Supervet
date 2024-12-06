@@ -2,9 +2,9 @@ package com.supervet.clinics.get_patients
 
 import java.util.UUID
 
-class GetPatients (private val getPatientsRepository: GetPatientsRepository) {
+class GetClinicPatients (private val getClinicPatientsRepository: GetClinicPatientsRepository) {
     operator fun invoke(clientId: UUID): List<Patient>{
-        return getPatientsRepository.getPatientsByClientId(clientId)
+        return getClinicPatientsRepository.getPatientsByClientId(clientId)
     }
 }
 data class Patient(

@@ -4,7 +4,7 @@ import org.jdbi.v3.core.Jdbi
 import org.jdbi.v3.core.kotlin.inTransactionUnchecked
 import java.util.*
 
-class GetPatientsRepository(private val jdbi: Jdbi)  {
+class GetClinicPatientsRepository(private val jdbi: Jdbi)  {
     fun getPatientsByClientId(clientId: UUID): List<Patient>{
         return jdbi.inTransactionUnchecked { handle ->
             handle.createQuery(

@@ -19,9 +19,12 @@ import com.supervet.clinics.delete_client.DeleteClientRepository
 import com.supervet.clients.get_info.GetInfo
 import com.supervet.clients.get_info.GetInfoHandler
 import com.supervet.clients.get_info.GetInfoRepository
-import com.supervet.clinics.get_patients.GetPatients
-import com.supervet.clinics.get_patients.GetPatientsHandler
-import com.supervet.clinics.get_patients.GetPatientsRepository
+import com.supervet.clients.get_patients.GetClientPatients
+import com.supervet.clients.get_patients.GetClientPatientsHandler
+import com.supervet.clients.get_patients.GetClientPatientsRepository
+import com.supervet.clinics.get_patients.GetClinicPatients
+import com.supervet.clinics.get_patients.GetClinicPatientsHandler
+import com.supervet.clinics.get_patients.GetClinicPatientsRepository
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import io.ktor.server.application.*
@@ -62,9 +65,12 @@ fun Application.configureDependencyInjection() {
         bind<DeleteClientRepository>() with singleton { DeleteClientRepository(instance()) }
         bind<DeleteClient>() with singleton { DeleteClient(instance()) }
         bind<DeleteClientHandler>() with singleton { DeleteClientHandler(instance()) }
-        bind<GetPatientsRepository>() with singleton { GetPatientsRepository(instance()) }
-        bind<GetPatients>() with singleton { GetPatients(instance()) }
-        bind<GetPatientsHandler>() with singleton { GetPatientsHandler(instance()) }
+        bind<GetClinicPatientsRepository>() with singleton { GetClinicPatientsRepository(instance()) }
+        bind<GetClinicPatients>() with singleton { GetClinicPatients(instance()) }
+        bind<GetClinicPatientsHandler>() with singleton { GetClinicPatientsHandler(instance()) }
+        bind<GetClientPatientsRepository>() with singleton { GetClientPatientsRepository(instance()) }
+        bind<GetClientPatients>() with singleton { GetClientPatients(instance()) }
+        bind<GetClientPatientsHandler>() with singleton { GetClientPatientsHandler(instance()) }
     }
 }
 

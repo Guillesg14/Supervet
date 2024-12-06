@@ -10,13 +10,19 @@ import java.util.*
 
 class DeleteClientHandler(
     private val deleteClient: DeleteClient,
-): Handler {
+) : Handler {
     override suspend fun invoke(ctx: RoutingContext) {
         val clientId = UUID.fromString(ctx.call.parameters["client-id"]!!)
         val clinicUserId = UUID.fromString(ctx.call.principal<JWTPrincipal>()!!.payload.getClaim("user_id").asString())
 
-        deleteClient(clientId, clinicUserId)
+        try {
+            deleteClient(clientId, clinicUserId)
+            ctx.call.respond(HttpStatusCode.NoContent)
+        } catch (e: Exception) {
+            when (e) {
+                is ClientDoesNotBelongToClinicException -> ctx.call.respond(HttpStatusCode.Unauthorized)
+            }
+        }
 
-        ctx.call.respond(HttpStatusCode.NoContent)
     }
 }

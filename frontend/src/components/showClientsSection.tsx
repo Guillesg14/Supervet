@@ -1,4 +1,3 @@
-
 import {redirect} from "next/navigation";
 import {cookies} from "next/headers";
 import {revalidatePath} from "next/cache";
@@ -21,14 +20,14 @@ export default async function ShowClients() {
     async function fetchClients(): Promise<Client[]> {
         try {
             const response = await fetch(
-            `https://${process.env.API_URL}.onrender.com/clinics/clients`,
-            {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${token}`
+                `https://${process.env.API_URL}.onrender.com/clinics/clients`,
+                {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${token}`
+                    }
                 }
-            }
-        );
+            );
 
             // Imprimir estado de la respuesta y detalles del error
             if (!response.ok) {
@@ -57,6 +56,8 @@ export default async function ShowClients() {
         }
 
         try {
+            console.log(`https://${process.env.API_URL}.onrender.com/clinics/delete-client/${clientId}`)
+
             const response = await fetch(
                 `https://${process.env.API_URL}.onrender.com/clinics/delete-client/${clientId}`,
                 {
@@ -73,11 +74,12 @@ export default async function ShowClients() {
                 throw new Error(`Failed to delete client: ${response.status} ${errorDetails}`);
             }
 
-            revalidatePath("/clinics/clinic_clients")
-            redirect("/clinics/clinic_clients")
         } catch (err) {
             console.error("Error deleting client:", err);
         }
+
+        revalidatePath("/clinics/clinic_clients")
+        redirect("/clinics/clinic_clients")
     }
 
     const clients = await fetchClients();

@@ -84,7 +84,7 @@ class DeleteClientTest {
                 bearerAuth(token)
             }
 
-            assertEquals(HttpStatusCode.NoContent, response.status)
+            assertEquals(HttpStatusCode.Unauthorized, response.status)
 
             assertDoesNotThrow {
                 jdbi.withHandleUnchecked { handle ->

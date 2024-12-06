@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const navigation = [
-    { name: 'Clientes', href: '/clinics/clinic_clients', current: true },
+    { name: 'Clientes', href: '/clinics/clients', current: true },
     { name: 'Pacientes', href: '/clinics/patients', current: false },
 ]
 

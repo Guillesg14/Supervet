@@ -1,54 +1,17 @@
-
 import { redirect } from "next/navigation";
 import { cookies } from "next/headers";
+import {revalidatePath} from "next/cache";
 
-interface Client {
-    id: string;
-    name: string;
-    surname: string;
-    phone: string;
-}
-
-export default async function AddPatientForm() {
+export default async function AddPatientForm({clientId}: {clientId: string}) {
     const cookieStore = await cookies();
     const token = cookieStore.get("session")?.value;
 
     if (!token) {redirect("/log-in");}
 
-    async function fetchClients(): Promise<Client[]> {
-        try {
-            const response = await fetch(
-                `https://${process.env.API_URL}.onrender.com/clinics/clients`,
-                {
-                    method: "GET",
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            if (!response.ok) {
-                const errorDetails = await response.text();
-                console.error(
-                    `Error fetching clients. Status: ${response.status}, Details: ${errorDetails}`
-                );
-                throw new Error(`Failed to fetch clients: ${response.status}`);
-            }
-
-            const clients: Client[] = await response.json();
-            return clients;
-        } catch (err) {
-            console.error("Error fetching clients:", err);
-            return [];
-        }
-    }
-
-    const clients = await fetchClients();
-
     async function handlePatientRegistration(formData: FormData) {
         'use server'
         const rawFormData = {
-            clientId: formData.get("client"),
+            clientId: clientId,
             name: formData.get("name"),
             breed: formData.get("breed"),
             age: formData.get("age"),
@@ -76,6 +39,9 @@ export default async function AddPatientForm() {
         } catch (err){
             console.error("Error creating patient :", err);
         }
+
+        revalidatePath(`/clinics/clients/${clientId}/patients`)
+        redirect(`/clinics/clients/${clientId}/patients`);
     }
 
 
@@ -88,7 +54,7 @@ export default async function AddPatientForm() {
                 <div className="flex h-full items-center justify-center bg-gray-100">
                     <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
                         <h2 className="text-2xl font-bold text-center text-gray-800">
-                            Registro de Mascota
+                            Añade una nueva mascota
                         </h2>
                         <form className="space-y-6" action={handlePatientRegistration}>
                             {/* Nombre */}
@@ -107,28 +73,6 @@ export default async function AddPatientForm() {
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
-                            </div>
-                            {/* Cliente */}
-                            <div>
-                                <label
-                                    className="block mb-1 text-sm font-medium text-gray-600"
-                                    htmlFor="client"
-                                >
-                                    Cliente
-                                </label>
-                                <select
-                                    id="client"
-                                    name="client"
-                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    required
-                                >
-                                    <option value="">Selecciona un cliente</option>
-                                    {clients.map((client) => (
-                                        <option key={client.id} value={client.id}>
-                                            {client.name} {client.surname}
-                                        </option>
-                                    ))}
-                                </select>
                             </div>
                             {/* Otros campos */}
                             <div>

@@ -28,7 +28,7 @@ export default async function LogInForm(){
         cookieStore.set("session", responseBody.token)
         const decodedToken = jwtDecode<JWT>(responseBody.token)
         if ( decodedToken.type == "CLINIC" ){
-            redirect("/clinics/clinic_clients")
+            redirect("/clinics/clients")
         }
         if ( decodedToken.type == "CLIENT" ){
             redirect("/clients/dashboard")

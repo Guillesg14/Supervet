@@ -14,4 +14,5 @@ data class Patient(
     val age: Int,
     val weight: Int,
     val status: String,
+    val clientId: UUID,
 )

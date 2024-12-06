@@ -9,7 +9,7 @@ class GetPatientsRepository(private val jdbi: Jdbi)  {
         return jdbi.inTransactionUnchecked { handle ->
             handle.createQuery(
                 """
-                SELECT id, name, breed, age, weight, status
+                SELECT id, client_id, name, breed, age, weight, status
                 FROM patients
                 WHERE client_id = :clientId
                 """.trimIndent()
@@ -23,6 +23,7 @@ class GetPatientsRepository(private val jdbi: Jdbi)  {
                         age = rs.getInt("age"),
                         weight = rs.getInt("weight"),
                         status = rs.getString("status"),
+                        clientId = UUID.fromString(rs.getString("client_id")),
                     )
                 }
                 .list()

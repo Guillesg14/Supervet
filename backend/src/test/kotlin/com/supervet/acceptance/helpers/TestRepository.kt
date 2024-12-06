@@ -73,9 +73,11 @@ class TestRepository(
 
         return client
     }
+
     fun createPatient(client: Client): Patient {
         val patient = Patient()
-            jdbi.useTransactionUnchecked { handle ->
+
+        jdbi.useTransactionUnchecked { handle ->
             handle.createUpdate(
                 """
                     INSERT INTO patients (id, client_id, name, breed, age, weight, status)
@@ -111,8 +113,8 @@ data class Client(
     val surname: String = UUID.randomUUID().toString(),
     val phone: String = Random.nextInt(100_000_000, 1_000_000_000).toString(),
 )
+
 data class Patient(
-    val clientId: UUID = UUID.randomUUID(),
     val name: String = UUID.randomUUID().toString(),
     val breed: String = UUID.randomUUID().toString(),
     val age: Int = Random.nextInt(0, 100),

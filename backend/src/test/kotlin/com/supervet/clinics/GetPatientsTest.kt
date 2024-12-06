@@ -3,8 +3,8 @@ package com.supervet.clinics
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
+import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import io.kotest.matchers.shouldNotBe
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -12,14 +12,13 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 
-
-class GetPatientTest {
+class GetPatientsTest {
     @Test
-    fun `should get patient info`() =
+    fun `should get patients`() =
         testApplicationWithDependencies { testRepository, jdbi, httpClient, customConfig ->
             val clinic = testRepository.createClinic()
             val client = testRepository.createClient(clinic)
-            val createdPatient = testRepository.createPatient(client)
+            val patient = testRepository.createPatient(client)
 
             val token = JWT.create()
                 .withAudience("supervet")
@@ -35,16 +34,20 @@ class GetPatientTest {
 
             assertEquals(HttpStatusCode.OK, response.status)
 
-            val   patientsResponse =   response.body<List<Map<String, String>>>()
+            val patientsResponse = response.body<List<Map<String, String>>>()
 
             assertEquals(1, patientsResponse.size)
 
-            val patient = patientsResponse.find { it["id"] == createdPatient.clientId.toString()}
-                patient shouldNotBe null
-                patient!!["name"] shouldBe createdPatient.name
-                patient["breed"] shouldBe createdPatient.breed
-                patient["age"] shouldBe createdPatient.age
-                patient["weight"] shouldBe createdPatient.weight
-                patient["status"] shouldBe createdPatient.status
-            }
+            val patientResponse = patientsResponse.find { it["clientId"] == client.id.toString() }
+            client
+            patient
+
+
+            patientResponse.shouldNotBeNull()
+            patientResponse["name"] shouldBe patient.name
+            patientResponse["breed"] shouldBe patient.breed
+            patientResponse["age"] shouldBe patient.age.toString()
+            patientResponse["weight"] shouldBe patient.weight.toString()
+            patientResponse["status"] shouldBe patient.status
+        }
 }

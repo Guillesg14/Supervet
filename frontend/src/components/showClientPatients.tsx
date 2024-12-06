@@ -77,7 +77,7 @@ export default async function ShowClientPatients() {
                 </thead>
                 <tbody className="bg-white">
                 {patients.map(patient => (
-                    <tr>
+                    <tr key={patient.id}>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.name}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.age}</td>
                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.breed}</td>

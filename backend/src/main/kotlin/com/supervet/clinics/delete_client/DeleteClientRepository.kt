@@ -16,7 +16,7 @@ class DeleteClientRepository(
                     FROM clients
                     WHERE id = :clientId AND clinic_id = (
                         SELECT c.id
-                        FROM clients c
+                        FROM clinics c
                         JOIN users u on u.id = c.user_id
                         WHERE u.id = :clinicUserId
                     )

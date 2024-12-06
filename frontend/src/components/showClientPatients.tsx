@@ -21,7 +21,7 @@ export default async function ShowClientPatients() {
     async function fetchPatientsInfo(): Promise<Patient[]> {
         try {
             const response = await fetch(
-                `https://${process.env.API_URL}.onrender.com/clients/patients"`,
+                `https://${process.env.API_URL}.onrender.com/clients/patients`,
                 {
                     method: "GET",
                     headers: {

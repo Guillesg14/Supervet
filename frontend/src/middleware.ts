@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 import {jwtDecode, JwtPayload} from "jwt-decode";
-import {redirect} from "next/navigation";
 
 type JWT = JwtPayload & {
     type: string;

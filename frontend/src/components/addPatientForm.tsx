@@ -39,7 +39,7 @@ export default async function AddPatientForm({clientId}: {clientId: string}) {
             console.error("Error creating patient :", err);
         }
 
-        revalidatePath(`/clinics/clients/${clientId}`)
+        revalidatePath(`/clinics/clients/${clientId}`);
         redirect(`/clinics/clients/${clientId}`);
     }
 
@@ -49,7 +49,7 @@ export default async function AddPatientForm({clientId}: {clientId: string}) {
             <h1 className="text-xl font-bold mb-4">Añade una nueva mascota</h1>
             <form
                 className="min-w-full divide-y divide-gray-200 border border-gray-300 p-4 rounded-lg bg-gray-50 flex items-center gap-4"
-                onSubmit={handlePatientRegistration}
+                action={handlePatientRegistration}
             >
                 {/* Nombre */}
                 <div className="flex-1">

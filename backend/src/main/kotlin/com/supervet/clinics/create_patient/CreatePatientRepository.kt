@@ -30,8 +30,8 @@ class CreatePatientRepository(private val jdbi: Jdbi) {
         jdbi.useTransactionUnchecked { handle ->
             handle.createUpdate(
                 """
-                    INSERT INTO patients (id, client_id, name, breed, age, weight, status)
-                    VALUES (:id, :clientId, :name, :breed, :age, :weight, :status)
+                    INSERT INTO patients (id, client_id, name, breed, age, weight)
+                    VALUES (:id, :clientId, :name, :breed, :age, :weight)
                     """.trimIndent()
             )
                 .bind("id", UUID.randomUUID())
@@ -40,7 +40,6 @@ class CreatePatientRepository(private val jdbi: Jdbi) {
                 .bind("breed", createPatientRequest.breed)
                 .bind("age", createPatientRequest.age)
                 .bind("weight", createPatientRequest.weight)
-                .bind("status", createPatientRequest.status)
                 .execute()
         }
     }

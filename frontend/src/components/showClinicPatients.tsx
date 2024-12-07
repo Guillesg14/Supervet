@@ -1,14 +1,12 @@
 import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
 
-
 interface Patient{
     id: string;
     name: string;
     breed: string;
     age: string;
     weight: string;
-    status:string;
 }
 export default async function ShowClinicPatients({clientId}: {clientId: string}) {
     const cookieStore = await cookies();
@@ -25,11 +23,12 @@ export default async function ShowClinicPatients({clientId}: {clientId: string})
                 {
                     method: "GET",
                     headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                        Authorization: `Bearer ${token}`
+                    }
                 }
             );
-
+            const respuesta = await response.json();
+            console.log("la respuesta es:"+respuesta)
             if (!response.ok) {
                 const errorDetails = await response.text();
                 console.error(

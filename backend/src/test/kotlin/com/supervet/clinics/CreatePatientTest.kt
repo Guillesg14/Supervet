@@ -26,7 +26,6 @@ class CreatePatientTest {
             "breed" to "Golden Retriever",
             "age" to "3",
             "weight" to 25,
-            "status" to "Healthy",
         )
 
         val token = JWT.create()
@@ -48,7 +47,7 @@ class CreatePatientTest {
         val createdPatient = jdbi.withHandleUnchecked { handle ->
             handle.createQuery(
                 """
-                select name, breed, age, weight, status, client_id
+                select name, breed, age, weight, client_id
                 from patients
                 where client_id = :clientId
                 """.trimIndent()
@@ -64,7 +63,6 @@ class CreatePatientTest {
         assertEquals(createPatientPayload["breed"], createdPatient["breed"])
         assertEquals(createPatientPayload["age"], createdPatient["age"])
         assertEquals(createPatientPayload["weight"], createdPatient["weight"])
-        assertEquals(createPatientPayload["status"], createdPatient["status"])
     }
 
     @Test
@@ -80,7 +78,6 @@ class CreatePatientTest {
                 "breed" to "Golden Retriever",
                 "age" to "3",
                 "weight" to 25,
-                "status" to "Healthy",
             )
 
             val token = JWT.create()
@@ -103,7 +100,7 @@ class CreatePatientTest {
                 jdbi.withHandleUnchecked { handle ->
                     handle.createQuery(
                         """
-                select name, breed, age, weight, status, client_id
+                select name, breed, age, weight, client_id
                 from patients
                 where client_id = :clientId
                 """.trimIndent()

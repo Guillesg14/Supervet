@@ -31,5 +31,4 @@ data class CreatePatientRequest(
     val breed: String,
     val age: String,
     val weight: Int,
-    val status: String,
 )

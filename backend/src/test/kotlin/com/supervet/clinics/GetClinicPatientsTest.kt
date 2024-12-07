@@ -45,6 +45,5 @@ class GetClinicPatientsTest {
             patientResponse["breed"] shouldBe patient.breed
             patientResponse["age"] shouldBe patient.age.toString()
             patientResponse["weight"] shouldBe patient.weight.toString()
-            patientResponse["status"] shouldBe patient.status
         }
 }

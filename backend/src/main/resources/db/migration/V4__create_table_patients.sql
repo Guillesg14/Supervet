@@ -6,6 +6,5 @@ CREATE TABLE patients
     breed     text,
     age       text,
     weight    int,
-    status    text,
     FOREIGN KEY (client_id) REFERENCES clients (id) ON DELETE CASCADE
 );

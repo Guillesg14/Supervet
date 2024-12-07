@@ -82,8 +82,8 @@ class TestRepository(
         jdbi.useTransactionUnchecked { handle ->
             handle.createUpdate(
                 """
-                    INSERT INTO patients (id, client_id, name, breed, age, weight, status)
-                    VALUES (:id, :clientId, :name, :breed, :age, :weight, :status)
+                    INSERT INTO patients (id, client_id, name, breed, age, weight)
+                    VALUES (:id, :clientId, :name, :breed, :age, :weight)
                     """.trimIndent()
             )
                 .bind("id", UUID.randomUUID())
@@ -92,7 +92,6 @@ class TestRepository(
                 .bind("breed", patient.breed)
                 .bind("age", patient.age)
                 .bind("weight", patient.weight)
-                .bind("status", patient.status)
                 .execute()
         }
         return patient
@@ -123,5 +122,4 @@ data class Patient(
     val breed: String = UUID.randomUUID().toString(),
     val age: Int = Random.nextInt(0, 100),
     val weight: Int = Random.nextInt(0, 100),
-    val status: String = UUID.randomUUID().toString(),
 )

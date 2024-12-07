@@ -13,6 +13,5 @@ data class Patient(
     val breed: String,
     val age: Int,
     val weight: Int,
-    val status: String,
-    val clientId: UUID,
+    val clientId: UUID
 )

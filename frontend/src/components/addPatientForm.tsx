@@ -16,7 +16,6 @@ export default async function AddPatientForm({clientId}: {clientId: string}) {
             breed: formData.get("breed"),
             age: formData.get("age"),
             weight: formData.get("weight"),
-            status: formData.get("status"),
         };
         try {
             const response = await fetch(
@@ -123,22 +122,7 @@ export default async function AddPatientForm({clientId}: {clientId: string}) {
                                     required
                                 />
                             </div>
-                            <div>
-                                <label
-                                    className="block mb-1 text-sm font-medium text-gray-600"
-                                    htmlFor="status"
-                                >
-                                    Estado
-                                </label>
-                                <input
-                                    type="text"
-                                    id="status"
-                                    name="status"
-                                    placeholder="Ingresa el estado de la mascota"
-                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    required
-                                />
-                            </div>
+
                             {/* Botón de Registro */}
                             <button
                                 type="submit"

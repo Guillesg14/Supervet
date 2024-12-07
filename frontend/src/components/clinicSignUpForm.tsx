@@ -15,10 +15,12 @@ export default function ClinicSignUp() {
         try {
             await handleClinicSignUp(formData);
             setError(null);
-        } catch (e: any) {
-            setError(e.message);
+        } catch (e: unknown) {
+            if (e instanceof Error) {
+                setError(e.message);
+            }
         }
-    };
+    }
 
     return (
         <div className="relative flex w-full h-[80vh] flex-col bg-slate-50 group/design-root overflow-x-hidden"

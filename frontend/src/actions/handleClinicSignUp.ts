@@ -6,6 +6,8 @@ export const handleClinicSignUp = async (formData: FormData) => {
     const rawFormData = {
         email: formData.get('email'),
         password: formData.get('password'),
+        phone: formData.get('phone'),
+        address: formData.get('address'),
     }
 
     const response = await fetch(`https://${process.env.API_URL}.onrender.com/auth/clinics/sign-up`, {

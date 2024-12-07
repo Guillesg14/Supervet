@@ -45,95 +45,95 @@ export default async function AddPatientForm({clientId}: {clientId: string}) {
 
 
     return (
-        <div
-            className="relative flex w-full h-[80vh] flex-col bg-slate-50 group/design-root overflow-x-hidden"
-            style={{ fontFamily: 'Inter, "Noto Sans", sans-serif' }}
-        >
-            <div className="layout-container flex h-full grow flex-col">
-                <div className="flex h-full items-center justify-center bg-gray-100">
-                    <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
-                        <h2 className="text-2xl font-bold text-center text-gray-800">
-                            Añade una nueva mascota
-                        </h2>
-                        <form className="space-y-6" action={handlePatientRegistration}>
-                            {/* Nombre */}
-                            <div>
-                                <label
-                                    className="block mb-1 text-sm font-medium text-gray-600"
-                                    htmlFor="name"
-                                >
-                                    Nombre
-                                </label>
-                                <input
-                                    type="text"
-                                    id="name"
-                                    name="name"
-                                    placeholder="Ingresa el nombre de la mascota"
-                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    required
-                                />
-                            </div>
-                            {/* Otros campos */}
-                            <div>
-                                <label
-                                    className="block mb-1 text-sm font-medium text-gray-600"
-                                    htmlFor="breed"
-                                >
-                                    Raza
-                                </label>
-                                <input
-                                    type="text"
-                                    id="breed"
-                                    name="breed"
-                                    placeholder="Ingresa la raza de la mascota"
-                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label
-                                    className="block mb-1 text-sm font-medium text-gray-600"
-                                    htmlFor="age"
-                                >
-                                    Edad
-                                </label>
-                                <input
-                                    type="number"
-                                    id="age"
-                                    name="age"
-                                    placeholder="Ingresa la edad de la mascota"
-                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    required
-                                />
-                            </div>
-                            <div>
-                                <label
-                                    className="block mb-1 text-sm font-medium text-gray-600"
-                                    htmlFor="weight"
-                                >
-                                    Peso
-                                </label>
-                                <input
-                                    type="number"
-                                    id="weight"
-                                    name="weight"
-                                    placeholder="Ingresa el peso de la mascota (kg)"
-                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    required
-                                />
-                            </div>
-
-                            {/* Botón de Registro */}
-                            <button
-                                type="submit"
-                                className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
-                            >
-                                Registrar Mascota
-                            </button>
-                        </form>
-                    </div>
+        <div className="container mx-auto p-4">
+            <h1 className="text-xl font-bold mb-4">Añade una nueva mascota</h1>
+            <form
+                className="min-w-full divide-y divide-gray-200 border border-gray-300 p-4 rounded-lg bg-gray-50 flex items-center space-x-4"
+                onSubmit={handlePatientRegistration}
+            >
+                {/* Nombre */}
+                <div className="flex flex-col">
+                    <label
+                        htmlFor="name"
+                        className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                        Nombre
+                    </label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Nombre"
+                        className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        required
+                    />
                 </div>
-            </div>
+
+                {/* Raza */}
+                <div className="flex flex-col">
+                    <label
+                        htmlFor="breed"
+                        className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                        Raza
+                    </label>
+                    <input
+                        type="text"
+                        id="breed"
+                        name="breed"
+                        placeholder="Raza"
+                        className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        required
+                    />
+                </div>
+
+                {/* Edad */}
+                <div className="flex flex-col">
+                    <label
+                        htmlFor="age"
+                        className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                        Edad
+                    </label>
+                    <input
+                        type="number"
+                        id="age"
+                        name="age"
+                        placeholder="Edad"
+                        className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        required
+                    />
+                </div>
+
+                {/* Peso */}
+                <div className="flex flex-col">
+                    <label
+                        htmlFor="weight"
+                        className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                    >
+                        Peso
+                    </label>
+                    <input
+                        type="number"
+                        id="weight"
+                        name="weight"
+                        placeholder="Peso (kg)"
+                        className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        required
+                    />
+                </div>
+
+                {/* Botón Añadir */}
+                <div className="ml-auto">
+                    <button
+                        type="submit"
+                        className="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
+                    >
+                        Añadir
+                    </button>
+                </div>
+            </form>
         </div>
+
     );
 }

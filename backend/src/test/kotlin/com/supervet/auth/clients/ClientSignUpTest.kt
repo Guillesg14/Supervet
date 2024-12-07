@@ -1,4 +1,4 @@
-package com.supervet.auth.clients;
+package com.supervet.auth.clients
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import kotlin.random.Random
@@ -7,7 +7,6 @@ import io.kotest.matchers.shouldBe
 import io.ktor.client.request.*
 import io.ktor.http.*
 import org.jdbi.v3.core.kotlin.mapTo
-import org.jdbi.v3.core.kotlin.useHandleUnchecked
 import org.jdbi.v3.core.kotlin.withHandleUnchecked
 import org.junit.jupiter.api.assertDoesNotThrow
 import java.util.*
@@ -96,10 +95,11 @@ class ClientSignUpTest {
                 "phone" to Random.nextInt(100_000_000, 1_000_000_000)
             )
 
-            client.post("auth/clients/sign-up") {
+           val response = client.post("auth/clients/sign-up") {
                 contentType(ContentType.Application.Json)
                 setBody(clientSignUpPayload)
             }
+            assertEquals(HttpStatusCode.Created, response.status)
 
             val duplicateResponse = client.post("auth/clients/sign-up") {
                 contentType(ContentType.Application.Json)

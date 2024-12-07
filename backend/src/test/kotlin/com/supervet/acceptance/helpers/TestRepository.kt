@@ -28,12 +28,14 @@ class TestRepository(
 
             handle.createUpdate(
                 """
-                    insert into clinics(id, user_id)
-                    values(:id, :user_id)
-                """.trimIndent()
+                        insert into clinics(id, user_id, phone, address)
+                        values (:id, :user_id, :phone, :address)
+                    """.trimIndent()
             )
                 .bind("id", clinic.id)
                 .bind("user_id", clinic.userId)
+                .bind("phone",clinic.phone)
+                .bind("address",clinic.address)
                 .execute()
         }
 
@@ -102,6 +104,8 @@ data class Clinic(
     val userId: UUID = UUID.randomUUID(),
     val email: String = "${UUID.randomUUID()}@test.test",
     val password: String = UUID.randomUUID().toString(),
+    val phone:  Int = Random.nextInt(100_000_000, 1_000_000_000),
+    val address: String = UUID.randomUUID().toString(),
 )
 
 data class Client(

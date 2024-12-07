@@ -31,12 +31,14 @@ class SignUpRepository(private val jdbi: Jdbi) {
 
                 handle.createUpdate(
                     """
-                        insert into clinics(id, user_id)
-                        values (:id, :user_id)
+                        insert into clinics(id, user_id, phone, address)
+                        values (:id, :user_id, :phone, :address)
                     """.trimIndent()
                 )
                     .bind("id", UUID.randomUUID())
                     .bind("user_id", userId)
+                    .bind("phone",clinicSignUpRequest.phone)
+                    .bind("address",clinicSignUpRequest.address)
                     .execute()
             }
         } catch (e: Exception) {

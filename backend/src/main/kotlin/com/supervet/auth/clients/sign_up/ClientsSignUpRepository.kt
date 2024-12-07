@@ -50,10 +50,15 @@ class AddClientRepository(private val jdbi: Jdbi) {
                     throw ClinicDoesNotExistException(clientSignUpRequest.clinicId)
                 }
             }
-        } catch (e: PSQLException) {
-            when (e.sqlState) {
-                UNIQUE_VIOLATION -> throw ClientAlreadyExistsException(clientSignUpRequest.email)
-                FOREIGN_KEY_EXCEPTION -> throw ClinicDoesNotExistException(clientSignUpRequest.clinicId)
+        } catch (e: Exception) {
+            val cause = e.cause
+            if (cause is PSQLException && cause.sqlState == UNIQUE_VIOLATION) {
+                throw ClientAlreadyExistsException(clientSignUpRequest.email)
+            }
+            if (cause is PSQLException && cause.sqlState == FOREIGN_KEY_EXCEPTION) {
+                throw ClinicDoesNotExistException(clientSignUpRequest.clinicId)
+            } else {
+                throw e
             }
         }
     }

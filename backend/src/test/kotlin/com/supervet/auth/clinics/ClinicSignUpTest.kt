@@ -11,6 +11,7 @@ import org.jdbi.v3.core.kotlin.mapTo
 import org.jdbi.v3.core.kotlin.withHandleUnchecked
 import org.junit.jupiter.api.assertDoesNotThrow
 import java.util.*
+import kotlin.random.Random
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -20,7 +21,9 @@ class ClinicSignUpTest {
     fun `should register a clinic`() = testApplicationWithDependencies { testRepository, jdbi, httpClient, customConfig ->
         val clinicSignUpPayload = ClinicSignUpRequest(
             email = "${UUID.randomUUID()}@test.test",
-            password = UUID.randomUUID().toString()
+            password = UUID.randomUUID().toString(),
+            phone =  Random.nextInt(100_000_000, 1_000_000_000),
+            address = UUID.randomUUID().toString(),
         )
 
         val response = httpClient.post("auth/clinics/sign-up") {
@@ -73,7 +76,9 @@ class ClinicSignUpTest {
         testApplicationWithDependencies { testRepository, jdbi, httpClient, customConfig ->
             val clinicSignUpPayload = ClinicSignUpRequest(
                 email = "${UUID.randomUUID()}@test.test",
-                password = UUID.randomUUID().toString()
+                password = UUID.randomUUID().toString(),
+                phone = Random.nextInt(100_000_000, 1_000_000_000),
+                address = UUID.randomUUID().toString()
             )
 
             val response = httpClient.post("auth/clinics/sign-up") {

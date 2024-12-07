@@ -22,4 +22,9 @@ class SignUpHandler(private val clinicSignUp: ClinicSignUp) : Handler {
     }
 }
 
-data class ClinicSignUpRequest(val email: String, val password: String)
+data class ClinicSignUpRequest(
+    val email: String,
+    val password: String,
+    val phone: Int,
+    val address: String
+)

@@ -6,16 +6,16 @@ import java.util.*
 
 class CreateAppointmentRepository(private val jdbi: Jdbi) {
 
-    fun saveAppointment(createAppointmentRequest: CreateAppointmentRequest) {
+    fun saveAppointment(createAppointmentRequest: CreateAppointmentRequest, patientId: UUID) {
         jdbi.useTransactionUnchecked { handle ->
             handle.createUpdate(
                 """
-                    INSERT INTO appointments (id, patient_id, appointment)
-                    VALUES (:id, :patientId, :appointment)
+                    INSERT INTO appointments (id, patient_id, appointment, created_at)
+                    VALUES (:id, :patientId, :appointment, now())
                     """.trimIndent()
             )
                 .bind("id", UUID.randomUUID())
-                .bind("patientId", createAppointmentRequest.patientId)
+                .bind("patientId", patientId)
                 .bind("appointment", createAppointmentRequest.appointment)
                 .execute()
         }

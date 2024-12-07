@@ -8,10 +8,11 @@ import io.ktor.server.routing.*
 import java.util.*
 class CreateAppointmentHandler (private val createAppointment: CreateAppointment) : Handler{
     override suspend fun invoke(ctx: RoutingContext){
+        val patientId = UUID.fromString(ctx.call.parameters["patient-id"]!!)
         val addAppointmentRequest = ctx.call.receive<CreateAppointmentRequest>()
 
         try {
-            createAppointment(addAppointmentRequest)
+            createAppointment(addAppointmentRequest, patientId)
             ctx.call.respond(HttpStatusCode.Created)
         } catch (e:Exception){
                 ctx.call.respond(HttpStatusCode.InternalServerError)
@@ -20,6 +21,5 @@ class CreateAppointmentHandler (private val createAppointment: CreateAppointment
     }
 
 data class CreateAppointmentRequest(
-    val patientId: UUID,
     val appointment: String,
 )

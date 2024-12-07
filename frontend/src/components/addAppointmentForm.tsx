@@ -13,13 +13,12 @@ export default async function AddAppointmentForm({ patientId, clientId }: { pati
         'use server';
 
         const rawFormData = {
-            patientId: patientId,
             appointment: formData.get("appointment"),
         };
 
         try {
             const response = await fetch(
-                `https://${process.env.API_URL}.onrender.com/clinics/clients/${clientId}/patients/${patientId}`,
+                `https://${process.env.API_URL}.onrender.com/clinics/clients/${clientId}/patients/${patientId}/appointments`,
                 {
                     method: "POST",
                     headers: {

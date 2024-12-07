@@ -51,7 +51,7 @@ fun Application.configureRouting() {
                 delete("delete-client/{client-id}", executeInvoke<DeleteClientHandler>())
                 post("create-patient", executeInvoke<CreatePatientHandler>())
                 get("clients/{client-id}/patients", executeInvoke<GetClinicPatientsHandler>())
-                post("clients/{client-id}/patients/{patient-id}", executeInvoke<CreateAppointmentHandler>())
+                post("clients/{client-id}/patients/{patient-id}/appointments", executeInvoke<CreateAppointmentHandler>())
             }
         }
 

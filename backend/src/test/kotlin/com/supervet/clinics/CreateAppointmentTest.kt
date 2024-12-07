@@ -21,7 +21,6 @@ class CreateAppointmentTest {
             val patient = testRepository.createPatient(client)
 
             val createAppointmentPayload = mapOf(
-                "patientId" to patient.id,
                 "appointment" to "Test appointment text"
             )
 
@@ -33,7 +32,7 @@ class CreateAppointmentTest {
                 .withClaim("email", clinic.email)
                 .sign(Algorithm.HMAC512("supervet"))
 
-            val response = httpClient.post("clinics/clients/{client-id}/patients/create-appointment") {
+            val response = httpClient.post("clinics/clients/${client.id}/patients/${patient.id}/appointments") {
                 bearerAuth(token)
                 contentType(ContentType.Application.Json)
                 setBody(createAppointmentPayload)
@@ -44,7 +43,7 @@ class CreateAppointmentTest {
             val createdAppointment = jdbi.withHandleUnchecked { handle ->
                 handle.createQuery(
                     """
-                select appointment, patient_id
+                select appointment
                 from appointments
                 where patient_id = :patientId
                 """.trimIndent()
@@ -53,9 +52,7 @@ class CreateAppointmentTest {
                     .map(MapMapper())
                     .one()
             }
-            assertNotNull(createdAppointment)
+
             assertEquals(createAppointmentPayload["appointment"], createdAppointment["appointment"])
-
-
         }
 }

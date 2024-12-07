@@ -12,10 +12,6 @@ export default async function ShowClient() {
     const cookieStore = await cookies();
     const token = cookieStore.get("session")?.value;
 
-    if (!token) {
-        redirect("/log-in");
-    }
-
     async function fetchClientInfo(): Promise<Client | null> {
         try {
             const response = await fetch(

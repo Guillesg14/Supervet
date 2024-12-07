@@ -14,10 +14,6 @@ export default async function ShowClientPatients() {
     const cookieStore = await cookies();
     const token = cookieStore.get("session")?.value;
 
-    if (!token) {
-        redirect("/log-in");
-    }
-
     async function fetchPatientsInfo(): Promise<Patient[]> {
         try {
             const response = await fetch(

@@ -1,41 +1,41 @@
-import {redirect} from "next/navigation";
+'use client'
+
 import Link from "next/link";
+import {handleClinicSignUp} from "@/actions/handleClinicSignUp"
+import { useState } from "react";
 
-export default async function ClinicSignUp() {
-    const handleSignUp = async (formData: FormData) => {
-        'use server'
+export default function ClinicSignUp() {
+    const [error, setError] = useState<string | null>(null);
 
-        const rawFormData = {
-            email: formData.get('email'),
-            password: formData.get('password'),
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
+
+        try {
+            await handleClinicSignUp(formData);
+            setError(null);
+        } catch (e: any) {
+            setError(e.message);
         }
 
-        const response = await fetch(`https://${process.env.API_URL}.onrender.com/auth/clinics/sign-up`, {
-            method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(rawFormData),
-        });
-
-        if (response.ok) {
-            redirect("/log-in");
-        } else {
-            const errorData = await response.json();
-            console.error("Error al registrarse:", errorData.message || "Error desconocido");
-        }
-    }
+    };
 
     return (
         <div className="relative flex w-full h-[80vh] flex-col bg-slate-50 group/design-root overflow-x-hidden"
              style={{fontFamily: 'Inter, "Noto Sans", sans-serif'}}>
             <div className="layout-container flex h-full grow flex-col">
-
                 <div className="flex h-full items-center justify-center bg-gray-100">
                     <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-lg shadow-lg">
                         <h2 className="text-2xl font-bold text-center text-gray-800">Crea tu Cuenta</h2>
-                        <form className="space-y-6" action={handleSignUp}>
-                            {/* Correo Electrónico */}
+                        {/* Mostrar mensaje de error */}
+                        {error && (
+                            <p className="text-red-600 text-center">
+                                {error}
+                            </p>
+                        )}
+                        <form className="space-y-6" onSubmit={handleSubmit}>
+
                             <div>
                                 <label className="block mb-1 text-sm font-medium text-gray-600" htmlFor="email">Correo electronico</label>
                                 <input
@@ -48,7 +48,7 @@ export default async function ClinicSignUp() {
                                 />
                             </div>
 
-                            {/* Contraseña */}
+
                             <div>
                                 <label
                                     className="block mb-1 text-sm font-medium text-gray-600"
@@ -57,7 +57,6 @@ export default async function ClinicSignUp() {
                                     Contraseña
                                 </label>
                                 <input
-                                    type="password"
                                     id="password"
                                     name="password"
                                     placeholder="Enter your password"
@@ -66,7 +65,7 @@ export default async function ClinicSignUp() {
                                 />
                             </div>
 
-                            {/* Botón de Registro */}
+
                             <button
                                 type="submit"
                                 className="w-full px-4 py-2 text-white bg-blue-600 rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -74,7 +73,7 @@ export default async function ClinicSignUp() {
                                 Registrarse
                             </button>
 
-                            {/* Enlace para Iniciar Sesión */}
+
                             <p className="text-sm text-center text-gray-500">
                                 ¿Ya tenias cuenta?
                                 <Link href="/log-in" className="text-blue-600 hover:underline"> Log in</Link>

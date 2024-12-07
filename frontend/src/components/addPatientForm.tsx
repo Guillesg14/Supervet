@@ -39,8 +39,8 @@ export default async function AddPatientForm({clientId}: {clientId: string}) {
             console.error("Error creating patient :", err);
         }
 
-        revalidatePath(`/clinics/clients/${clientId}/patients`)
-        redirect(`/clinics/clients/${clientId}/patients`);
+        revalidatePath(`/clinics/clients/${clientId}`)
+        redirect(`/clinics/clients/${clientId}`);
     }
 
 

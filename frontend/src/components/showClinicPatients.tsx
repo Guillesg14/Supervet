@@ -27,8 +27,7 @@ export default async function ShowClinicPatients({clientId}: {clientId: string})
                     }
                 }
             );
-            const respuesta = await response.json();
-            console.log("la respuesta es:"+respuesta)
+
             if (!response.ok) {
                 const errorDetails = await response.text();
                 console.error(

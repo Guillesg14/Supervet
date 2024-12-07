@@ -86,7 +86,7 @@ class TestRepository(
                     VALUES (:id, :clientId, :name, :breed, :age, :weight)
                     """.trimIndent()
             )
-                .bind("id", UUID.randomUUID())
+                .bind("id", patient.id)
                 .bind("clientId", client.id)
                 .bind("name", patient.name)
                 .bind("breed", patient.breed)
@@ -118,6 +118,7 @@ data class Client(
 )
 
 data class Patient(
+    val id: UUID = UUID.randomUUID(),
     val name: String = UUID.randomUUID().toString(),
     val breed: String = UUID.randomUUID().toString(),
     val age: Int = Random.nextInt(0, 100),

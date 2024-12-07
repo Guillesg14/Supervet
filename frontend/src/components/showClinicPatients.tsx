@@ -1,5 +1,6 @@
 import {cookies} from "next/headers";
 import {redirect} from "next/navigation";
+import Link from "next/link";
 
 interface Patient{
     id: string;
@@ -59,32 +60,44 @@ export default async function ShowClinicPatients({clientId}: {clientId: string})
             <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
                 <thead className="bg-gray-50">
                 <tr>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Nombre
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Edad
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Raza
                     </th>
-                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Peso
+                    </th>
+                    <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Acciones
                     </th>
                 </tr>
                 </thead>
                 <tbody className="bg-white">
-                {patients.map(patient => (
+                {patients.map((patient) => (
                     <tr key={patient.id}>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.name}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.age}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.breed}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{patient.weight}</td>
+                        <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-900">{patient.name}</td>
+                        <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-900">{patient.age}</td>
+                        <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-900">{patient.breed}</td>
+                        <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-900">{patient.weight}</td>
+                        <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-900">
+                            <Link href={`/clinics/clients/${clientId}/patients/${patient.id}`}>
+                                <button
+                                    className="focus:outline-none text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-500 font-medium rounded-lg text-sm px-5 py-2.5"
+                                >
+                                    Ver Citas
+                                </button>
+                            </Link>
+                        </td>
                     </tr>
                 ))}
-
                 </tbody>
             </table>
         </div>
+
     );
 }

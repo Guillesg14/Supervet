@@ -6,6 +6,7 @@ import com.supervet.auth.clients.sign_up.AddClientHandler
 import com.supervet.clinics.create_patient.CreatePatientHandler
 import com.supervet.clients.get_info.GetInfoHandler
 import com.supervet.clients.get_patients.GetClientPatientsHandler
+import com.supervet.clinics.create_appointment.CreateAppointmentHandler
 import com.supervet.clinics.get_clients.GetClientsHandler
 import com.supervet.clinics.delete_client.DeleteClientHandler
 import com.supervet.clinics.get_patients.GetClinicPatientsHandler
@@ -50,6 +51,7 @@ fun Application.configureRouting() {
                 delete("delete-client/{client-id}", executeInvoke<DeleteClientHandler>())
                 post("create-patient", executeInvoke<CreatePatientHandler>())
                 get("clients/{client-id}/patients", executeInvoke<GetClinicPatientsHandler>())
+                post("clients/{client-id}/patients/{patient-id}", executeInvoke<CreateAppointmentHandler>())
             }
         }
 

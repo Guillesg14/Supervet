@@ -48,14 +48,14 @@ export default async function AddPatientForm({clientId}: {clientId: string}) {
         <div className="container mx-auto p-4">
             <h1 className="text-xl font-bold mb-4">Añade una nueva mascota</h1>
             <form
-                className="min-w-full divide-y divide-gray-200 border border-gray-300 p-4 rounded-lg bg-gray-50 flex items-center space-x-4"
+                className="min-w-full divide-y divide-gray-200 border border-gray-300 p-4 rounded-lg bg-gray-50 flex items-center gap-4"
                 onSubmit={handlePatientRegistration}
             >
                 {/* Nombre */}
-                <div className="flex flex-col">
+                <div className="flex-1">
                     <label
                         htmlFor="name"
-                        className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1"
                     >
                         Nombre
                     </label>
@@ -64,16 +64,16 @@ export default async function AddPatientForm({clientId}: {clientId: string}) {
                         id="name"
                         name="name"
                         placeholder="Nombre"
-                        className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         required
                     />
                 </div>
 
                 {/* Raza */}
-                <div className="flex flex-col">
+                <div className="flex-1">
                     <label
                         htmlFor="breed"
-                        className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1"
                     >
                         Raza
                     </label>
@@ -82,16 +82,16 @@ export default async function AddPatientForm({clientId}: {clientId: string}) {
                         id="breed"
                         name="breed"
                         placeholder="Raza"
-                        className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         required
                     />
                 </div>
 
                 {/* Edad */}
-                <div className="flex flex-col">
+                <div className="flex-1">
                     <label
                         htmlFor="age"
-                        className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1"
                     >
                         Edad
                     </label>
@@ -100,16 +100,16 @@ export default async function AddPatientForm({clientId}: {clientId: string}) {
                         id="age"
                         name="age"
                         placeholder="Edad"
-                        className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         required
                     />
                 </div>
 
                 {/* Peso */}
-                <div className="flex flex-col">
+                <div className="flex-1">
                     <label
                         htmlFor="weight"
-                        className="text-xs font-medium text-gray-500 uppercase tracking-wider"
+                        className="block text-xs font-medium text-gray-500 uppercase tracking-wider mb-1"
                     >
                         Peso
                     </label>
@@ -118,13 +118,13 @@ export default async function AddPatientForm({clientId}: {clientId: string}) {
                         id="weight"
                         name="weight"
                         placeholder="Peso (kg)"
-                        className="px-2 py-1 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                         required
                     />
                 </div>
 
                 {/* Botón Añadir */}
-                <div className="ml-auto">
+                <div className="flex-shrink-0">
                     <button
                         type="submit"
                         className="px-6 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50"
@@ -134,6 +134,7 @@ export default async function AddPatientForm({clientId}: {clientId: string}) {
                 </div>
             </form>
         </div>
+
 
     );
 }

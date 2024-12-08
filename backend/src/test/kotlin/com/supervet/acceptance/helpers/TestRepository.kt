@@ -96,6 +96,24 @@ class TestRepository(
         }
         return patient
     }
+
+    fun createAppointment(patient: Patient) : Appointment{
+        val appointment = Appointment()
+        jdbi.useTransactionUnchecked { handle ->
+            handle.createUpdate(
+                """
+                    INSERT INTO appointments (id, patient_id, appointment, created_at)
+                    VALUES (:id, :patientId, :appointment, now())
+                    """.trimIndent()
+            )
+                .bind("id", appointment.id)
+                .bind("patientId", patient.id)
+                .bind("appointment", appointment.appointment)
+                .execute()
+        }
+        return appointment
+    }
+
 }
 
 data class Clinic(
@@ -123,4 +141,10 @@ data class Patient(
     val breed: String = UUID.randomUUID().toString(),
     val age: Int = Random.nextInt(0, 100),
     val weight: Int = Random.nextInt(0, 100),
+)
+
+data class Appointment(
+    val id: UUID = UUID.randomUUID(),
+    val patientId:  UUID = UUID.randomUUID(),
+    val appointment: String = UUID.randomUUID().toString(),
 )

@@ -10,6 +10,7 @@ import com.supervet.clients.get_patients.GetClientPatientsHandler
 import com.supervet.clinics.create_appointment.CreateAppointmentHandler
 import com.supervet.clinics.get_clients.GetClientsHandler
 import com.supervet.clinics.delete_client.DeleteClientHandler
+import com.supervet.clinics.get_appointments.GetClinicPatientAppointmentsHandler
 import com.supervet.clinics.get_patients.GetClinicPatientsHandler
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -53,6 +54,7 @@ fun Application.configureRouting() {
                 post("create-patient", executeInvoke<CreatePatientHandler>())
                 get("clients/{client-id}/patients", executeInvoke<GetClinicPatientsHandler>())
                 post("clients/{client-id}/patients/{patient-id}/appointments", executeInvoke<CreateAppointmentHandler>())
+                get("clients/{client-id}/patients/{patient-id}/appointments", executeInvoke<GetClinicPatientAppointmentsHandler>())
             }
         }
 

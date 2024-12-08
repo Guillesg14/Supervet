@@ -3,6 +3,7 @@ package com.supervet.ktor
 import com.supervet.auth.sign_in.SignInHandler
 import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clients.sign_up.AddClientHandler
+import com.supervet.clients.get_clinic_info.GetClinicInfoHandler
 import com.supervet.clinics.create_patient.CreatePatientHandler
 import com.supervet.clients.get_info.GetInfoHandler
 import com.supervet.clients.get_patients.GetClientPatientsHandler
@@ -59,6 +60,7 @@ fun Application.configureRouting() {
             route("clients") {
                 get("info", executeInvoke<GetInfoHandler>())
                 get("patients", executeInvoke<GetClientPatientsHandler>())
+                get("clinic-info", executeInvoke<GetClinicInfoHandler>())
             }
         }
     }

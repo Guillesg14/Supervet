@@ -13,6 +13,9 @@ import com.supervet.clinics.get_clients.GetClients
 import com.supervet.clinics.get_clients.GetClientsHandler
 import com.supervet.clinics.get_clients.GetClientsRepository
 import com.supervet.auth.sign_in.*
+import com.supervet.clients.get_clinic_info.GetClinicInfo
+import com.supervet.clients.get_clinic_info.GetClinicInfoHandler
+import com.supervet.clients.get_clinic_info.GetClinicInfoRepository
 import com.supervet.clinics.delete_client.DeleteClient
 import com.supervet.clinics.delete_client.DeleteClientHandler
 import com.supervet.clinics.delete_client.DeleteClientRepository
@@ -77,6 +80,9 @@ fun Application.configureDependencyInjection() {
         bind<CreateAppointmentHandler>() with singleton { CreateAppointmentHandler(instance()) }
         bind<CreateAppointment>() with  singleton { CreateAppointment(instance()) }
         bind<CreateAppointmentRepository>() with singleton { CreateAppointmentRepository(instance()) }
+        bind<GetClinicInfoHandler>() with singleton { GetClinicInfoHandler(instance()) }
+        bind<GetClinicInfo>() with singleton { GetClinicInfo(instance()) }
+        bind<GetClinicInfoRepository>() with singleton { GetClinicInfoRepository(instance()) }
     }
 }
 

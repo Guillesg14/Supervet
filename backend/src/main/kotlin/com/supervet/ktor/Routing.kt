@@ -7,6 +7,7 @@ import com.supervet.clients.get_clinic_info.GetClinicInfoHandler
 import com.supervet.clinics.create_patient.CreatePatientHandler
 import com.supervet.clients.get_info.GetInfoHandler
 import com.supervet.clients.get_patients.GetClientPatientsHandler
+import com.supervet.clients.get_patients_appointment.GetClientPatientsAppointmentsHandler
 import com.supervet.clinics.create_appointment.CreateAppointmentHandler
 import com.supervet.clinics.get_clients.GetClientsHandler
 import com.supervet.clinics.delete_client.DeleteClientHandler
@@ -63,6 +64,7 @@ fun Application.configureRouting() {
                 get("info", executeInvoke<GetInfoHandler>())
                 get("patients", executeInvoke<GetClientPatientsHandler>())
                 get("clinic-info", executeInvoke<GetClinicInfoHandler>())
+                get("appointments", executeInvoke<GetClientPatientsAppointmentsHandler>())
             }
         }
     }

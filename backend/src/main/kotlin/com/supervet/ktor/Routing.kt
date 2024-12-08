@@ -1,5 +1,6 @@
 package com.supervet.ktor
 
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.supervet.auth.sign_in.SignInHandler
 import com.supervet.auth.clinics.sign_up.SignUpHandler
 import com.supervet.auth.clients.sign_up.AddClientHandler
@@ -32,7 +33,9 @@ interface Handler {
 
 fun Application.configureRouting() {
     install(ContentNegotiation) {
-        jackson()
+        jackson {
+            registerModule(JavaTimeModule())
+        }
     }
 
     routing {

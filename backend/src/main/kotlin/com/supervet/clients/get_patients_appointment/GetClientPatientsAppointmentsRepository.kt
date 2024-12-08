@@ -11,8 +11,9 @@ class GetClientPatientsAppointmentsRepository(private val jdbi: Jdbi) {
                 """
                     SELECT 
                         a.id AS appointment_id,
-                        a.patient_id AS patient_id,
-                        a.appointment AS appointment
+                        p.id AS patient_id,
+                        a.appointment AS appointment_name,
+                        p.name AS patient_name
                     FROM 
                         clients c
                     JOIN 
@@ -30,7 +31,8 @@ class GetClientPatientsAppointmentsRepository(private val jdbi: Jdbi) {
                     AppointmentInfo(
                         appointmentId = UUID.fromString(rs.getString("appointment_id")),
                         patientId = UUID.fromString(rs.getString("patient_id")),
-                        appointment = rs.getString("appointment")
+                        appointment = rs.getString("appointment_name"),
+                        patientName = rs.getString("patient_name")
                     )
                 }
                 .list()

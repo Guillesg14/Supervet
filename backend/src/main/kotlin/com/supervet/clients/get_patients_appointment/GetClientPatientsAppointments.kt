@@ -13,5 +13,6 @@ class GetClientPatientsAppointments( private val getClientPatientsAppointmentsRe
 data class AppointmentInfo(
     val appointmentId: UUID,
     val patientId: UUID,
-    val appointment: String
+    val appointment: String,
+    val patientName: String
 )

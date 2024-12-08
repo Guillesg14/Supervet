@@ -11,5 +11,5 @@ class GetClinicPatientAppointments(private val getClinicPatientAppointmentsRepos
 data class Appointment(
     val id: UUID,
     val appointment: String,
-    val created_at: Instant,
+    val createdAt: Instant,
 )

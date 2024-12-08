@@ -16,14 +16,10 @@ class GetClinicPatientAppointmentsRepository(private val jdbi: Jdbi) {
             )
                 .bind("patientId", patientId)
                 .map { rs, _ ->
-                    // Obtén el Timestamp de la base de datos
-                    val createdAt = rs.getTimestamp("created_at")
-                    val instant = createdAt.toInstant()  // Convierte el Timestamp a Instant
-
                     Appointment(
                         id = UUID.fromString(rs.getString("id")),
                         appointment = rs.getString("appointment"),
-                        created_at = instant // Devuelve el Instant
+                        createdAt = rs.getTimestamp("created_at").toInstant()
                     )
                 }
                 .list()

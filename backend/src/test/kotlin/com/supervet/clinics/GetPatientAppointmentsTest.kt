@@ -5,6 +5,7 @@ import com.auth0.jwt.algorithms.Algorithm
 import com.supervet.acceptance.helpers.testApplicationWithDependencies
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
@@ -40,5 +41,6 @@ class GetPatientAppointmentsTest {
 
             appointmentResponse.shouldNotBeNull()
             appointmentResponse["appointment"] shouldBe appointment.appointment
+            appointmentResponse["createdAt"] shouldNotBe null
         }
 }

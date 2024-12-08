@@ -1,6 +1,6 @@
 package com.supervet.clinics.get_appointments
 
-import java.util.Date
+import java.time.Instant
 import java.util.UUID
 
 class GetClinicPatientAppointments(private val getClinicPatientAppointmentsRepository: GetClinicPatientAppointmentsRepository){
@@ -11,5 +11,5 @@ class GetClinicPatientAppointments(private val getClinicPatientAppointmentsRepos
 data class Appointment(
     val id: UUID,
     val appointment: String,
-    val created_at: Date,
+    val created_at: Instant,
 )

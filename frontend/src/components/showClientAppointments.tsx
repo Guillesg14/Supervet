@@ -61,7 +61,7 @@ export default async function ShowClientAppointments() {
         <div className="container mx-auto p-4">
             <h1 className="text-xl font-bold mb-4">Tus Citas</h1>
             <table className="min-w-full divide-y divide-gray-200 border border-gray-300">
-                <thead className="bg-gray-50">
+                <thead className="bg-blue1">
                 <tr>
                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Nombre de la Mascota
@@ -72,30 +72,28 @@ export default async function ShowClientAppointments() {
                 </tr>
                 </thead>
                 <tbody className="bg-white">
-                {Object.keys(groupedAppointments).map(patientName => {
-                    return (
-                        <>
-                            <tr key={patientName}>
-                                <td
-                                    colSpan={2}
-                                    className="px-6 py-3 text-sm font-semibold text-gray-900 bg-gray-100"
-                                >
-                                    {patientName}
+                {Object.keys(groupedAppointments).map((patientName) => (
+                    <>
+                        <tr key={`header-${patientName}`}>
+                            <td
+                                colSpan={2}
+                                className="px-6 py-3 text-sm font-semibold text-gray-900 bg-gray-100"
+                            >
+                                {patientName}
+                            </td>
+                        </tr>
+                        {groupedAppointments[patientName].map((appointment) => (
+                            <tr key={appointment.appointmentId}>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+
+                                </td>
+                                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                    {appointment.appointment}
                                 </td>
                             </tr>
-                            {groupedAppointments[patientName].map(appointment => (
-                                <tr key={appointment.appointmentId}>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {appointment.patientName}
-                                    </td>
-                                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                        {appointment.appointment}
-                                    </td>
-                                </tr>
-                            ))}
-                        </>
-                    );
-                })}
+                        ))}
+                    </>
+                ))}
                 </tbody>
             </table>
         </div>

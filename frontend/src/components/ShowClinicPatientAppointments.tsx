@@ -5,7 +5,7 @@ import { redirect } from "next/navigation";
 interface Appointment {
     id: string;
     appointment: string;
-    created_at: string;
+    createdAt: string;
 }
 
 export default async function ShowClinicPatientsAppointments({patientId,clientId,}: {patientId: string;clientId: string;}) {
@@ -74,7 +74,7 @@ export default async function ShowClinicPatientsAppointments({patientId,clientId
                             {appointment.appointment}
                         </td>
                         <td className="px-6 py-4 text-center whitespace-nowrap text-sm text-gray-900">
-                            {appointment.created_at}
+                            {appointment.createdAt}
 
                         </td>
 

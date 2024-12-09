@@ -37,7 +37,7 @@ export default function ClientSignUpForm() {
                                     type="text"
                                     id="name"
                                     name="name"
-                                    placeholder="Enter your name"
+                                    placeholder="Intoduce tu nombre"
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
@@ -54,7 +54,7 @@ export default function ClientSignUpForm() {
                                     type="text"
                                     id="surname"
                                     name="surname"
-                                    placeholder="Enter your surname"
+                                    placeholder="Introduce tus apellidos"
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
@@ -71,7 +71,7 @@ export default function ClientSignUpForm() {
                                     type="number"
                                     id="phone"
                                     name="phone"
-                                    placeholder="Enter your phone number"
+                                    placeholder="Introduce tu teléfono"
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
@@ -88,7 +88,7 @@ export default function ClientSignUpForm() {
                                     type="email"
                                     id="email"
                                     name="email"
-                                    placeholder="Enter your email"
+                                    placeholder="Introduce tu correo"
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
@@ -105,7 +105,7 @@ export default function ClientSignUpForm() {
                                     type="password"
                                     id="password"
                                     name="password"
-                                    placeholder="Enter your password"
+                                    placeholder="Introduce tu contraseña"
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />

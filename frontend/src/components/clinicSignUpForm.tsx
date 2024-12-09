@@ -44,7 +44,7 @@ export default function ClinicSignUp() {
                                     type="email"
                                     id="email"
                                     name="email"
-                                    placeholder="Enter your email"
+                                    placeholder="Introduce tu correo"
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
@@ -85,9 +85,10 @@ export default function ClinicSignUp() {
                                     Contraseña
                                 </label>
                                 <input
+                                    type="password"
                                     id="password"
                                     name="password"
-                                    placeholder="Enter your password"
+                                    placeholder="Introduce la contraseña"
                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                                     required
                                 />
